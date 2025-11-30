@@ -1,0 +1,92 @@
+
+# Auto detect text files and perform LF normalization
+* text=auto
+# ==============================================================================
+# LINE ENDING SETTINGS (Crucial for Windows + Python)
+# ==============================================================================
+
+# Auto-detect text files and ensure they use LF in repository
+* text=auto
+
+# Force Python files to use LF line endings in repository
+*.py text eol=lf
+*.pyw text eol=lf
+*.pyi text eol=lf
+
+# Force other source files to use LF
+*.txt text eol=lf
+*.md text eol=lf
+*.rst text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+
+# ==============================================================================
+# BINARY FILES (Tell Git not to mess with these)
+# ==============================================================================
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.bmp binary
+*.ico binary
+
+# Archives and packages
+*.zip binary
+*.tar.gz binary
+*.egg binary
+*.whl binary
+
+# Documents
+*.pdf binary
+*.doc binary
+*.docx binary
+
+# Python compiled files
+*.pyc binary
+*.pyo binary
+*.pyd binary
+
+# ==============================================================================
+# PYTHON-SPECIFIC SETTINGS
+# ==============================================================================
+
+# Jupyter notebooks - treat as binary to avoid merge conflicts
+*.ipynb binary
+
+# Python virtual environment - ignore in diffs and exports
+venv/ export-ignore
+.env export-ignore
+.venv/ export-ignore
+
+# Python cache directories
+__pycache__/ export-ignore
+*.egg-info/ export-ignore
+
+# ==============================================================================
+# DIFF AND MERGE SETTINGS
+# ==============================================================================
+
+# Use better diff for requirements files
+requirements*.txt diff=requirements
+Pipfile diff=ini
+Pipfile.lock binary
+
+# ==============================================================================
+# EXPORT SETTINGS (Files to exclude when creating releases)
+# ==============================================================================
+
+# Exclude development files from distribution
+.gitattributes export-ignore
+.gitignore export-ignore
+README.md export-ignore
+CONTRIBUTING.md export-ignore
+TODO.md export-ignore
+*.bak export-ignore
+*.tmp export-ignore
