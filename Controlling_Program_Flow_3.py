@@ -1,0 +1,49 @@
+# Peyman Miyandashti 250161
+# Data Structures
+# 1. Lists[]
+# Ordered, mutable(changeable)collections. very versatile
+my_list = ["apple", "banana", "cherry", 42, True]
+# Access elements (index starts at 0)
+print(my_list[0])  # Output:apple
+print(my_list[-1])  # Output: True(negative index counts  from the end)
+
+# Modify elements
+my_list[1] = "blueberry"
+print(my_list)  # Output: ["apple","blueberry","cherry",42,True]
+
+# Add elements
+my_list.append("orange")  # Adds to the end
+my_list.insert(1, "mango")  # Insert at inddex 1
+# Get Length
+print(len(my_list))  # Output:6
+#################################################################
+# 2. Dictionaries{}
+# unordered collections of Key-value pairs.
+# used to store data with labels.
+my_dic = {"name": "Peyman", "age": 42, "is_student": True}
+# Access values using keys
+print(my_dic["name"])  # Output : Peyman
+print(my_dic.get("age"))  # Output:42
+
+# Add or change values
+my_dic["job"] = "Developer"
+my_dic["age"] = 43
+
+# Get all keys or values
+print(my_dic.keys())
+print(my_dic.values())
+
+######################################################################
+# 3. Tuples()
+# ordered , immutable (unchangeable) collections. faster than lists.
+my_tuple = ("apple", "banana", "cherry")
+# my_tuple[1] "blueberry" This would cause an error!
+print(my_tuple[1])  # Output: banana
+
+####################################################################
+# 4. Sets
+# unordered, unidexed collections with no duplicate values.
+my_set ={"apple","banana","cherry","apple"}
+print(
+    my_set
+)  # Output {'cherry','banana','apple'} (duplicate removed , order may vary).
