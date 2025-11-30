@@ -1,0 +1,103 @@
+#Peyman Miyandashti #250161
+# Example 1: Basic check
+print("123".isdigit())  # Output: True
+print("12a3".isdigit())  # Output: False
+
+# Example 2: Input validation
+user_input = input("Enter your age: ")
+if user_input.isdigit():
+    age = int(user_input)
+    print(f"Your age is {age}")
+else:
+    print("Please enter a valid number")
+
+# Example 3: Processing strings
+text = "I have 3 apples and 5 oranges"
+words = text.split()
+numbers = [word for word in words if word.isdigit()]
+print(f"Numbers found: {numbers}")  # Output: ['3', '5']
+
+# Example : Basic usage
+text = "   Hello World!   "
+print(f"'{text.strip()}'")  # Output: 'Hello World!'
+
+# Example 2: User input cleanup
+user_input = input("Enter your name: ").strip()
+print(f"Hello, {user_input}!")
+
+# Example 3: Removing specific characters
+text = "***Hello***"
+print(text.strip('*'))  # Output: 'Hello'
+
+# Example 1: Basic usage
+text = "hello world"
+print(text.upper())  # Output: HELLO WORLD
+
+# Example 2: Case-insensitive comparison
+user_input = "Yes"
+if user_input.upper() == "YES":
+    print("Affirmative!")
+
+# Example 3: Formatting output
+names = ["john", "jane", "jim"]
+for name in names:
+    print(name.upper())
+
+  # Example 1: Getting all values
+student = {"name": "John", "age": 20, "grade": "A"}
+print(student.values())  # Output: dict_values(['John', 20, 'A'])
+
+# Example 2: Iterating through values
+for value in student.values():
+    print(value)
+
+# Example 3: Converting to list
+values_list = list(student.values())
+print(values_list)  # Output: ['John', 20, 'A']
+
+# all Attribute together 
+  def process_data(data_list):
+    """Process a list of data entries"""
+    valid_numbers = []
+    invalid_entries = []
+
+    for entry in data_list:
+        # Clean the entry
+        cleaned_entry = entry.strip()
+
+        # Check if it's a valid number
+        if cleaned_entry.isdigit():
+            valid_numbers.append(int(cleaned_entry))
+        else:
+            invalid_entries.append(cleaned_entry)
+
+    return valid_numbers, invalid_entries
+
+def calculate_average(numbers):
+    """Calculate the average of numbers"""
+    if len(numbers) == 0:
+        return 0
+    return sum(numbers) / len(numbers)
+
+def main():
+    # Sample data with various entries
+    data = [" 25 ", "42", "hello", "75 ", "abc123", "100"]
+
+    try:
+        # Process the data
+        numbers, invalid = process_data(data)
+
+        # Calculate results
+        average = calculate_average(numbers)
+
+        # Display results
+        print(f"Valid numbers: {numbers}")
+        print(f"Invalid entries: {invalid}")
+        print(f"Average of valid numbers: {average:.2f}")
+        print(f"Total valid entries: {len(numbers)}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+     main()
