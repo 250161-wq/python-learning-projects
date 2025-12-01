@@ -1,0 +1,832 @@
+#peyman miyandashti 250161
+# Fibonacci sequence up to 100
+a, b = 0, 1
+while a < 100:
+    print(a, end=' ')
+    a, b = b, a + b
+
+###############################################
+# peyman miyandashti 250161
+
+import math
+from typing import List, Tuple, Generator
+import time
+from dataclasses import dataclass
+from enum import Enum
+import matplotlib.pyplot as plt
+
+class FibonacciMethod(Enum):
+    """Different methods to generate Fibonacci sequence"""
+    ITERATIVE = "Iterative (While Loop)"
+    RECURSIVE = "Recursive"
+    GENERATOR = "Generator"
+    MATRIX = "Matrix Exponentiation"
+    BINET = "Binet's Formula"
+    MEMOIZED = "Memoized Recursive"
+    DYNAMIC = "Dynamic Programming"
+
+@dataclass
+class FibonacciResult:
+    """Data class to store Fibonacci calculation results"""
+    method: FibonacciMethod
+    sequence: List[int]
+    time_taken: float
+    limit_type: str  # "max_value" or "terms"
+    limit_value: int
+    properties: dict = None
+
+class AdvancedFibonacci:
+    """Advanced Fibonacci sequence generator with multiple algorithms"""
+    
+    def __init__(self):
+        self.history = []
+    
+    # 1. Original while loop method (enhanced)
+    def fibonacci_while_loop(self, max_value: int = 100, max_terms: int = None) -> List[int]:
+        """
+        Generate Fibonacci sequence using while loop.
+        Can limit by maximum value OR number of terms.
+        """
+        sequence = []
+        a, b = 0, 1
+        
+        if max_terms:
+            # Limit by number of terms
+            for _ in range(max_terms):
+                sequence.append(a)
+                a, b = b, a + b
+        else:
+            # Limit by maximum value
+            while a <= max_value:
+                sequence.append(a)
+                a, b = b, a + b
+        
+        return sequence
+    
+    # 2. Recursive method (for educational purposes)
+    def fibonacci_recursive(self, n: int) -> int:
+        """Calculate nth Fibonacci number recursively"""
+        if n <= 1:
+            return n
+        return self.fibonacci_recursive(n-1) + self.fibonacci_recursive(n-2)
+    
+    def fibonacci_recursive_sequence(self, terms: int) -> List[int]:
+        """Generate Fibonacci sequence using recursive method"""
+        return [self.fibonacci_recursive(i) for i in range(terms)]
+    
+    # 3. Generator method (memory efficient)
+    def fibonacci_generator(self, max_value: int = 100) -> Generator[int, None, None]:
+        """Fibonacci generator for memory-efficient iteration"""
+        a, b = 0, 1
+        while a <= max_value:
+            yield a
+            a, b = b, a + b
+    
+    # 4. Matrix exponentiation method (fast for large n)
+    def fibonacci_matrix(self, n: int) -> int:
+        """Calculate nth Fibonacci number using matrix exponentiation (O(log n))"""
+        def multiply(A, B):
+            return [[A[0][0]*B[0][0] + A[0][1]*B[1][0], A[0][0]*B[0][1] + A[0][1]*B[1][1]],
+                    [A[1][0]*B[0][0] + A[1][1]*B[1][0], A[1][0]*B[0][1] + A[1][1]*B[1][1]]]
+        
+        def power(F, n):
+            if n <= 1:
+                return F
+            M = [[1, 1], [1, 0]]
+            
+            if n % 2 == 0:
+                half = power(F, n // 2)
+                return multiply(half, half)
+            else:
+                return multiply(F, power(F, n - 1))
+        
+        if n == 0:
+            return 0
+        
+        F = [[1, 1], [1, 0]]
+        F = power(F, n - 1)
+        return F[0][0]
+    
+    def fibonacci_matrix_sequence(self, terms: int) -> List[int]:
+        """Generate Fibonacci sequence using matrix method"""
+        return [self.fibonacci_matrix(i) for i in range(terms)]
+    
+    # 5. Binet's formula method (direct calculation)
+    def fibonacci_binet(self, n: int) -> int:
+        """Calculate nth Fibonacci number using Binet's formula"""
+        if n < 0:
+            return None
+        
+        phi = (1 + math.sqrt(5)) / 2  # Golden ratio
+        psi = (1 - math.sqrt(5)) / 2  # Negative of reciprocal of phi
+        
+        # Binet's formula: F(n) = (phi^n - psi^n) / sqrt(5)
+        return int(round((phi**n - psi**n) / math.sqrt(5)))
+    
+    def fibonacci_binet_sequence(self, terms: int) -> List[int]:
+        """Generate Fibonacci sequence using Binet's formula"""
+        return [self.fibonacci_binet(i) for i in range(terms)]
+    
+    # 6. Memoized recursive method (optimized recursion)
+    def fibonacci_memoized(self, n: int, memo: dict = None) -> int:
+        """Calculate nth Fibonacci number with memoization"""
+        if memo is None:
+            memo = {}
+        
+        if n in memo:
+            return memo[n]
+        
+        if n <= 1:
+            result = n
+        else:
+            result = self.fibonacci_memoized(n-1, memo) + self.fibonacci_memoized(n-2, memo)
+        
+        memo[n] = result
+        return result
+    
+    def fibonacci_memoized_sequence(self, terms: int) -> List[int]:
+        """Generate Fibonacci sequence using memoized recursion"""
+        return [self.fibonacci_memoized(i) for i in range(terms)]
+    
+    # 7. Dynamic programming method (iterative with list)
+    def fibonacci_dynamic(self, n: int) -> List[int]:
+        """Generate Fibonacci sequence using dynamic programming"""
+        if n <= 0:
+            return []
+        elif n == 1:
+            return [0]
+        
+        fib = [0, 1]
+        for i in range(2, n):
+            fib.append(fib[i-1] + fib[i-2])
+        
+        return fib
+    
+    # 8. Advanced features
+    def analyze_fibonacci(self, sequence: List[int]) -> dict:
+        """Analyze Fibonacci sequence properties"""
+        if len(sequence) < 2:
+            return {}
+        
+        # Calculate ratios
+        ratios = []
+        for i in range(1, len(sequence)):
+            if sequence[i-1] != 0:
+                ratio = sequence[i] / sequence[i-1]
+                ratios.append(ratio)
+        
+        # Calculate golden ratio approximation error
+        phi = (1 + math.sqrt(5)) / 2
+        last_ratio = ratios[-1] if ratios else 0
+        golden_ratio_error = abs(last_ratio - phi)
+        
+        # Check for properties
+        properties = {
+            'length': len(sequence),
+            'sum': sum(sequence),
+            'average': sum(sequence) / len(sequence) if sequence else 0,
+            'max_value': max(sequence),
+            'even_count': sum(1 for num in sequence if num % 2 == 0),
+            'odd_count': sum(1 for num in sequence if num % 2 == 1),
+            'perfect_squares': [num for num in sequence if math.isqrt(num)**2 == num],
+            'prime_numbers': self._find_primes(sequence),
+            'golden_ratio_approximation': last_ratio,
+            'golden_ratio_error': golden_ratio_error,
+            'last_10_ratios': ratios[-10:] if len(ratios) >= 10 else ratios,
+            'ratio_convergence': golden_ratio_error < 0.0001
+        }
+        
+        return properties
+    
+    def _find_primes(self, sequence: List[int]) -> List[int]:
+        """Find prime numbers in the sequence"""
+        primes = []
+        for num in sequence:
+            if num < 2:
+                continue
+            is_prime = True
+            for i in range(2, int(math.sqrt(num)) + 1):
+                if num % i == 0:
+                    is_prime = False
+                    break
+            if is_prime:
+                primes.append(num)
+        return primes
+    
+    # 9. Visualization
+    def plot_fibonacci(self, sequence: List[int], method_name: str):
+        """Plot Fibonacci sequence"""
+        plt.figure(figsize=(12, 5))
+        
+        # Plot 1: Fibonacci values
+        plt.subplot(1, 2, 1)
+        plt.plot(range(len(sequence)), sequence, 'b-o', linewidth=2, markersize=4)
+        plt.title(f'Fibonacci Sequence ({method_name})')
+        plt.xlabel('Index (n)')
+        plt.ylabel('Fibonacci Number F(n)')
+        plt.grid(True, alpha=0.3)
+        
+        # Plot 2: Ratio convergence to golden ratio
+        plt.subplot(1, 2, 2)
+        if len(sequence) > 1:
+            ratios = []
+            for i in range(1, len(sequence)):
+                if sequence[i-1] != 0:
+                    ratios.append(sequence[i] / sequence[i-1])
+            
+            plt.plot(range(1, len(ratios) + 1), ratios, 'r-o', linewidth=2, markersize=4, label='F(n)/F(n-1)')
+            plt.axhline(y=(1 + math.sqrt(5)) / 2, color='g', linestyle='--', label='Golden Ratio (φ)')
+            plt.title('Ratio Convergence to Golden Ratio')
+            plt.xlabel('n')
+            plt.ylabel('Ratio F(n)/F(n-1)')
+            plt.legend()
+            plt.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.show()
+    
+    # 10. Compare different methods
+    def compare_methods(self, terms: int = 20) -> List[FibonacciResult]:
+        """Compare performance of different Fibonacci generation methods"""
+        methods = [
+            (FibonacciMethod.ITERATIVE, lambda: self.fibonacci_dynamic(terms)),
+            (FibonacciMethod.MATRIX, lambda: self.fibonacci_matrix_sequence(terms)),
+            (FibonacciMethod.BINET, lambda: self.fibonacci_binet_sequence(terms)),
+            (FibonacciMethod.MEMOIZED, lambda: self.fibonacci_memoized_sequence(terms)),
+            (FibonacciMethod.DYNAMIC, lambda: self.fibonacci_dynamic(terms)),
+        ]
+        
+        results = []
+        for method, func in methods:
+            start_time = time.time()
+            sequence = func()
+            end_time = time.time()
+            
+            result = FibonacciResult(
+                method=method,
+                sequence=sequence,
+                time_taken=end_time - start_time,
+                limit_type="terms",
+                limit_value=terms,
+                properties=self.analyze_fibonacci(sequence)
+            )
+            results.append(result)
+        
+        return results
+
+def display_menu():
+    """Display the main menu"""
+    print("\n" + "="*60)
+    print("ADVANCED FIBONACCI SEQUENCE GENERATOR")
+    print("Peyman Miyandashti 250161")
+    print("="*60)
+    print("\n📊 AVAILABLE METHODS:")
+    print("-"*40)
+    
+    methods = [
+        ("1", "While Loop (Original, enhanced)", "Limit by value or terms"),
+        ("2", "Generator Method", "Memory efficient"),
+        ("3", "Matrix Exponentiation", "Fast for large n"),
+        ("4", "Binet's Formula", "Direct calculation"),
+        ("5", "Memoized Recursion", "Optimized recursion"),
+        ("6", "Dynamic Programming", "Efficient iterative"),
+        ("7", "Compare All Methods", "Performance comparison"),
+        ("8", "Analyze Sequence", "Detailed properties"),
+        ("9", "Visualize Sequence", "Plot graphs"),
+        ("H", "View History", "Previous calculations"),
+        ("G", "Golden Ratio Calculator", "Calculate φ and related"),
+        ("P", "Fibonacci Applications", "Real-world examples"),
+        ("Q", "Quit", "Exit program")
+    ]
+    
+    for num, name, desc in methods:
+        print(f"{num:>2}. {name:30} - {desc}")
+    
+    print("-"*40)
+
+def golden_ratio_calculator():
+    """Calculate and display golden ratio properties"""
+    phi = (1 + math.sqrt(5)) / 2
+    print(f"\n{'='*60}")
+    print("GOLDEN RATIO (φ) CALCULATOR")
+    print('='*60)
+    
+    print(f"φ = (1 + √5) / 2 ≈ {phi:.10f}")
+    print(f"1/φ = φ - 1 ≈ {1/phi:.10f}")
+    print(f"φ² = φ + 1 ≈ {phi**2:.10f}")
+    
+    # Applications
+    print("\n📐 Applications in Geometry:")
+    print(f"  • Golden Rectangle sides ratio: 1:{phi:.4f}")
+    print(f"  • Regular Pentagon diagonal/side ratio: φ")
+    
+    # Calculate Fibonacci approximation
+    print("\n🔢 Fibonacci Approximation:")
+    n = 10
+    fib = AdvancedFibonacci()
+    sequence = fib.fibonacci_dynamic(n+1)
+    if len(sequence) >= 2:
+        ratio = sequence[-1] / sequence[-2]
+        error = abs(ratio - phi)
+        print(f"  • F({n})/F({n-1}) = {sequence[-1]}/{sequence[-2]} = {ratio:.10f}")
+        print(f"  • Error from φ: {error:.10f}")
+    
+    print("\n🎨 In Nature and Art:")
+    print("  • Arrangement of leaves, seeds, and petals")
+    print("  • Shell spirals (nautilus)")
+    print("  • Famous artworks (Parthenon, Mona Lisa)")
+    print(f"  • Human body proportions (height/navel height ≈ φ)")
+
+def fibonacci_applications():
+    """Display real-world applications of Fibonacci sequence"""
+    print(f"\n{'='*60}")
+    print("FIBONACCI SEQUENCE APPLICATIONS")
+    print('='*60)
+    
+    applications = [
+        ("🌿 Nature", [
+            "• Phyllotaxis (leaf arrangement)",
+            "• Pinecone and sunflower seed patterns",
+            "• Branching in trees",
+            "• Fruit and vegetable patterns (pineapple, artichoke)"
+        ]),
+        ("🎨 Art & Architecture", [
+            "• Golden rectangle in architecture",
+            "• Composition in paintings and photography",
+            "• Musical compositions and scales",
+            "• Website design and layouts"
+        ]),
+        ("💻 Computer Science", [
+            "• Fibonacci heap data structure",
+            "• Algorithm analysis and complexity",
+            "• Lossless data compression",
+            "• Pseudorandom number generation"
+        ]),
+        ("📈 Finance", [
+            "• Fibonacci retracement in trading",
+            "• Elliott Wave theory",
+            "• Financial modeling and forecasting"
+        ]),
+        ("🔬 Science & Engineering", [
+            "• Crystal structures",
+            "• Error-correcting codes",
+            "• Computer graphics and polygon modeling",
+            "• Electrical engineering circuit design"
+        ])
+    ]
+    
+    for category, items in applications:
+        print(f"\n{category}:")
+        for item in items:
+            print(f"  {item}")
+
+def main():
+    """Main program loop"""
+    fib_calculator = AdvancedFibonacci()
+    
+    while True:
+        display_menu()
+        choice = input("\nEnter your choice: ").strip().upper()
+        
+        try:
+            if choice == '1':  # While Loop Method
+                print("\nWhile Loop Fibonacci Generator")
+                print("-"*40)
+                
+                limit_type = input("Limit by (V)alue or (T)erms? ").strip().upper()
+                
+                if limit_type == 'V':
+                    max_value = int(input("Enter maximum value (e.g., 100): "))
+                    start_time = time.time()
+                    sequence = fib_calculator.fibonacci_while_loop(max_value=max_value)
+                    end_time = time.time()
+                    limit_type_str = "max_value"
+                    limit_val = max_value
+                else:
+                    max_terms = int(input("Enter number of terms (e.g., 20): "))
+                    start_time = time.time()
+                    sequence = fib_calculator.fibonacci_while_loop(max_terms=max_terms)
+                    end_time = time.time()
+                    limit_type_str = "terms"
+                    limit_val = max_terms
+                
+                result = FibonacciResult(
+                    method=FibonacciMethod.ITERATIVE,
+                    sequence=sequence,
+                    time_taken=end_time - start_time,
+                    limit_type=limit_type_str,
+                    limit_value=limit_val,
+                    properties=fib_calculator.analyze_fibonacci(sequence)
+                )
+                
+                fib_calculator.history.append(result)
+                display_result(result)
+            
+            elif choice == '2':  # Generator Method
+                print("\nGenerator Method (Memory Efficient)")
+                print("-"*40)
+                
+                max_value = int(input("Enter maximum value: "))
+                
+                print("\nGenerating Fibonacci sequence...")
+                start_time = time.time()
+                
+                sequence = []
+                for num in fib_calculator.fibonacci_generator(max_value):
+                    sequence.append(num)
+                
+                end_time = time.time()
+                
+                result = FibonacciResult(
+                    method=FibonacciMethod.GENERATOR,
+                    sequence=sequence,
+                    time_taken=end_time - start_time,
+                    limit_type="max_value",
+                    limit_value=max_value,
+                    properties=fib_calculator.analyze_fibonacci(sequence)
+                )
+                
+                fib_calculator.history.append(result)
+                display_result(result)
+            
+            elif choice == '3':  # Matrix Method
+                print("\nMatrix Exponentiation Method")
+                print("-"*40)
+                
+                terms = int(input("Enter number of terms: "))
+                
+                start_time = time.time()
+                sequence = fib_calculator.fibonacci_matrix_sequence(terms)
+                end_time = time.time()
+                
+                result = FibonacciResult(
+                    method=FibonacciMethod.MATRIX,
+                    sequence=sequence,
+                    time_taken=end_time - start_time,
+                    limit_type="terms",
+                    limit_value=terms,
+                    properties=fib_calculator.analyze_fibonacci(sequence)
+                )
+                
+                fib_calculator.history.append(result)
+                display_result(result)
+            
+            elif choice == '4':  # Binet's Formula
+                print("\nBinet's Formula Method")
+                print("-"*40)
+                
+                terms = int(input("Enter number of terms: "))
+                
+                start_time = time.time()
+                sequence = fib_calculator.fibonacci_binet_sequence(terms)
+                end_time = time.time()
+                
+                result = FibonacciResult(
+                    method=FibonacciMethod.BINET,
+                    sequence=sequence,
+                    time_taken=end_time - start_time,
+                    limit_type="terms",
+                    limit_value=terms,
+                    properties=fib_calculator.analyze_fibonacci(sequence)
+                )
+                
+                fib_calculator.history.append(result)
+                display_result(result)
+            
+            elif choice == '5':  # Memoized Recursion
+                print("\nMemoized Recursion Method")
+                print("-"*40)
+                
+                terms = int(input("Enter number of terms (recommended ≤ 1000): "))
+                
+                start_time = time.time()
+                sequence = fib_calculator.fibonacci_memoized_sequence(terms)
+                end_time = time.time()
+                
+                result = FibonacciResult(
+                    method=FibonacciMethod.MEMOIZED,
+                    sequence=sequence,
+                    time_taken=end_time - start_time,
+                    limit_type="terms",
+                    limit_value=terms,
+                    properties=fib_calculator.analyze_fibonacci(sequence)
+                )
+                
+                fib_calculator.history.append(result)
+                display_result(result)
+            
+            elif choice == '6':  # Dynamic Programming
+                print("\nDynamic Programming Method")
+                print("-"*40)
+                
+                terms = int(input("Enter number of terms: "))
+                
+                start_time = time.time()
+                sequence = fib_calculator.fibonacci_dynamic(terms)
+                end_time = time.time()
+                
+                result = FibonacciResult(
+                    method=FibonacciMethod.DYNAMIC,
+                    sequence=sequence,
+                    time_taken=end_time - start_time,
+                    limit_type="terms",
+                    limit_value=terms,
+                    properties=fib_calculator.analyze_fibonacci(sequence)
+                )
+                
+                fib_calculator.history.append(result)
+                display_result(result)
+            
+            elif choice == '7':  # Compare Methods
+                print("\nMethod Comparison")
+                print("-"*40)
+                
+                terms = int(input("Enter number of terms to compare: "))
+                
+                results = fib_calculator.compare_methods(terms)
+                
+                print(f"\n{'='*60}")
+                print(f"PERFORMANCE COMPARISON ({terms} terms)")
+                print('='*60)
+                print(f"{'Method':25} {'Time (s)':12} {'Length':10}")
+                print("-"*60)
+                
+                for result in results:
+                    print(f"{result.method.value:25} {result.time_taken:12.6f} {len(result.sequence):10}")
+                
+                # Find fastest method
+                fastest = min(results, key=lambda x: x.time_taken)
+                print(f"\n🏆 Fastest method: {fastest.method.value} ({fastest.time_taken:.6f} seconds)")
+                
+                # Add all to history
+                fib_calculator.history.extend(results)
+            
+            elif choice == '8':  # Analyze Sequence
+                if not fib_calculator.history:
+                    print("\nNo calculations in history. Generate a sequence first.")
+                else:
+                    # Use last generated sequence
+                    last_result = fib_calculator.history[-1]
+                    properties = last_result.properties
+                    
+                    print(f"\n{'='*60}")
+                    print(f"SEQUENCE ANALYSIS")
+                    print('='*60)
+                    print(f"Method: {last_result.method.value}")
+                    print(f"Sequence: {last_result.sequence[:10]}..." if len(last_result.sequence) > 10 else f"Sequence: {last_result.sequence}")
+                    
+                    print(f"\n📊 Statistics:")
+                    print(f"  • Length: {properties.get('length', 0)} terms")
+                    print(f"  • Sum: {properties.get('sum', 0):,}")
+                    print(f"  • Average: {properties.get('average', 0):.2f}")
+                    print(f"  • Maximum value: {properties.get('max_value', 0):,}")
+                    print(f"  • Even numbers: {properties.get('even_count', 0)}")
+                    print(f"  • Odd numbers: {properties.get('odd_count', 0)}")
+                    
+                    print(f"\n🔢 Special Numbers:")
+                    print(f"  • Perfect squares: {properties.get('perfect_squares', [])}")
+                    print(f"  • Prime numbers: {properties.get('prime_numbers', [])}")
+                    
+                    print(f"\n📐 Golden Ratio Convergence:")
+                    print(f"  • Last ratio F(n)/F(n-1): {properties.get('golden_ratio_approximation', 0):.10f}")
+                    print(f"  • Actual φ: {(1 + math.sqrt(5)) / 2:.10f}")
+                    print(f"  • Error: {properties.get('golden_ratio_error', 0):.10f}")
+                    print(f"  • Converged to φ? {'✅ Yes' if properties.get('ratio_convergence', False) else '❌ No'}")
+            
+            elif choice == '9':  # Visualize
+                if not fib_calculator.history:
+                    print("\nNo calculations in history. Generate a sequence first.")
+                else:
+                    last_result = fib_calculator.history[-1]
+                    fib_calculator.plot_fibonacci(last_result.sequence, last_result.method.value)
+            
+            elif choice == 'H':  # History
+                if not fib_calculator.history:
+                    print("\nNo calculations in history.")
+                else:
+                    print(f"\n{'='*60}")
+                    print("CALCULATION HISTORY")
+                    print('='*60)
+                    for i, result in enumerate(fib_calculator.history[-10:], 1):
+                        print(f"{i}. {result.method.value:30} - {len(result.sequence)} terms, {result.time_taken:.6f}s")
+            
+            elif choice == 'G':  # Golden Ratio
+                golden_ratio_calculator()
+            
+            elif choice == 'P':  # Applications
+                fibonacci_applications()
+            
+            elif choice == 'Q':  # Quit
+                print("\nThank you for using Advanced Fibonacci Generator!")
+                print("Peyman Miyandashti 250161")
+                break
+            
+            else:
+                print("Invalid choice. Please try again.")
+        
+        except ValueError as e:
+            print(f"❌ Error: Please enter a valid number. {e}")
+        except Exception as e:
+            print(f"❌ Unexpected error: {e}")
+        
+        # Ask if user wants to continue
+        if choice != 'Q':
+            input("\nPress Enter to continue...")
+
+def display_result(result: FibonacciResult):
+    """Display Fibonacci calculation result"""
+    print(f"\n{'='*60}")
+    print(f"FIBONACCI SEQUENCE RESULT")
+    print('='*60)
+    print(f"Method: {result.method.value}")
+    print(f"Time taken: {result.time_taken:.6f} seconds")
+    
+    if result.limit_type == "max_value":
+        print(f"Maximum value: {result.limit_value}")
+    else:
+        print(f"Number of terms: {result.limit_value}")
+    
+    # Display sequence (limited for readability)
+    sequence = result.sequence
+    if len(sequence) > 20:
+        print(f"\nFirst 10 terms: {sequence[:10]}")
+        print(f"Last 10 terms: {sequence[-10:]}")
+        print(f"Total terms: {len(sequence)}")
+    else:
+        print(f"\nSequence: {sequence}")
+        print(f"Total terms: {len(sequence)}")
+    
+    # Display sum
+    print(f"Sum of sequence: {sum(sequence):,}")
+
+if __name__ == "__main__":
+    main()
+################################################################
+# peyman miyandashti 250161
+# Advanced Fibonacci Applications Module
+
+def fibonacci_spiral():
+    """Generate Fibonacci spiral coordinates"""
+    import numpy as np
+    
+    # Fibonacci sequence
+    fib = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+    
+    # Starting point
+    x, y = 0, 0
+    direction = 0  # 0=right, 1=up, 2=left, 3=down
+    
+    coordinates = [(x, y)]
+    
+    for i in range(1, len(fib)):
+        length = fib[i]
+        
+        # Move in current direction
+        if direction == 0:  # Right
+            x += length
+        elif direction == 1:  # Up
+            y += length
+        elif direction == 2:  # Left
+            x -= length
+        elif direction == 3:  # Down
+            y -= length
+        
+        coordinates.append((x, y))
+        direction = (direction + 1) % 4  # Turn 90 degrees
+    
+    return coordinates
+
+def fibonacci_word(n: int) -> str:
+    """Generate Fibonacci word (a binary string)"""
+    if n == 0:
+        return "0"
+    elif n == 1:
+        return "01"
+    else:
+        return fibonacci_word(n-1) + fibonacci_word(n-2)
+
+def fibonacci_search(arr, x):
+    """Fibonacci search algorithm"""
+    n = len(arr)
+    
+    # Initialize Fibonacci numbers
+    fibMMm2 = 0  # (m-2)'th Fibonacci number
+    fibMMm1 = 1  # (m-1)'th Fibonacci number
+    fibM = fibMMm2 + fibMMm1  # m'th Fibonacci number
+    
+    # Find the smallest Fibonacci number greater than or equal to n
+    while fibM < n:
+        fibMMm2 = fibMMm1
+        fibMMm1 = fibM
+        fibM = fibMMm2 + fibMMm1
+    
+    # Marks the eliminated range from front
+    offset = -1
+    
+    while fibM > 1:
+        # Check if fibMMm2 is a valid location
+        i = min(offset + fibMMm2, n-1)
+        
+        if arr[i] < x:
+            fibM = fibMMm1
+            fibMMm1 = fibMMm2
+            fibMMm2 = fibM - fibMMm1
+            offset = i
+        elif arr[i] > x:
+            fibM = fibMMm2
+            fibMMm1 = fibMMm1 - fibMMm2
+            fibMMm2 = fibM - fibMMm1
+        else:
+            return i
+    
+    # Compare last element with x
+    if fibMMm1 and arr[offset+1] == x:
+        return offset+1
+    
+    return -1
+
+def fibonacci_encoding(n: int) -> str:
+    """Encode integer using Fibonacci coding"""
+    if n <= 0:
+        return ""
+    
+    # Generate Fibonacci numbers
+    fib = [1, 2]
+    while fib[-1] <= n:
+        fib.append(fib[-1] + fib[-2])
+    
+    # Remove last element (greater than n)
+    fib.pop()
+    
+    # Encode
+    code = ['1']  # Add termination '1'
+    n2 = n
+    
+    for f in reversed(fib):
+        if f <= n2:
+            code.insert(0, '1')
+            n2 -= f
+        else:
+            code.insert(0, '0')
+    
+    return ''.join(code)
+
+def fibonacci_trading_levels(high, low):
+    """Calculate Fibonacci retracement levels for trading"""
+    diff = high - low
+    
+    levels = {
+        '0.0%': low,
+        '23.6%': low + diff * 0.236,
+        '38.2%': low + diff * 0.382,
+        '50.0%': low + diff * 0.5,
+        '61.8%': low + diff * 0.618,
+        '78.6%': low + diff * 0.786,
+        '100.0%': high,
+        '161.8%': high + diff * 0.618,
+        '261.8%': high + diff * 1.618
+    }
+    
+    return levels
+
+# Run advanced features
+if __name__ == "__main__":
+    print("\n" + "="*60)
+    print("ADVANCED FIBONACCI APPLICATIONS")
+    print("="*60)
+    
+    # Fibonacci spiral
+    spiral_coords = fibonacci_spiral()
+    print(f"\n📐 Fibonacci Spiral Coordinates (first 5):")
+    for i, (x, y) in enumerate(spiral_coords[:5]):
+        print(f"  Point {i}: ({x}, {y})")
+    
+    # Fibonacci word
+    fib_word = fibonacci_word(5)
+    print(f"\n🔤 Fibonacci Word (n=5): {fib_word}")
+    print(f"  Length: {len(fib_word)}")
+    print(f"  Ratio of 1s to 0s: {fib_word.count('1')}/{fib_word.count('0')}")
+    
+    # Fibonacci search
+    arr = [10, 22, 35, 40, 45, 50, 80, 82, 85, 90, 100]
+    target = 85
+    result = fibonacci_search(arr, target)
+    print(f"\n🔍 Fibonacci Search:")
+    print(f"  Array: {arr}")
+    print(f"  Target: {target}")
+    print(f"  Found at index: {result}")
+    
+    # Fibonacci encoding
+    numbers = [1, 2, 3, 4, 5, 10, 20, 50]
+    print(f"\n💾 Fibonacci Encoding:")
+    for n in numbers:
+        code = fibonacci_encoding(n)
+        print(f"  {n:3} → {code}")
+    
+    # Fibonacci trading levels
+    high = 100
+    low = 50
+    levels = fibonacci_trading_levels(high, low)
+    print(f"\n📈 Fibonacci Trading Levels (High={high}, Low={low}):")
+    for level, value in levels.items():
+        print(f"  {level:7}: {value:.2f}")
