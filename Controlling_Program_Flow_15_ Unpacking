@@ -1,0 +1,169 @@
+# Peyman Miyandashti 250161
+# inicio
+try:
+    # Try to read multiple files
+    with open("data1.txt", "r") as file1, open("data2.txt", "r") as file2:
+        content1 = file1.read()
+        content2 = file2.read()
+        print("Both files read successfully!")
+        print(f"File 1 content: {content1}")
+        print(f"File 2 content: {content2}")
+        
+except FileNotFoundError as e:
+    print(f"File not found: {e.filename}")
+except PermissionError:
+    print("Permission denied to access the file!")
+except IOError:
+    print("An I/O error occurred!")
+else:
+    print("Operation completed without errors!")
+finally:
+    print("Program execution ended.\n")
+#######################################################
+#Peyman Miyandashti 250161
+#inicio
+txt=['1','2','3']
+print(txt)#Normal print 
+print(*txt)#Unpacking model
+print (*txt , sep= "==>")#Add more model
+########################################################
+# Peyman Miyandashti 250161
+# Writing structured data
+data_list = ["John", "Doe", "25", "Engineer"]
+data_dict = {"name": "Alice", "age": 30, "job": "Doctor"}
+
+try:
+    with open("person.txt", "w") as file:
+        # Write list items with different separators
+        file.write("=== List Data ===\n")
+        file.write("; ".join(data_list))  # Join with semicolon
+        file.write("\n\n")
+        
+        # Write dictionary data
+        file.write("=== Dictionary Data ===\n")
+        for key, value in data_dict.items():
+            file.write(f"{key}: {value}\n")
+            
+        # Write with unpacking
+        file.write("\n=== Unpacked Data ===\n")
+        name, surname, age, job = data_list
+        file.write(f"{name} {surname}, {age}, {job}")
+        
+except Exception as e:
+    print(f"Error occurred: {type(e).__name__}")
+else:
+    print("Data written successfully!\n")
+
+###########################################################
+# Peyman Miyandashti 250161
+# CSV data handling example
+students = [
+    ["ID", "Name", "Grade"],
+    ["250161", "Peyman Miyandashti", "A"],
+    ["250162", "John Smith", "B"],
+    ["250163", "Alice Johnson", "A+"],
+    ["250164", "Bob Brown", "C"]
+]
+
+try:
+    with open("grades.csv", "w") as file:
+        for student in students:
+            # Unpacking and writing with custom separator
+            if len(student) == 3:
+                id_num, name, grade = student
+                file.write(f"{id_num}|{name}|{grade}\n")
+            else:
+                file.write("|".join(student) + "\n")
+    
+    # Now read it back
+    with open("grades.csv", "r") as file:
+        print("=== Student Grades ===")
+        for line in file:
+            print(line.strip())
+            
+except Exception as e:
+    print(f"Error: {e}")
+print()
+##################################################################
+# Peyman Miyandashti 250161
+# Binary file operations
+binary_data = [
+    b'\x48\x65\x6c\x6c\x6f',  # Hello
+    b'\x57\x6f\x72\x6c\x64',  # World
+    b'\x50\x79\x74\x68\x6f\x6e'  # Python
+]
+
+try:
+    # Write binary data
+    with open("binary_data.bin", "wb") as file:
+        for data in binary_data:
+            file.write(data + b'\n')  # Add newline in binary
+    
+    # Read binary data
+    with open("binary_data.bin", "rb") as file:
+        content = file.read()
+        print("Binary content:", content)
+        print("Decoded:", content.decode('utf-8'))
+        
+except Exception as e:
+    print(f"Binary operation error: {e}")
+print()
+#################################################################
+# Peyman Miyandashti 250161
+# Advanced unpacking examples
+txt = ['Python', 'Java', 'C++', 'JavaScript', 'Ruby']
+
+print("=== Normal print ===")
+print(txt)  # Normal print
+
+print("\n=== Unpacking model ===")
+print(*txt)  # Unpacking model
+
+print("\n=== Custom separator ===")
+print(*txt, sep=" ==> ")  # Add more model
+
+print("\n=== Formatted output ===")
+print(*txt, sep="\n• ")  # Bullet points
+
+print("\n=== Numbered list ===")
+for i, language in enumerate(txt, 1):
+    print(f"{i}. {language}")
+
+print("\n=== Zipped with numbers ===")
+numbers = [1, 2, 3, 4, 5]
+for num, lang in zip(numbers, txt):
+    print(f"{num}: {lang}")
+###############################################################
+# Peyman Miyandashti 250161
+# Logging system with file handling
+import datetime
+
+log_entries = [
+    ["INFO", "System started"],
+    ["WARNING", "High memory usage"],
+    ["ERROR", "Database connection failed"],
+    ["INFO", "Backup completed"],
+    ["DEBUG", "Processing request 12345"]
+]
+
+try:
+    with open("system.log", "a") as log_file:  # Append mode
+        current_time = datetime.datetime.now()
+        log_file.write(f"\n=== Session started at {current_time} ===\n")
+        
+        for entry in log_entries:
+            level, message = entry  # Unpacking
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            log_file.write(f"[{timestamp}] {level}: {message}\n")
+            
+    print("Log entries written successfully!")
+    
+    # Read last 3 lines of log
+    with open("system.log", "r") as log_file:
+        lines = log_file.readlines()
+        print("\n=== Last 3 log entries ===")
+        print(*lines[-3:], sep="")
+        
+except Exception as e:
+    print(f"Logging error: {e}")
+##############################################################
