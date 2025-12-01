@@ -1,0 +1,687 @@
+#peyman miyandashti 250161
+# Calculate area of a circle
+radius = 5
+pi = 3.14159
+area = pi * radius ** 2
+print(f"The area is {area:.2f}")  # Formatted to 2 decimal places
+############################################
+# peyman miyandashti 250161
+
+import math
+from typing import Union, Tuple, List
+from dataclasses import dataclass
+from enum import Enum
+
+class ShapeType(Enum):
+    """Enum for different shape types"""
+    CIRCLE = "Circle"
+    RECTANGLE = "Rectangle"
+    TRIANGLE = "Triangle"
+    SQUARE = "Square"
+    SPHERE = "Sphere"
+    CYLINDER = "Cylinder"
+    CUBE = "Cube"
+    PYRAMID = "Pyramid"
+    ELLIPSE = "Ellipse"
+    POLYGON = "Polygon"
+    TRAPEZOID = "Trapezoid"
+
+@dataclass
+class GeometryResult:
+    """Data class to store geometry calculation results"""
+    shape: ShapeType
+    area: float
+    perimeter: float = 0.0
+    volume: float = 0.0
+    surface_area: float = 0.0
+    properties: dict = None
+    
+    def display(self):
+        """Display the calculation results in a formatted way"""
+        print(f"\n{'='*50}")
+        print(f"{self.shape.value.upper()} CALCULATIONS")
+        print('='*50)
+        
+        if self.area:
+            print(f"📐 Area: {self.area:.4f} square units")
+        if self.perimeter:
+            print(f"📏 Perimeter: {self.perimeter:.4f} units")
+        if self.volume:
+            print(f"📦 Volume: {self.volume:.4f} cubic units")
+        if self.surface_area:
+            print(f"🎯 Surface Area: {self.surface_area:.4f} square units")
+        
+        if self.properties:
+            print("\n📊 Properties:")
+            for key, value in self.properties.items():
+                if isinstance(value, float):
+                    print(f"  {key}: {value:.4f}")
+                else:
+                    print(f"  {key}: {value}")
+        
+        # Additional interesting facts
+        print("\n💡 Interesting Facts:")
+        if self.shape == ShapeType.CIRCLE:
+            print(f"  • Diameter: {self.properties.get('diameter', 0):.4f}")
+            print(f"  • Circumference: {self.perimeter:.4f}")
+            print(f"  • π (pi) approximation: {math.pi:.10f}")
+
+class GeometryCalculator:
+    """Comprehensive geometry calculator with multiple shapes"""
+    
+    def __init__(self):
+        self.pi = math.pi  # Use math.pi for accuracy
+        self.history = []  # Store calculation history
+    
+    def calculate_circle(self, radius: float) -> GeometryResult:
+        """Calculate circle properties"""
+        if radius <= 0:
+            raise ValueError("Radius must be positive")
+        
+        area = self.pi * radius ** 2
+        circumference = 2 * self.pi * radius
+        diameter = 2 * radius
+        
+        return GeometryResult(
+            shape=ShapeType.CIRCLE,
+            area=area,
+            perimeter=circumference,
+            properties={
+                'radius': radius,
+                'diameter': diameter,
+                'pi_used': self.pi
+            }
+        )
+    
+    def calculate_rectangle(self, length: float, width: float) -> GeometryResult:
+        """Calculate rectangle properties"""
+        if length <= 0 or width <= 0:
+            raise ValueError("Dimensions must be positive")
+        
+        area = length * width
+        perimeter = 2 * (length + width)
+        diagonal = math.sqrt(length ** 2 + width ** 2)
+        
+        return GeometryResult(
+            shape=ShapeType.RECTANGLE,
+            area=area,
+            perimeter=perimeter,
+            properties={
+                'length': length,
+                'width': width,
+                'diagonal': diagonal,
+                'aspect_ratio': length / width
+            }
+        )
+    
+    def calculate_triangle(self, base: float, height: float, 
+                          side_a: float = None, side_b: float = None, side_c: float = None) -> GeometryResult:
+        """Calculate triangle properties (various types)"""
+        if base <= 0 or height <= 0:
+            raise ValueError("Base and height must be positive")
+        
+        area = 0.5 * base * height
+        
+        properties = {
+            'base': base,
+            'height': height,
+            'type': 'Right triangle' if side_a and side_b and side_c is None else 'General triangle'
+        }
+        
+        perimeter = 0
+        if side_a and side_b and side_c:
+            if side_a <= 0 or side_b <= 0 or side_c <= 0:
+                raise ValueError("All sides must be positive")
+            
+            # Use Heron's formula for area if all sides given
+            s = (side_a + side_b + side_c) / 2
+            area = math.sqrt(s * (s - side_a) * (s - side_b) * (s - side_c))
+            perimeter = side_a + side_b + side_c
+            
+            # Determine triangle type
+            sides = sorted([side_a, side_b, side_c])
+            if sides[0] + sides[1] <= sides[2]:
+                raise ValueError("Invalid triangle sides")
+            
+            if side_a == side_b == side_c:
+                properties['type'] = 'Equilateral'
+            elif side_a == side_b or side_a == side_c or side_b == side_c:
+                properties['type'] = 'Isosceles'
+            else:
+                properties['type'] = 'Scalene'
+            
+            # Check if right triangle
+            if math.isclose(sides[0]**2 + sides[1]**2, sides[2]**2, rel_tol=1e-9):
+                properties['type'] += ' (Right)'
+            
+            properties.update({
+                'side_a': side_a,
+                'side_b': side_b,
+                'side_c': side_c,
+                'semiperimeter': s
+            })
+        
+        return GeometryResult(
+            shape=ShapeType.TRIANGLE,
+            area=area,
+            perimeter=perimeter,
+            properties=properties
+        )
+    
+    def calculate_sphere(self, radius: float) -> GeometryResult:
+        """Calculate sphere properties"""
+        if radius <= 0:
+            raise ValueError("Radius must be positive")
+        
+        surface_area = 4 * self.pi * radius ** 2
+        volume = (4/3) * self.pi * radius ** 3
+        
+        return GeometryResult(
+            shape=ShapeType.SPHERE,
+            area=surface_area,  # Surface area
+            volume=volume,
+            properties={
+                'radius': radius,
+                'diameter': 2 * radius,
+                'great_circle_circumference': 2 * self.pi * radius
+            }
+        )
+    
+    def calculate_cylinder(self, radius: float, height: float) -> GeometryResult:
+        """Calculate cylinder properties"""
+        if radius <= 0 or height <= 0:
+            raise ValueError("Radius and height must be positive")
+        
+        base_area = self.pi * radius ** 2
+        lateral_area = 2 * self.pi * radius * height
+        surface_area = 2 * base_area + lateral_area
+        volume = base_area * height
+        
+        return GeometryResult(
+            shape=ShapeType.CYLINDER,
+            area=surface_area,
+            volume=volume,
+            properties={
+                'radius': radius,
+                'height': height,
+                'base_area': base_area,
+                'lateral_area': lateral_area
+            }
+        )
+    
+    def calculate_polygon(self, n_sides: int, side_length: float) -> GeometryResult:
+        """Calculate regular polygon properties"""
+        if n_sides < 3:
+            raise ValueError("Polygon must have at least 3 sides")
+        if side_length <= 0:
+            raise ValueError("Side length must be positive")
+        
+        # Interior angle
+        interior_angle = (n_sides - 2) * 180 / n_sides
+        
+        # Area of regular polygon
+        apothem = side_length / (2 * math.tan(math.pi / n_sides))
+        perimeter = n_sides * side_length
+        area = 0.5 * perimeter * apothem
+        
+        return GeometryResult(
+            shape=ShapeType.POLYGON,
+            area=area,
+            perimeter=perimeter,
+            properties={
+                'number_of_sides': n_sides,
+                'side_length': side_length,
+                'interior_angle': interior_angle,
+                'apothem': apothem,
+                'central_angle': 360 / n_sides,
+                'name': self._get_polygon_name(n_sides)
+            }
+        )
+    
+    def _get_polygon_name(self, n_sides: int) -> str:
+        """Get the name of regular polygon based on number of sides"""
+        names = {
+            3: "Triangle",
+            4: "Square",
+            5: "Pentagon",
+            6: "Hexagon",
+            7: "Heptagon",
+            8: "Octagon",
+            9: "Nonagon",
+            10: "Decagon"
+        }
+        return names.get(n_sides, f"{n_sides}-gon")
+    
+    def calculate_ellipse(self, major_axis: float, minor_axis: float) -> GeometryResult:
+        """Calculate ellipse properties"""
+        if major_axis <= 0 or minor_axis <= 0:
+            raise ValueError("Axes must be positive")
+        
+        area = self.pi * major_axis * minor_axis
+        
+        # Approximation for perimeter (Ramanujan's formula)
+        h = ((major_axis - minor_axis) ** 2) / ((major_axis + minor_axis) ** 2)
+        perimeter = self.pi * (major_axis + minor_axis) * (1 + (3*h)/(10 + math.sqrt(4 - 3*h)))
+        
+        eccentricity = math.sqrt(1 - (minor_axis ** 2) / (major_axis ** 2)) if major_axis >= minor_axis else 0
+        
+        return GeometryResult(
+            shape=ShapeType.ELLIPSE,
+            area=area,
+            perimeter=perimeter,
+            properties={
+                'major_axis': major_axis,
+                'minor_axis': minor_axis,
+                'eccentricity': eccentricity,
+                'foci_distance': 2 * math.sqrt(abs(major_axis**2 - minor_axis**2))
+            }
+        )
+    
+    def calculate_cube(self, side: float) -> GeometryResult:
+        """Calculate cube properties"""
+        if side <= 0:
+            raise ValueError("Side must be positive")
+        
+        surface_area = 6 * side ** 2
+        volume = side ** 3
+        space_diagonal = side * math.sqrt(3)
+        
+        return GeometryResult(
+            shape=ShapeType.CUBE,
+            area=surface_area,
+            volume=volume,
+            properties={
+                'side': side,
+                'face_diagonal': side * math.sqrt(2),
+                'space_diagonal': space_diagonal,
+                'face_area': side ** 2
+            }
+        )
+    
+    def save_to_history(self, result: GeometryResult):
+        """Save calculation to history"""
+        self.history.append(result)
+        if len(self.history) > 10:  # Keep only last 10 calculations
+            self.history.pop(0)
+    
+    def display_history(self):
+        """Display calculation history"""
+        if not self.history:
+            print("\nNo calculations in history.")
+            return
+        
+        print(f"\n{'='*50}")
+        print("CALCULATION HISTORY (Last 10)")
+        print('='*50)
+        
+        for i, result in enumerate(self.history[-10:], 1):
+            print(f"{i}. {result.shape.value}: Area={result.area:.2f}, "
+                  f"Perimeter={result.perimeter:.2f}, Volume={result.volume:.2f}")
+
+def display_menu():
+    """Display the main menu"""
+    print("\n" + "="*60)
+    print("GEOMETRY CALCULATOR SUITE")
+    print("Peyman Miyandashti 250161")
+    print("="*60)
+    print("\n📐 AVAILABLE SHAPES:")
+    print("-"*40)
+    
+    shapes = [
+        ("1", "Circle", "radius"),
+        ("2", "Rectangle", "length, width"),
+        ("3", "Triangle", "base, height, sides (optional)"),
+        ("4", "Sphere", "radius"),
+        ("5", "Cylinder", "radius, height"),
+        ("6", "Polygon (Regular)", "number of sides, side length"),
+        ("7", "Ellipse", "major axis, minor axis"),
+        ("8", "Cube", "side length"),
+        ("9", "Square", "side length"),
+        ("10", "Trapezoid", "base1, base2, height"),
+        ("H", "View History", ""),
+        ("C", "Clear History", ""),
+        ("Q", "Quit", "")
+    ]
+    
+    for num, name, params in shapes:
+        if params:
+            print(f"{num:>2}. {name:20} ({params})")
+        else:
+            print(f"{num:>2}. {name}")
+    
+    print("-"*40)
+
+def get_float_input(prompt: str, min_val: float = 0, allow_zero: bool = False) -> float:
+    """Get validated float input from user"""
+    while True:
+        try:
+            value = float(input(prompt))
+            if value < min_val:
+                print(f"Value must be at least {min_val}")
+            elif not allow_zero and value == 0:
+                print("Value cannot be zero")
+            else:
+                return value
+        except ValueError:
+            print("Please enter a valid number")
+
+def main():
+    """Main program loop"""
+    calculator = GeometryCalculator()
+    
+    while True:
+        display_menu()
+        choice = input("\nEnter your choice: ").strip().upper()
+        
+        try:
+            if choice == '1':  # Circle
+                radius = get_float_input("Enter radius: ", min_val=0.0001)
+                result = calculator.calculate_circle(radius)
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '2':  # Rectangle
+                length = get_float_input("Enter length: ", min_val=0.0001)
+                width = get_float_input("Enter width: ", min_val=0.0001)
+                result = calculator.calculate_rectangle(length, width)
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '3':  # Triangle
+                print("\nTriangle calculation options:")
+                print("1. Base and height (area only)")
+                print("2. All three sides (area and perimeter)")
+                
+                tri_choice = input("Choose option (1 or 2): ").strip()
+                
+                if tri_choice == '1':
+                    base = get_float_input("Enter base: ", min_val=0.0001)
+                    height = get_float_input("Enter height: ", min_val=0.0001)
+                    result = calculator.calculate_triangle(base, height)
+                elif tri_choice == '2':
+                    side_a = get_float_input("Enter side A: ", min_val=0.0001)
+                    side_b = get_float_input("Enter side B: ", min_val=0.0001)
+                    side_c = get_float_input("Enter side C: ", min_val=0.0001)
+                    result = calculator.calculate_triangle(
+                        base=side_a, height=0,  # Height calculated internally
+                        side_a=side_a, side_b=side_b, side_c=side_c
+                    )
+                else:
+                    print("Invalid choice")
+                    continue
+                
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '4':  # Sphere
+                radius = get_float_input("Enter radius: ", min_val=0.0001)
+                result = calculator.calculate_sphere(radius)
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '5':  # Cylinder
+                radius = get_float_input("Enter radius: ", min_val=0.0001)
+                height = get_float_input("Enter height: ", min_val=0.0001)
+                result = calculator.calculate_cylinder(radius, height)
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '6':  # Polygon
+                n_sides = int(get_float_input("Enter number of sides (≥3): ", min_val=3))
+                side_length = get_float_input("Enter side length: ", min_val=0.0001)
+                result = calculator.calculate_polygon(n_sides, side_length)
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '7':  # Ellipse
+                major = get_float_input("Enter major axis: ", min_val=0.0001)
+                minor = get_float_input("Enter minor axis: ", min_val=0.0001)
+                result = calculator.calculate_ellipse(major, minor)
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '8':  # Cube
+                side = get_float_input("Enter side length: ", min_val=0.0001)
+                result = calculator.calculate_cube(side)
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '9':  # Square (special case of rectangle)
+                side = get_float_input("Enter side length: ", min_val=0.0001)
+                result = calculator.calculate_rectangle(side, side)
+                result.shape = ShapeType.SQUARE
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == '10':  # Trapezoid
+                base1 = get_float_input("Enter first base: ", min_val=0.0001)
+                base2 = get_float_input("Enter second base: ", min_val=0.0001)
+                height = get_float_input("Enter height: ", min_val=0.0001)
+                # Trapezoid area = (base1 + base2) * height / 2
+                area = (base1 + base2) * height / 2
+                result = GeometryResult(
+                    shape=ShapeType.TRAPEZOID,
+                    area=area,
+                    properties={
+                        'base1': base1,
+                        'base2': base2,
+                        'height': height,
+                        'midsegment': (base1 + base2) / 2
+                    }
+                )
+                result.display()
+                calculator.save_to_history(result)
+            
+            elif choice == 'H':  # History
+                calculator.display_history()
+            
+            elif choice == 'C':  # Clear History
+                calculator.history.clear()
+                print("\nHistory cleared!")
+            
+            elif choice == 'Q':  # Quit
+                print("\nThank you for using Geometry Calculator!")
+                print("Peyman Miyandashti 250161")
+                break
+            
+            else:
+                print("Invalid choice. Please try again.")
+        
+        except ValueError as e:
+            print(f"❌ Error: {e}")
+        except Exception as e:
+            print(f"❌ Unexpected error: {e}")
+        
+        # Ask if user wants to continue
+        if choice != 'Q':
+            input("\nPress Enter to continue...")
+
+if __name__ == "__main__":
+    main()
+#########################################################################
+# peyman miyandashti 250161
+# Advanced Geometry Features Module
+
+import numpy as np
+from matplotlib import pyplot as plt
+import sympy as sp
+
+class AdvancedGeometry:
+    """Advanced geometry operations with visualization and symbolic math"""
+    
+    @staticmethod
+    def distance_between_points(p1, p2):
+        """Calculate distance between two points in n-dimensional space"""
+        p1, p2 = np.array(p1), np.array(p2)
+        return np.linalg.norm(p1 - p2)
+    
+    @staticmethod
+    def line_equation(p1, p2):
+        """Find equation of line passing through two points"""
+        x1, y1 = p1
+        x2, y2 = p2
+        
+        if x1 == x2:
+            return f"x = {x1}"  # Vertical line
+        
+        m = (y2 - y1) / (x2 - x1)
+        b = y1 - m * x1
+        
+        if b >= 0:
+            return f"y = {m:.2f}x + {b:.2f}"
+        else:
+            return f"y = {m:.2f}x - {abs(b):.2f}"
+    
+    @staticmethod
+    def plot_circle(radius, center=(0, 0)):
+        """Visualize a circle"""
+        theta = np.linspace(0, 2*np.pi, 100)
+        x = center[0] + radius * np.cos(theta)
+        y = center[1] + radius * np.sin(theta)
+        
+        plt.figure(figsize=(6, 6))
+        plt.plot(x, y, 'b-', linewidth=2)
+        plt.scatter([center[0]], [center[1]], color='red', s=100, label='Center')
+        plt.axhline(y=0, color='k', linestyle=':', alpha=0.3)
+        plt.axvline(x=0, color='k', linestyle=':', alpha=0.3)
+        plt.axis('equal')
+        plt.grid(True, alpha=0.3)
+        plt.title(f'Circle: Radius = {radius}')
+        plt.legend()
+        plt.show()
+    
+    @staticmethod
+    def symbolic_geometry():
+        """Use symbolic math for geometry proofs"""
+        # Define symbolic variables
+        r = sp.symbols('r', positive=True)
+        h = sp.symbols('h', positive=True)
+        
+        # Circle area formula
+        circle_area = sp.pi * r**2
+        
+        # Cylinder volume formula
+        cylinder_volume = sp.pi * r**2 * h
+        
+        # Sphere volume formula
+        sphere_volume = (4/3) * sp.pi * r**3
+        
+        print("Symbolic Geometry Formulas:")
+        print(f"Circle Area: {circle_area}")
+        print(f"Cylinder Volume: {cylinder_volume}")
+        print(f"Sphere Volume: {sphere_volume}")
+        
+        return circle_area, cylinder_volume, sphere_volume
+    
+    @staticmethod
+    def golden_ratio_properties():
+        """Calculate golden ratio properties"""
+        phi = (1 + math.sqrt(5)) / 2  # Golden ratio
+        
+        golden_rectangle = {
+            'ratio': phi,
+            'if_width_1': {
+                'height': 1/phi,
+                'area': 1/phi,
+                'diagonal': math.sqrt(1 + (1/phi)**2)
+            },
+            'if_height_1': {
+                'width': phi,
+                'area': phi,
+                'diagonal': math.sqrt(phi**2 + 1)
+            }
+        }
+        
+        return phi, golden_rectangle
+    
+    @staticmethod
+    def fractal_dimension():
+        """Calculate fractal dimensions for various shapes"""
+        fractals = {
+            'Koch Snowflake': {
+                'similarity_ratio': 1/3,
+                'num_pieces': 4,
+                'dimension': math.log(4) / math.log(3)
+            },
+            'Sierpinski Triangle': {
+                'similarity_ratio': 1/2,
+                'num_pieces': 3,
+                'dimension': math.log(3) / math.log(2)
+            },
+            'Menger Sponge': {
+                'similarity_ratio': 1/3,
+                'num_pieces': 20,
+                'dimension': math.log(20) / math.log(3)
+            }
+        }
+        return fractals
+
+def geometry_quiz():
+    """Interactive geometry quiz"""
+    questions = [
+        {
+            'question': "What is the area of a circle with radius 7?",
+            'answer': math.pi * 49,
+            'hint': "Use A = πr²"
+        },
+        {
+            'question': "What is the volume of a sphere with radius 5?",
+            'answer': (4/3) * math.pi * 125,
+            'hint': "Use V = (4/3)πr³"
+        },
+        {
+            'question': "What is the diagonal of a rectangle with sides 3 and 4?",
+            'answer': 5,
+            'hint': "Use Pythagorean theorem"
+        }
+    ]
+    
+    score = 0
+    for i, q in enumerate(questions, 1):
+        print(f"\nQuestion {i}: {q['question']}")
+        try:
+            answer = float(input("Your answer: "))
+            if math.isclose(answer, q['answer'], rel_tol=0.01):
+                print("✅ Correct!")
+                score += 1
+            else:
+                print(f"❌ Incorrect. Hint: {q['hint']}")
+                print(f"Correct answer: {q['answer']:.2f}")
+        except:
+            print("Invalid input")
+    
+    print(f"\nYour score: {score}/{len(questions)}")
+
+# Run advanced features
+if __name__ == "__main__":
+    print("\n" + "="*60)
+    print("ADVANCED GEOMETRY FEATURES")
+    print("="*60)
+    
+    adv = AdvancedGeometry()
+    
+    # Calculate distance
+    p1 = (1, 2)
+    p2 = (4, 6)
+    print(f"\nDistance between {p1} and {p2}: {adv.distance_between_points(p1, p2):.2f}")
+    
+    # Line equation
+    print(f"Line equation: {adv.line_equation(p1, p2)}")
+    
+    # Golden ratio
+    phi, golden_props = adv.golden_ratio_properties()
+    print(f"\nGolden Ratio (φ): {phi:.6f}")
+    print(f"Golden Rectangle properties: {golden_props['if_width_1']}")
+    
+    # Fractal dimensions
+    fractals = adv.fractal_dimension()
+    print(f"\nFractal Dimensions:")
+    for name, props in fractals.items():
+        print(f"  {name}: {props['dimension']:.4f}")
+    
+    # Run quiz
+    print("\n" + "="*60)
+    print("GEOMETRY QUIZ TIME!")
+    print("="*60)
+    geometry_quiz()
+#########################################################################################
