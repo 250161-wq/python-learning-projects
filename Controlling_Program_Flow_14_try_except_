@@ -1,0 +1,40 @@
+#Peyman Miyandashti #250161
+try:
+    file = open("data.txt", "r")
+    content = file.read()
+except FileNotFoundError:
+    print("File not found!")
+else:
+    print("File read successfully!")
+    print(content)
+    file.close()
+
+######################################
+#Peyman Miyandashti #250161
+# Using context manager (with statement) - cleaner approach
+try:
+    user_input = input("Enter numbers separated by commas: ")
+    numbers = [int(x.strip()) for x in user_input.split(",")]
+    
+    with open("numbers.txt", "w") as file:
+        # Write each number on a new line
+        for num in numbers:
+            file.write(f"{num}\n")
+            
+except ValueError:
+    print("Error: Please enter valid numbers only!")
+    
+except FileNotFoundError:
+    print("Error: Could not create or access the file!")
+    
+except PermissionError:
+    print("Error: No permission to write to this location!")
+    
+except Exception as e:
+    print(f"An unexpected error occurred: {type(e).__name__} - {e}")
+    
+else:
+    print(f"Successfully wrote {len(numbers)} numbers to file!")
+    
+finally:
+    print("Program execution completed")
