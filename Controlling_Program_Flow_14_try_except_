@@ -38,3 +38,13 @@ else:
     
 finally:
     print("Program execution completed")
+##################################################
+try:
+    numerator = int(input("Enter numerator: "))
+    denominator = int(input("Enter denominator: "))
+    result = numerator / denominator
+    print(f"Result: {result}")
+except ValueError:
+    print("Please enter valid numbers!")
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
