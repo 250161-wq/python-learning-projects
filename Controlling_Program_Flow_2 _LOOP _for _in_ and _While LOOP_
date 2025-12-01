@@ -66,4 +66,47 @@ while count > 0:
     print(count)
     count-=1 #This is the same as count = count-1
 print("blastoff")
+###################################################################
+# Peyman Miyandashti 250161
+# Simple game that runs until player quits
+game_running = True
+score = 0
 
+while game_running:
+    print(f"Score: {score}")
+    choice = input("Play or quit? (p/q): ").strip().lower()  # Normalize input
+    
+    # Validate input
+    if choice not in ['p', 'q']:
+        print("Error: Please enter only 'p' to play or 'q' to quit.")
+        continue
+    
+    if choice == "q":
+        game_running = False
+    else:
+        score += 10
+
+print("Game over!")
+##############################################################################
+#Peyman Miyandasjti 250161
+#inicio 
+# Example 1: Basic counter
+count = 0
+while count <= 5:
+    print(f"Count: {count}")
+    count += 1
+
+##############################################################################
+#Peyman Miyandashti 250161
+password = ""
+while password != "secret":
+    password = input("Enter password: ")
+print("Access granted!")
+###############################################################################
+#Peyman Miyandashti 250161
+choice = ""
+while choice != "quit":
+    print("1. Option 1\n2. Option 2\nType 'quit' to exit")
+    choice = input("Your choice: ")
+    if choice == "1":
+        print("You selected option 1")
