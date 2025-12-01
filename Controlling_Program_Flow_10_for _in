@@ -2,3 +2,9 @@
 fruits = ["apple", "banana", "cherry"]
 for fruit in fruits:
     print(f"I like {fruit}")
+word = "Python"
+for letter in word:
+    print(letter.upper())    
+student = {"name": "John", "age": 20, "grade": "A"}
+for key, value in student.items():
+    print(f"{key}: {value}")
