@@ -1,0 +1,14 @@
+#Peyman Miyandashti  # 250161
+# Example 1: Basic f-string
+name = "Peyman"
+age = 25
+print(f"My name is {name} and I'm {age} years old")
+
+# Example 2: Expressions in f-strings
+a = 5
+b = 3
+print(f"{a} + {b} = {a + b}")
+
+# Example 3: Formatting numbers
+price = 19.99
+print(f"Price: ${price:.2f}")  # 2 decimal places
