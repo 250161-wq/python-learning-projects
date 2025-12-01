@@ -1,0 +1,4 @@
+#Peyman Miyandashti #250161
+fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(f"I like {fruit}")
