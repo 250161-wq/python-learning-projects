@@ -279,3 +279,50 @@ for score in test_scores:
     print(f"Score {score}/100: {result}")
 
 ########################################################################
+grade = 85
+if grade >= 90:
+    print("A")
+elif grade >= 80:
+    print("B")
+elif grade >= 70:
+    print("C")
+else:
+    print("Need improvement")
+age = 18
+if age >= 18:
+    print("You are an adult")
+else:
+    print("You are a minor")
+temperature = 25
+is_sunny = True
+if temperature > 20 and is_sunny:
+    print("Great weather for a walk!")
+elif temperature < 0 or temperature > 35:
+    print("Extreme weather warning!")
+# Example 1: Basic usage
+def main():
+    print("This is the main function")
+
+if __name__ == "__main__":
+    main()
+
+# Example 2: Module vs script
+# In my_module.py:
+def helper_function():
+    print("Helper function")
+
+if __name__ == "__main__":
+    print("This runs only when executed directly")
+    helper_function()
+
+# Example 3: Organizing code
+def calculate_square(x):
+    return x * x
+
+def main():
+    num = int(input("Enter a number: "))
+    result = calculate_square(num)
+    print(f"The square of {num} is {result}")
+
+if __name__ == "__main__":
+    main()
