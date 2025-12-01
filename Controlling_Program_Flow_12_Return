@@ -1,0 +1,28 @@
+# Example 1: Simple function with return
+def add_numbers(a, b):
+    return a + b
+
+result = add_numbers(5, 3)
+print(result)  # Output: 8
+
+# Example 2: Multiple return statements
+def get_grade(score):
+    if score >= 90:
+        return "A"
+    elif score >= 80:
+        return "B"
+    else:
+        return "C"
+
+grade = get_grade(85)
+print(grade)  # Output: B
+
+# Example 3: Returning multiple values
+def calculate_stats(numbers):
+    total = sum(numbers)
+    average = total / len(numbers)
+    return total, average
+
+scores = [85, 90, 78, 92]
+total, avg = calculate_stats(scores)
+print(f"Total: {total}, Average: {avg:.2f}")
