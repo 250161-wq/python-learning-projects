@@ -208,3 +208,15 @@ if __name__ == "__main__":
     # Also demonstrate the quick analysis function
     test_names = ['Daniel', 'Mike', 'William', 'peyman', 'Anna']
     quick_analysis(test_names)
+####################################################################################
+# Example 1: String length
+name = "Peyman"
+print(len(name))  # Output: 6
+
+# Example 2: List length
+fruits = ["apple", "banana", "cherry"]
+print(len(fruits))  # Output: 3
+
+# Example 3: Dictionary length
+student = {"name": "John", "age": 20, "grade": "A"}
+print(len(student))  # Output: 3
