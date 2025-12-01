@@ -1,0 +1,853 @@
+#peyman miyandashti 250161
+#dictionary 
+
+person = {
+    "name": "Alice",
+    "age": 25,
+    "is_student": True
+}
+
+# Access values
+print(person["name"])  # Output: "Alice"
+
+# Add/modify
+person["job"] = "Engineer"
+
+# Check if key exists
+if "age" in person:
+    print(person["age"])
+####################################
+# peyman miyandashti 250161
+# ADVANCED DICTIONARY MASTERY: COMPLETE GUIDE
+
+from typing import Any, Dict, List, Tuple, Set, Optional, Union
+from dataclasses import dataclass, asdict
+from collections import defaultdict, OrderedDict, Counter, deque
+import json
+import csv
+from datetime import datetime
+from enum import Enum
+import pickle
+
+class SkillLevel(Enum):
+    """Enum for skill levels"""
+    BEGINNER = "Beginner"
+    INTERMEDIATE = "Intermediate"
+    ADVANCED = "Advanced"
+    EXPERT = "Expert"
+
+@dataclass
+class Project:
+    """Data class for projects"""
+    name: str
+    description: str
+    technologies: List[str]
+    completion_date: datetime
+    is_active: bool = True
+
+class AdvancedDictionaryOperations:
+    """Comprehensive dictionary operations with real-world examples"""
+    
+    def __init__(self):
+        self.student_database = {}
+        self.company_data = {}
+        self.inventory_system = defaultdict(lambda: {"quantity": 0, "price": 0.0})
+        self.cache_system = OrderedDict()
+        self.MAX_CACHE_SIZE = 5
+        self.history = deque(maxlen=10)  # Store last 10 operations
+        
+    # SECTION 1: BASIC DICTIONARY OPERATIONS (Enhanced)
+    def basic_operations_demo(self):
+        """Demonstrate basic dictionary operations"""
+        print("="*70)
+        print("SECTION 1: BASIC DICTIONARY OPERATIONS")
+        print("="*70)
+        
+        # Creating dictionaries in different ways
+        person1 = {"name": "Alice", "age": 25, "is_student": True}
+        person2 = dict(name="Bob", age=30, is_student=False)
+        person3 = dict([("name", "Charlie"), ("age", 22), ("is_student", True)])
+        
+        print("\n📝 Creating Dictionaries:")
+        print(f"   person1: {person1}")
+        print(f"   person2: {person2}")
+        print(f"   person3: {person3}")
+        
+        # Accessing values (multiple methods)
+        print("\n🔍 Accessing Values:")
+        print(f"   person1['name']: {person1['name']}")
+        print(f"   person1.get('age'): {person1.get('age')}")
+        print(f"   person1.get('salary', 'Not Available'): {person1.get('salary', 'Not Available')}")
+        
+        # Safe access with error handling
+        try:
+            print(f"   person1['salary']: Would raise KeyError")
+        except KeyError:
+            print("   ✅ KeyError correctly caught for missing key")
+        
+        # Modifying dictionaries
+        print("\n✏️ Modifying Dictionaries:")
+        person1["job"] = "Software Engineer"  # Add new key
+        person1["age"] = 26  # Update existing key
+        print(f"   After adding job and updating age: {person1}")
+        
+        # Removing items
+        print("\n🗑️ Removing Items:")
+        removed_value = person1.pop("is_student")
+        print(f"   Removed 'is_student': {removed_value}")
+        print(f"   Dictionary after pop: {person1}")
+        
+        # Remove last inserted item (Python 3.7+)
+        person1["city"] = "New York"
+        person1["country"] = "USA"
+        key, value = person1.popitem()
+        print(f"   popitem() removed: {key}={value}")
+        print(f"   Dictionary after popitem: {person1}")
+        
+        # Clear dictionary
+        person_copy = person1.copy()
+        person_copy.clear()
+        print(f"   After clear(): {person_copy}")
+        
+        self._log_operation("basic_operations_demo")
+    
+    # SECTION 2: DICTIONARY COMPREHENSIONS & ITERATION
+    def comprehensions_and_iteration(self):
+        """Advanced dictionary comprehensions and iteration techniques"""
+        print("\n" + "="*70)
+        print("SECTION 2: DICTIONARY COMPREHENSIONS & ITERATION")
+        print("="*70)
+        
+        # Dictionary comprehension
+        print("\n🎨 Dictionary Comprehensions:")
+        
+        # Create dictionary of squares
+        numbers = [1, 2, 3, 4, 5]
+        squares = {x: x**2 for x in numbers}
+        print(f"   Squares: {squares}")
+        
+        # Create dictionary with conditional
+        even_squares = {x: x**2 for x in numbers if x % 2 == 0}
+        print(f"   Even squares: {even_squares}")
+        
+        # Transform existing dictionary
+        student_scores = {"Alice": 85, "Bob": 92, "Charlie": 78, "Diana": 95}
+        passed_students = {name: "Pass" if score >= 80 else "Fail" 
+                          for name, score in student_scores.items()}
+        print(f"   Pass/Fail: {passed_students}")
+        
+        # Multiple ways to iterate
+        print("\n🔄 Iteration Techniques:")
+        
+        print("   Iterating over keys:")
+        for key in student_scores:
+            print(f"     Key: {key}")
+        
+        print("\n   Iterating over values:")
+        for value in student_scores.values():
+            print(f"     Value: {value}")
+        
+        print("\n   Iterating over key-value pairs:")
+        for key, value in student_scores.items():
+            print(f"     {key}: {value}")
+        
+        print("\n   Enumerated iteration:")
+        for i, (key, value) in enumerate(student_scores.items(), 1):
+            print(f"     {i}. {key} = {value}")
+        
+        # Reverse iteration
+        print("\n   Reverse iteration (sorted by key):")
+        for key in sorted(student_scores.keys(), reverse=True):
+            print(f"     {key}: {student_scores[key]}")
+        
+        self._log_operation("comprehensions_and_iteration")
+    
+    # SECTION 3: REAL-WORLD EXAMPLE: STUDENT DATABASE
+    def student_database_system(self):
+        """Complete student database system using dictionaries"""
+        print("\n" + "="*70)
+        print("SECTION 3: REAL-WORLD EXAMPLE - STUDENT DATABASE")
+        print("="*70)
+        
+        # Initialize sample student database
+        self.student_database = {
+            "250161": {
+                "name": "Peyman Miyandashti",
+                "age": 22,
+                "major": "Computer Science",
+                "courses": ["Data Structures", "Algorithms", "Database Systems"],
+                "grades": {"Data Structures": 95, "Algorithms": 88, "Database Systems": 92},
+                "skills": {
+                    "Python": SkillLevel.ADVANCED,
+                    "Java": SkillLevel.INTERMEDIATE,
+                    "SQL": SkillLevel.ADVANCED
+                },
+                "projects": [
+                    Project("E-commerce Platform", "Online shopping system", 
+                           ["Python", "Django", "PostgreSQL"], datetime(2023, 12, 1)),
+                    Project("AI Chatbot", "Intelligent customer service bot",
+                           ["Python", "TensorFlow", "NLP"], datetime(2024, 3, 15), False)
+                ]
+            },
+            "250162": {
+                "name": "Alice Johnson",
+                "age": 21,
+                "major": "Data Science",
+                "courses": ["Statistics", "Machine Learning", "Data Visualization"],
+                "grades": {"Statistics": 90, "Machine Learning": 94, "Data Visualization": 89},
+                "skills": {
+                    "Python": SkillLevel.EXPERT,
+                    "R": SkillLevel.ADVANCED,
+                    "Tableau": SkillLevel.INTERMEDIATE
+                },
+                "projects": [
+                    Project("Stock Prediction", "ML model for stock prices",
+                           ["Python", "Scikit-learn", "Pandas"], datetime(2024, 2, 20))
+                ]
+            }
+        }
+        
+        # Display database
+        print("\n📊 STUDENT DATABASE:")
+        for student_id, info in self.student_database.items():
+            print(f"\n🎓 Student ID: {student_id}")
+            print(f"   Name: {info['name']}")
+            print(f"   Major: {info['major']}")
+            print(f"   Courses: {', '.join(info['courses'])}")
+            
+            # Calculate average grade
+            grades = info['grades'].values()
+            avg_grade = sum(grades) / len(grades) if grades else 0
+            print(f"   Average Grade: {avg_grade:.1f}")
+            
+            # Display skills
+            print("   Skills:")
+            for skill, level in info['skills'].items():
+                print(f"     • {skill}: {level.value}")
+        
+        # Advanced queries
+        print("\n🔍 ADVANCED QUERIES:")
+        
+        # Find students with grade > 90 in any subject
+        high_achievers = []
+        for student_id, info in self.student_database.items():
+            if any(grade > 90 for grade in info['grades'].values()):
+                high_achievers.append(info['name'])
+        print(f"   Students with grades > 90: {', '.join(high_achievers)}")
+        
+        # Find most common skill
+        all_skills = []
+        for info in self.student_database.values():
+            all_skills.extend(info['skills'].keys())
+        
+        skill_counter = Counter(all_skills)
+        if skill_counter:
+            most_common = skill_counter.most_common(1)[0]
+            print(f"   Most common skill: {most_common[0]} ({most_common[1]} students)")
+        
+        # Add new student
+        self._add_student("250163", {
+            "name": "Bob Smith",
+            "age": 23,
+            "major": "Software Engineering",
+            "courses": ["Web Development", "Mobile Apps", "Cloud Computing"],
+            "grades": {"Web Development": 87, "Mobile Apps": 91, "Cloud Computing": 88},
+            "skills": {"JavaScript": SkillLevel.ADVANCED, "React": SkillLevel.INTERMEDIATE},
+            "projects": []
+        })
+        
+        print(f"\n✅ Database updated. Total students: {len(self.student_database)}")
+        
+        self._log_operation("student_database_system")
+    
+    def _add_student(self, student_id: str, student_data: Dict):
+        """Add a student to the database"""
+        self.student_database[student_id] = student_data
+    
+    # SECTION 4: COLLECTIONS MODULE - SPECIALIZED DICTIONARIES
+    def collections_module_demo(self):
+        """Demonstrate specialized dictionaries from collections module"""
+        print("\n" + "="*70)
+        print("SECTION 4: SPECIALIZED DICTIONARIES (collections module)")
+        print("="*70)
+        
+        # 1. defaultdict - Automatic default values
+        print("\n1️⃣ defaultdict - Automatic Default Values")
+        word_counts = defaultdict(int)
+        text = "apple banana apple cherry banana apple"
+        
+        for word in text.split():
+            word_counts[word] += 1
+        
+        print(f"   Word counts: {dict(word_counts)}")
+        
+        # Complex default with lambda
+        graph = defaultdict(list)
+        graph['A'].append('B')
+        graph['A'].append('C')
+        graph['B'].append('C')
+        
+        print(f"   Graph structure: {dict(graph)}")
+        
+        # 2. OrderedDict - Maintains insertion order
+        print("\n2️⃣ OrderedDict - Maintains Insertion Order")
+        ordered = OrderedDict()
+        ordered['first'] = 1
+        ordered['second'] = 2
+        ordered['third'] = 3
+        
+        print(f"   OrderedDict: {ordered}")
+        
+        # Move to end
+        ordered.move_to_end('first')
+        print(f"   After moving 'first' to end: {ordered}")
+        
+        # 3. Counter - Count hashable objects
+        print("\n3️⃣ Counter - Counting Elements")
+        purchases = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple']
+        purchase_counter = Counter(purchases)
+        
+        print(f"   Purchase counts: {purchase_counter}")
+        print(f"   Most common: {purchase_counter.most_common(2)}")
+        print(f"   Total items: {sum(purchase_counter.values())}")
+        
+        # 4. ChainMap - Multiple dictionaries as single mapping
+        print("\n4️⃣ ChainMap - Multiple Dictionaries as One")
+        from collections import ChainMap
+        
+        defaults = {'theme': 'dark', 'language': 'en'}
+        user_prefs = {'language': 'fr', 'timezone': 'UTC'}
+        
+        settings = ChainMap(user_prefs, defaults)
+        print(f"   Theme: {settings['theme']}")  # From defaults
+        print(f"   Language: {settings['language']}")  # From user_prefs (overrides)
+        
+        self._log_operation("collections_module_demo")
+    
+    # SECTION 5: INVENTORY SYSTEM EXAMPLE
+    def inventory_system(self):
+        """Complete inventory management system"""
+        print("\n" + "="*70)
+        print("SECTION 5: INVENTORY MANAGEMENT SYSTEM")
+        print("="*70)
+        
+        # Initialize inventory
+        self.inventory_system["laptop"] = {"quantity": 10, "price": 999.99}
+        self.inventory_system["mouse"] = {"quantity": 50, "price": 29.99}
+        self.inventory_system["keyboard"] = {"quantity": 30, "price": 79.99}
+        
+        print("\n🛒 CURRENT INVENTORY:")
+        for item, details in self.inventory_system.items():
+            total_value = details["quantity"] * details["price"]
+            print(f"   {item.title()}: {details['quantity']} units, "
+                  f"${details['price']} each, Total: ${total_value:.2f}")
+        
+        # Restock items
+        self._restock_item("laptop", 5)
+        self._restock_item("monitor", 15, 299.99)  # New item
+        
+        # Sell items
+        print("\n💳 PROCESSING SALES:")
+        self._sell_item("laptop", 3)
+        self._sell_item("mouse", 10)
+        
+        # Try to sell unavailable item
+        self._sell_item("printer", 2)
+        
+        # Inventory report
+        print("\n📈 INVENTORY REPORT:")
+        total_value = sum(details["quantity"] * details["price"] 
+                         for details in self.inventory_system.values())
+        print(f"   Total inventory value: ${total_value:.2f}")
+        
+        # Low stock alert
+        low_stock = {item: details for item, details in self.inventory_system.items() 
+                    if details["quantity"] < 10}
+        if low_stock:
+            print("\n⚠️  LOW STOCK ALERT:")
+            for item, details in low_stock.items():
+                print(f"   {item.title()}: Only {details['quantity']} left!")
+        
+        self._log_operation("inventory_system")
+    
+    def _restock_item(self, item: str, quantity: int, price: Optional[float] = None):
+        """Restock an item in inventory"""
+        if price:
+            self.inventory_system[item]["price"] = price
+        self.inventory_system[item]["quantity"] += quantity
+        print(f"   ✅ Restocked {quantity} {item}(s)")
+    
+    def _sell_item(self, item: str, quantity: int):
+        """Sell an item from inventory"""
+        if item not in self.inventory_system:
+            print(f"   ❌ {item.title()} not in inventory!")
+            return
+        
+        if self.inventory_system[item]["quantity"] >= quantity:
+            self.inventory_system[item]["quantity"] -= quantity
+            total_price = quantity * self.inventory_system[item]["price"]
+            print(f"   ✅ Sold {quantity} {item}(s) for ${total_price:.2f}")
+        else:
+            available = self.inventory_system[item]["quantity"]
+            print(f"   ❌ Not enough {item}! Available: {available}, Requested: {quantity}")
+    
+    # SECTION 6: CACHING SYSTEM WITH ORDEREDDICT
+    def lru_cache_system(self):
+        """LRU (Least Recently Used) Cache implementation"""
+        print("\n" + "="*70)
+        print("SECTION 6: LRU CACHE SYSTEM")
+        print("="*70)
+        
+        print("🔧 Implementing LRU Cache with OrderedDict")
+        print(f"   Cache size limit: {self.MAX_CACHE_SIZE}")
+        
+        # Simulate cache operations
+        operations = [
+            ("get", "user_profile_1"),
+            ("set", "user_profile_1", "Alice Data"),
+            ("get", "product_details_101"),
+            ("set", "product_details_101", "Product Info"),
+            ("set", "shopping_cart_42", "Cart Contents"),
+            ("get", "user_profile_1"),  # Should move to end
+            ("set", "search_results_q", "Search Results"),
+            ("set", "config_settings", "Config Data"),
+            ("set", "api_response_1", "API Response"),
+            ("set", "cache_item_6", "Item 6"),  # Should evict oldest
+            ("get", "product_details_101"),
+        ]
+        
+        for op in operations:
+            if op[0] == "get":
+                self._cache_get(op[1])
+            elif op[0] == "set":
+                self._cache_set(op[1], op[2])
+        
+        print(f"\n📊 Cache Statistics:")
+        print(f"   Current cache size: {len(self.cache_system)}")
+        print(f"   Cache contents (oldest to newest):")
+        for key, value in self.cache_system.items():
+            print(f"     • {key}: {value}")
+        
+        self._log_operation("lru_cache_system")
+    
+    def _cache_get(self, key: str) -> Any:
+        """Get item from cache, mark as recently used"""
+        if key in self.cache_system:
+            # Move to end (most recently used)
+            value = self.cache_system.pop(key)
+            self.cache_system[key] = value
+            print(f"   🔄 Cache HIT: {key} (moved to MRU position)")
+            return value
+        else:
+            print(f"   ❌ Cache MISS: {key}")
+            return None
+    
+    def _cache_set(self, key: str, value: Any):
+        """Set item in cache, evict if needed"""
+        if key in self.cache_system:
+            # Remove old entry
+            self.cache_system.pop(key)
+        elif len(self.cache_system) >= self.MAX_CACHE_SIZE:
+            # Evict least recently used (first item)
+            evicted_key, _ = self.cache_system.popitem(last=False)
+            print(f"   🗑️  Evicted: {evicted_key}")
+        
+        self.cache_system[key] = value
+        print(f"   ✅ Cached: {key}")
+    
+    # SECTION 7: SERIALIZATION & PERSISTENCE
+    def serialization_demo(self):
+        """Serialize dictionaries to various formats"""
+        print("\n" + "="*70)
+        print("SECTION 7: SERIALIZATION & PERSISTENCE")
+        print("="*70)
+        
+        sample_data = {
+            "company": "TechCorp",
+            "employees": [
+                {"id": 1, "name": "Alice", "department": "Engineering"},
+                {"id": 2, "name": "Bob", "department": "Sales"},
+                {"id": 3, "name": "Charlie", "department": "Marketing"}
+            ],
+            "locations": ["NYC", "SF", "London"],
+            "founded": 2010,
+            "active": True
+        }
+        
+        # 1. JSON Serialization
+        print("\n1️⃣ JSON Serialization:")
+        json_str = json.dumps(sample_data, indent=2)
+        print(f"   JSON string (first 100 chars):\n{json_str[:100]}...")
+        
+        # Save to file
+        with open("company_data.json", "w") as f:
+            json.dump(sample_data, f, indent=2)
+        print("   ✅ Saved to company_data.json")
+        
+        # Load from file
+        with open("company_data.json", "r") as f:
+            loaded_data = json.load(f)
+        print(f"   ✅ Loaded data. Company: {loaded_data['company']}")
+        
+        # 2. Pickle Serialization (Python-specific)
+        print("\n2️⃣ Pickle Serialization (Python binary):")
+        with open("company_data.pkl", "wb") as f:
+            pickle.dump(sample_data, f)
+        print("   ✅ Saved to company_data.pkl")
+        
+        with open("company_data.pkl", "rb") as f:
+            pickled_data = pickle.load(f)
+        print(f"   ✅ Loaded from pickle. Employees: {len(pickled_data['employees'])}")
+        
+        # 3. CSV Export
+        print("\n3️⃣ CSV Export:")
+        employees = sample_data["employees"]
+        with open("employees.csv", "w", newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=["id", "name", "department"])
+            writer.writeheader()
+            writer.writerows(employees)
+        print("   ✅ Exported to employees.csv")
+        
+        self._log_operation("serialization_demo")
+    
+    # SECTION 8: ADVANCED MERGING & COMBINING
+    def merging_techniques(self):
+        """Advanced dictionary merging techniques"""
+        print("\n" + "="*70)
+        print("SECTION 8: ADVANCED MERGING TECHNIQUES")
+        print("="*70)
+        
+        dict1 = {"a": 1, "b": 2, "c": 3}
+        dict2 = {"b": 20, "c": 30, "d": 40}
+        dict3 = {"c": 300, "e": 50}
+        
+        print(f"\n📚 Original dictionaries:")
+        print(f"   dict1: {dict1}")
+        print(f"   dict2: {dict2}")
+        print(f"   dict3: {dict3}")
+        
+        # Method 1: update() - in-place
+        merged = dict1.copy()
+        merged.update(dict2)
+        merged.update(dict3)
+        print(f"\n1️⃣ Using update(): {merged}")
+        
+        # Method 2: Dictionary unpacking (Python 3.5+)
+        merged2 = {**dict1, **dict2, **dict3}
+        print(f"2️⃣ Using ** unpacking: {merged2}")
+        
+        # Method 3: ChainMap
+        from collections import ChainMap
+        merged3 = dict(ChainMap(dict3, dict2, dict1))
+        print(f"3️⃣ Using ChainMap: {merged3}")
+        
+        # Method 4: Custom merge with conflict resolution
+        def smart_merge(*dicts):
+            result = {}
+            for d in dicts:
+                for key, value in d.items():
+                    if key in result:
+                        # Sum values if both are numbers
+                        if isinstance(result[key], (int, float)) and isinstance(value, (int, float)):
+                            result[key] += value
+                        else:
+                            result[key] = value  # Keep last value
+                    else:
+                        result[key] = value
+            return result
+        
+        merged4 = smart_merge(dict1, dict2, dict3)
+        print(f"4️⃣ Smart merge (sum numbers): {merged4}")
+        
+        # Deep merging for nested dictionaries
+        config_default = {"theme": "light", "settings": {"auto_save": True, "backup": False}}
+        config_user = {"theme": "dark", "settings": {"backup": True, "notifications": True}}
+        
+        def deep_merge(default, override):
+            result = default.copy()
+            for key, value in override.items():
+                if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+                    result[key] = deep_merge(result[key], value)
+                else:
+                    result[key] = value
+            return result
+        
+        merged_config = deep_merge(config_default, config_user)
+        print(f"\n🎯 Deep merge for nested dicts:")
+        print(f"   Result: {merged_config}")
+        
+        self._log_operation("merging_techniques")
+    
+    # SECTION 9: DICTIONARY PERFORMANCE TIPS
+    def performance_tips(self):
+        """Performance tips and best practices"""
+        print("\n" + "="*70)
+        print("SECTION 9: PERFORMANCE TIPS & BEST PRACTICES")
+        print("="*70)
+        
+        print("\n🚀 Performance Tips:")
+        
+        # Tip 1: Use get() for safe access
+        print("\n1️⃣ Use get() instead of try-except for missing keys:")
+        print("   data.get('key', default_value)  # Fast and safe")
+        
+        # Tip 2: Dictionary views for memory efficiency
+        print("\n2️⃣ Use dictionary views for large dictionaries:")
+        print("   keys_view = my_dict.keys()    # Memory efficient")
+        print("   values_view = my_dict.values()")
+        print("   items_view = my_dict.items()")
+        
+        # Tip 3: Use setdefault for initialization
+        print("\n3️⃣ Use setdefault() for dictionary initialization:")
+        groups = {}
+        names = ["Alice", "Bob", "Alice", "Charlie", "Bob"]
+        
+        for name in names:
+            groups.setdefault(name, []).append(f"Item_{len(groups.get(name, []))}")
+        
+        print(f"   Groups: {groups}")
+        
+        # Tip 4: Dictionary size estimation
+        print("\n4️⃣ Memory usage estimation:")
+        import sys
+        sample_dict = {i: f"value_{i}" for i in range(100)}
+        print(f"   Size of dict with 100 items: ~{sys.getsizeof(sample_dict)} bytes")
+        
+        # Tip 5: Use comprehensions for creation
+        print("\n5️⃣ Use comprehensions for better performance:")
+        print("   squares = {x: x**2 for x in range(1000)}  # Faster than loop")
+        
+        # Tip 6: Key selection
+        print("\n6️⃣ Choose immutable, hashable keys:")
+        print("   ✅ Good keys: strings, numbers, tuples")
+        print("   ❌ Bad keys: lists, dictionaries, sets")
+        
+        self._log_operation("performance_tips")
+    
+    def _log_operation(self, operation_name: str):
+        """Log operations to history"""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        self.history.append(f"{timestamp} - {operation_name}")
+    
+    def display_history(self):
+        """Display operation history"""
+        print("\n" + "="*70)
+        print("📜 OPERATION HISTORY")
+        print("="*70)
+        
+        if not self.history:
+            print("   No operations recorded.")
+        else:
+            for i, record in enumerate(self.history, 1):
+                print(f"   {i}. {record}")
+
+def main():
+    """Main program execution"""
+    print("="*70)
+    print("ADVANCED DICTIONARY MASTERY COMPLETE GUIDE")
+    print("Peyman Miyandashti 250161")
+    print("="*70)
+    
+    # Create instance
+    dict_master = AdvancedDictionaryOperations()
+    
+    # Execute all sections
+    dict_master.basic_operations_demo()
+    
+    dict_master.comprehensions_and_iteration()
+    
+    dict_master.student_database_system()
+    
+    dict_master.collections_module_demo()
+    
+    dict_master.inventory_system()
+    
+    dict_master.lru_cache_system()
+    
+    dict_master.serialization_demo()
+    
+    dict_master.merging_techniques()
+    
+    dict_master.performance_tips()
+    
+    # Display history
+    dict_master.display_history()
+    
+    print("\n" + "="*70)
+    print("🎉 DICTIONARY MASTERY COMPLETE!")
+    print("="*70)
+
+if __name__ == "__main__":
+    main()
+################################################################
+# peyman miyandashti 250161
+# Advanced Dictionary Applications
+
+def dictionary_patterns():
+    """Common patterns and idioms using dictionaries"""
+    print("\n" + "="*70)
+    print("COMMON DICTIONARY PATTERNS & IDIOMS")
+    print("="*70)
+    
+    # Pattern 1: Switch/Case replacement
+    def operation_switch(operation, x, y):
+        operations = {
+            'add': lambda: x + y,
+            'subtract': lambda: x - y,
+            'multiply': lambda: x * y,
+            'divide': lambda: x / y if y != 0 else "Error"
+        }
+        return operations.get(operation, lambda: "Invalid operation")()
+    
+    print("\n1️⃣ Switch/Case Pattern:")
+    print(f"   add(5, 3) = {operation_switch('add', 5, 3)}")
+    print(f"   multiply(5, 3) = {operation_switch('multiply', 5, 3)}")
+    
+    # Pattern 2: Counting frequency
+    text = "the quick brown fox jumps over the lazy dog"
+    freq = {}
+    for word in text.split():
+        freq[word] = freq.get(word, 0) + 1
+    
+    print("\n2️⃣ Frequency Counting Pattern:")
+    print(f"   Word frequencies: {freq}")
+    
+    # Pattern 3: Grouping
+    students = [
+        {"name": "Alice", "grade": "A"},
+        {"name": "Bob", "grade": "B"},
+        {"name": "Charlie", "grade": "A"},
+        {"name": "Diana", "grade": "C"},
+        {"name": "Eve", "grade": "B"}
+    ]
+    
+    grouped = {}
+    for student in students:
+        grouped.setdefault(student["grade"], []).append(student["name"])
+    
+    print("\n3️⃣ Grouping Pattern:")
+    print(f"   Students grouped by grade: {grouped}")
+    
+    # Pattern 4: Inverting dictionary
+    original = {"a": 1, "b": 2, "c": 3}
+    inverted = {v: k for k, v in original.items()}
+    
+    print("\n4️⃣ Dictionary Inversion Pattern:")
+    print(f"   Original: {original}")
+    print(f"   Inverted: {inverted}")
+    
+    # Pattern 5: Two-way lookup
+    print("\n5️⃣ Two-way Lookup Dictionary:")
+    
+    class TwoWayDict(dict):
+        def __setitem__(self, key, value):
+            # Remove any previous connections
+            if key in self:
+                del self[key]
+            if value in self.values():
+                for k, v in list(self.items()):
+                    if v == value:
+                        del self[k]
+            
+            # Set new connection
+            super().__setitem__(key, value)
+            super().__setitem__(value, key)
+        
+        def __delitem__(self, key):
+            value = self[key]
+            super().__delitem__(key)
+            if value in self:
+                super().__delitem__(value)
+        
+        def __len__(self):
+            return super().__len__() // 2
+    
+    twoway = TwoWayDict()
+    twoway["apple"] = "red"
+    twoway["banana"] = "yellow"
+    
+    print(f"   apple -> {twoway['apple']}")
+    print(f"   red -> {twoway['red']}")
+
+def dictionary_algorithms():
+    """Algorithms using dictionaries"""
+    print("\n" + "="*70)
+    print("ALGORITHMS USING DICTIONARIES")
+    print("="*70)
+    
+    # Algorithm 1: Find first non-repeating character
+    def first_non_repeating_char(s):
+        char_count = {}
+        for char in s:
+            char_count[char] = char_count.get(char, 0) + 1
+        
+        for char in s:
+            if char_count[char] == 1:
+                return char
+        return None
+    
+    print("\n1️⃣ First Non-repeating Character:")
+    test_string = "swiss"
+    result = first_non_repeating_char(test_string)
+    print(f"   In '{test_string}': {result}")
+    
+    # Algorithm 2: Two Sum problem
+    def two_sum(nums, target):
+        seen = {}
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in seen:
+                return [seen[complement], i]
+            seen[num] = i
+        return None
+    
+    print("\n2️⃣ Two Sum Algorithm:")
+    nums = [2, 7, 11, 15]
+    target = 9
+    result = two_sum(nums, target)
+    print(f"   nums={nums}, target={target} -> indices={result}")
+    
+    # Algorithm 3: Anagrams check
+    def are_anagrams(str1, str2):
+        if len(str1) != len(str2):
+            return False
+        
+        count1 = {}
+        count2 = {}
+        
+        for char in str1:
+            count1[char] = count1.get(char, 0) + 1
+        
+        for char in str2:
+            count2[char] = count2.get(char, 0) + 1
+        
+        return count1 == count2
+    
+    print("\n3️⃣ Anagram Check:")
+    print(f"   'listen' and 'silent': {are_anagrams('listen', 'silent')}")
+    print(f"   'hello' and 'world': {are_anagrams('hello', 'world')}")
+    
+    # Algorithm 4: Find duplicates
+    def find_duplicates(arr):
+        seen = set()
+        duplicates = set()
+        
+        for item in arr:
+            if item in seen:
+                duplicates.add(item)
+            else:
+                seen.add(item)
+        
+        return list(duplicates)
+    
+    print("\n4️⃣ Find Duplicates:")
+    numbers = [1, 2, 3, 2, 4, 5, 3, 6, 7, 5]
+    print(f"   In {numbers}: {find_duplicates(numbers)}")
+
+if __name__ == "__main__":
+    print("\n" + "="*70)
+    print("ADVANCED DICTIONARY APPLICATIONS")
+    print("="*70)
+    
+    dictionary_patterns()
+    dictionary_algorithms()
