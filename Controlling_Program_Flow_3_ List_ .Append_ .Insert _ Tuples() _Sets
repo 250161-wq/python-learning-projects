@@ -47,3 +47,12 @@ my_set ={"apple","banana","cherry","apple"}
 print(
     my_set
 )  # Output {'cherry','banana','apple'} (duplicate removed , order may vary).
+
+########################################################################
+#Peyman Miyandashti 250161
+#inicio
+names=['Daniel','Mike','William','peyman',]
+#list comprention
+length=[len(name) for name in names]
+#imprimir
+print(length)
