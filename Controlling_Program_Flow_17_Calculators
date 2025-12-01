@@ -685,3 +685,414 @@ if __name__ == "__main__":
     print("="*60)
     geometry_quiz()
 #########################################################################################
+#Peyman Miyandashti #250161
+"""
+CÁLCULO DIFERENCIAL
+Ingeniería en Tecnologías de la Información
+
+Módulo que contiene herramientas fundamentales de cálculo diferencial
+para aplicaciones en ingeniería de tecnologías de la información.
+Incluye constantes matemáticas, derivadas, límites y aplicaciones prácticas.
+"""
+
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+from typing import Callable, List, Tuple, Dict
+
+# =============================================================================
+# CONSTANTES MATEMÁTICAS FUNDAMENTALES
+# =============================================================================
+PI = 3.141592653589793
+E = 2.718281828459045
+GRAVEDAD_TIERRA = 9.81  # m/s²
+
+# =============================================================================
+# CLASE PRINCIPAL: CALCULADORA DIFERENCIAL
+# =============================================================================
+class CalculadoraDiferencial:
+    """
+    Clase para realizar operaciones de cálculo diferencial con aplicaciones
+    en ingeniería de tecnologías de la información.
+    """
+    
+    def __init__(self, precision: int = 6):
+        """
+        Inicializa la calculadora con una precisión específica.
+        
+        Args:
+            precision (int): Número de decimales para redondeo (default: 6)
+        """
+        self.precision = precision
+    
+    # -------------------------------------------------------------------------
+    # LÍMITES Y CONTINUIDAD
+    # -------------------------------------------------------------------------
+    def limite(self, funcion: Callable[[float], float], punto: float, h: float = 1e-6) -> float:
+        """
+        Calcula el límite de una función en un punto usando aproximación.
+        
+        Args:
+            funcion: Función de la cual calcular el límite
+            punto (float): Punto donde evaluar el límite
+            h (float): Incremento infinitesimal (default: 1e-6)
+            
+        Returns:
+            float: Valor del límite
+        """
+        try:
+            return round((funcion(punto + h) + funcion(punto - h)) / 2, self.precision)
+        except ZeroDivisionError:
+            return self._limite_indeterminado(funcion, punto, h)
+    
+    def _limite_indeterminado(self, funcion: Callable[[float], float], punto: float, h: float) -> float:
+        """
+        Maneja límites indeterminados usando aproximación numérica.
+        
+        Args:
+            funcion: Función a evaluar
+            punto (float): Punto donde evaluar el límite
+            h (float): Incremento infinitesimal
+            
+        Returns:
+            float: Valor aproximado del límite
+        """
+        # Estrategia para límites indeterminados: evaluar desde ambos lados
+        izquierda = funcion(punto - h)
+        derecha = funcion(punto + h)
+        
+        if abs(izquierda - derecha) < 1e-10:  # Los valores son muy cercanos
+            return round((izquierda + derecha) / 2, self.precision)
+        else:
+            # Si hay discrepancia, podría ser un límite que no existe
+            raise ValueError("El límite podría no existir en el punto dado")
+    
+    # -------------------------------------------------------------------------
+    # DERIVADAS
+    # -------------------------------------------------------------------------
+    def derivada(self, funcion: Callable[[float], float], x: float, h: float = 1e-6) -> float:
+        """
+        Calcula la derivada de una función en un punto usando diferencia central.
+        
+        Args:
+            funcion: Función a derivar
+            x (float): Punto donde calcular la derivada
+            h (float): Incremento infinitesimal (default: 1e-6)
+            
+        Returns:
+            float: Valor de la derivada en el punto x
+        """
+        try:
+            return round((funcion(x + h) - funcion(x - h)) / (2 * h), self.precision)
+        except ZeroDivisionError:
+            raise ValueError("División por cero al calcular la derivada")
+    
+    def derivada_segunda(self, funcion: Callable[[float], float], x: float, h: float = 1e-6) -> float:
+        """
+        Calcula la segunda derivada de una función en un punto.
+        
+        Args:
+            funcion: Función a derivar
+            x (float): Punto donde calcular la derivada
+            h (float): Incremento infinitesimal (default: 1e-6)
+            
+        Returns:
+            float: Valor de la segunda derivada en el punto x
+        """
+        try:
+            return round((funcion(x + h) - 2 * funcion(x) + funcion(x - h)) / (h ** 2), self.precision)
+        except ZeroDivisionError:
+            raise ValueError("División por cero al calcular la segunda derivada")
+    
+    def derivada_n_esima(self, funcion: Callable[[float], float], x: float, n: int, h: float = 1e-4) -> float:
+        """
+        Calcula la n-ésima derivada de una función usando diferencias finitas.
+        
+        Args:
+            funcion: Función a derivar
+            x (float): Punto donde calcular la derivada
+            n (int): Orden de la derivada
+            h (float): Incremento infinitesimal (default: 1e-4)
+            
+        Returns:
+            float: Valor de la n-ésima derivada
+        """
+        if n == 0:
+            return round(funcion(x), self.precision)
+        
+        if n == 1:
+            return self.derivada(funcion, x, h)
+        else:
+            # Aproximación para derivadas de orden superior
+            return round((self.derivada_n_esima(funcion, x + h, n - 1, h) - 
+                         self.derivada_n_esima(funcion, x - h, n - 1, h)) / (2 * h), self.precision)
+    
+    # -------------------------------------------------------------------------
+    # REGLAS DE DERIVACIÓN
+    # -------------------------------------------------------------------------
+    def regla_producto(self, f: Callable[[float], float], g: Callable[[float], float], 
+                       x: float, h: float = 1e-6) -> float:
+        """
+        Aplica la regla del producto para derivadas: (fg)' = f'g + fg'
+        
+        Args:
+            f: Primera función
+            g: Segunda función
+            x (float): Punto de evaluación
+            h (float): Incremento infinitesimal
+            
+        Returns:
+            float: Derivada del producto en x
+        """
+        f_val = f(x)
+        g_val = g(x)
+        f_prime = self.derivada(f, x, h)
+        g_prime = self.derivada(g, x, h)
+        
+        return round(f_prime * g_val + f_val * g_prime, self.precision)
+    
+    def regla_cociente(self, f: Callable[[float], float], g: Callable[[float], float], 
+                       x: float, h: float = 1e-6) -> float:
+        """
+        Aplica la regla del cociente para derivadas: (f/g)' = (f'g - fg')/g²
+        
+        Args:
+            f: Función numerador
+            g: Función denominador
+            x (float): Punto de evaluación
+            h (float): Incremento infinitesimal
+            
+        Returns:
+            float: Derivada del cociente en x
+        """
+        f_val = f(x)
+        g_val = g(x)
+        f_prime = self.derivada(f, x, h)
+        g_prime = self.derivada(g, x, h)
+        
+        if abs(g_val) < 1e-12:
+            raise ValueError("División por cero: el denominador no puede ser cero")
+        
+        return round((f_prime * g_val - f_val * g_prime) / (g_val ** 2), self.precision)
+    
+    def regla_cadena(self, f: Callable[[float], float], g: Callable[[float], float], 
+                     x: float, h: float = 1e-6) -> float:
+        """
+        Aplica la regla de la cadena para derivadas: (f∘g)' = f'(g(x)) * g'(x)
+        
+        Args:
+            f: Función exterior
+            g: Función interior
+            x (float): Punto de evaluación
+            h (float): Incremento infinitesimal
+            
+        Returns:
+            float: Derivada de la composición en x
+        """
+        g_val = g(x)
+        f_prime_g = self.derivada(f, g_val, h)
+        g_prime = self.derivada(g, x, h)
+        
+        return round(f_prime_g * g_prime, self.precision)
+    
+    # -------------------------------------------------------------------------
+    # APLICACIONES PRÁCTICAS PARA TI
+    # -------------------------------------------------------------------------
+    def velocidad_instantanea(self, funcion_posicion: Callable[[float], float], 
+                             tiempo: float, h: float = 1e-6) -> float:
+        """
+        Calcula la velocidad instantánea como derivada de la posición.
+        
+        Args:
+            funcion_posicion: Función que describe la posición en el tiempo
+            tiempo (float): Instante de tiempo
+            h (float): Incremento infinitesimal
+            
+        Returns:
+            float: Velocidad instantánea
+        """
+        return self.derivada(funcion_posicion, tiempo, h)
+    
+    def aceleracion_instantanea(self, funcion_posicion: Callable[[float], float], 
+                               tiempo: float, h: float = 1e-6) -> float:
+        """
+        Calcula la aceleración instantánea como segunda derivada de la posición.
+        
+        Args:
+            funcion_posicion: Función que describe la posición en el tiempo
+            tiempo (float): Instante de tiempo
+            h (float): Incremento infinitesimal
+            
+        Returns:
+            float: Aceleración instantánea
+        """
+        return self.derivada_segunda(funcion_posicion, tiempo, h)
+    
+    def tasa_cambio(self, funcion: Callable[[float], float], x: float, h: float = 1e-6) -> float:
+        """
+        Calcula la tasa de cambio instantánea de una función.
+        
+        Args:
+            funcion: Función a analizar
+            x (float): Punto de evaluación
+            h (float): Incremento infinitesimal
+            
+        Returns:
+            float: Tasa de cambio instantánea
+        """
+        return self.derivada(funcion, x, h)
+    
+    def optimizar_funcion(self, funcion: Callable[[float], float], 
+                         a: float, b: float, paso: float = 0.01) -> Dict[str, List[Tuple[float, float]]]:
+        """
+        Encuentra mínimos y máximos locales en un intervalo [a, b].
+        
+        Args:
+            funcion: Función a optimizar
+            a (float): Límite inferior del intervalo
+            b (float): Límite superior del intervalo
+            paso (float): Paso para el barrido (default: 0.01)
+            
+        Returns:
+            dict: Puntos críticos encontrados con su tipo y coordenadas
+        """
+        puntos_criticos = {'minimos': [], 'maximos': [], 'puntos_inflexion': []}
+        x = a
+        
+        while x <= b:
+            try:
+                derivada1 = self.derivada(funcion, x)
+                derivada2 = self.derivada_segunda(funcion, x)
+                
+                if abs(derivada1) < 1e-5:  # Punto crítico
+                    if derivada2 > 1e-5:  # Mínimo local
+                        puntos_criticos['minimos'].append((round(x, 3), round(funcion(x), 3)))
+                    elif derivada2 < -1e-5:  # Máximo local
+                        puntos_criticos['maximos'].append((round(x, 3), round(funcion(x), 3)))
+                    else:  # Posible punto de inflexión
+                        puntos_criticos['puntos_inflexion'].append((round(x, 3), round(funcion(x), 3)))
+            except:
+                # Saltar puntos problemáticos
+                pass
+            
+            x += paso
+        
+        return puntos_criticos
+    
+    def graficar_funcion_y_derivada(self, funcion: Callable[[float], float], 
+                                   a: float, b: float, titulo: str = "Función y su derivada"):
+        """
+        Grafica una función y su derivada en un intervalo [a, b].
+        
+        Args:
+            funcion: Función a graficar
+            a (float): Límite inferior del intervalo
+            b (float): Límite superior del intervalo
+            titulo (str): Título del gráfico
+        """
+        x_vals = np.linspace(a, b, 1000)
+        y_vals = [funcion(x) for x in x_vals]
+        dy_vals = [self.derivada(funcion, x) for x in x_vals]
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(x_vals, y_vals, label='Función', linewidth=2)
+        plt.plot(x_vals, dy_vals, label='Derivada', linewidth=2)
+        plt.title(titulo)
+        plt.xlabel('x')
+        plt.ylabel('y')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.show()
+
+# =============================================================================
+# FUNCIONES MATEMÁTICAS COMUNES
+# =============================================================================
+def funcion_lineal(x: float, m: float = 2, b: float = 1) -> float:
+    """Función lineal: f(x) = m*x + b"""
+    return m * x + b
+
+def funcion_cuadratica(x: float, a: float = 1, b: float = 0, c: float = 0) -> float:
+    """Función cuadrática: f(x) = a*x² + b*x + c"""
+    return a * x**2 + b * x + c
+
+def funcion_exponencial(x: float, base: float = E) -> float:
+    """Función exponencial: f(x) = base^x"""
+    return base ** x
+
+def funcion_logaritmica(x: float, base: float = E) -> float:
+    """Función logarítmica: f(x) = log_base(x)"""
+    if x <= 0:
+        return float('-inf')
+    return math.log(x, base)
+
+def funcion_seno(x: float) -> float:
+    """Función trigonométrica seno: f(x) = sin(x)"""
+    return math.sin(x)
+
+def funcion_coseno(x: float) -> float:
+    """Función trigonométrica coseno: f(x) = cos(x)"""
+    return math.cos(x)
+
+def funcion_sigmoide(x: float) -> float:
+    """
+    Función sigmoide, comúnmente usada en redes neuronales.
+    f(x) = 1 / (1 + e^(-x))
+    """
+    return 1 / (1 + math.exp(-x))
+
+# =============================================================================
+# EJEMPLOS DE USO Y DEMOSTRACIÓN
+# =============================================================================
+if __name__ == "__main__":
+    # Crear instancia de la calculadora
+    calc = CalculadoraDiferencial(precision=4)
+    
+    print("=" * 70)
+    print("CÁLCULO DIFERENCIAL - INGENIERÍA EN TECNOLOGÍAS DE LA INFORMACIÓN")
+    print("=" * 70)
+    
+    # Ejemplo 1: Derivada de función cuadrática
+    print("\n1. DERIVADA DE FUNCIÓN CUADRÁTICA")
+    print("   f(x) = x² + 2x + 1")
+    resultado = calc.derivada(lambda x: x**2 + 2*x + 1, 2)
+    print(f"   f'(2) = {resultado}")
+    
+    # Ejemplo 2: Velocidad instantánea
+    print("\n2. VELOCIDAD INSTANTÁNEA")
+    # Posición: s(t) = t³ - 2t² + 3t
+    posicion = lambda t: t**3 - 2*t**2 + 3*t
+    velocidad = calc.velocidad_instantanea(posicion, 2)
+    print(f"   s(t) = t³ - 2t² + 3t")
+    print(f"   v(2) = {velocidad} m/s")
+    
+    # Ejemplo 3: Optimización
+    print("\n3. OPTIMIZACIÓN - MÍNIMOS Y MÁXIMOS")
+    funcion = lambda x: x**3 - 6*x**2 + 9*x + 1
+    optimos = calc.optimizar_funcion(funcion, 0, 4)
+    print(f"   f(x) = x³ - 6x² + 9x + 1")
+    print(f"   Mínimos: {optimos['minimos']}")
+    print(f"   Máximos: {optimos['maximos']}")
+    print(f"   Puntos de inflexión: {optimos['puntos_inflexion']}")
+    
+    # Ejemplo 4: Reglas de derivación
+    print("\n4. REGLA DEL PRODUCTO")
+    f = lambda x: x**2
+    g = lambda x: math.sin(x)
+    producto = calc.regla_producto(f, g, PI/2)
+    print(f"   f(x) = x², g(x) = sin(x)")
+    print(f"   (f·g)'({PI/2:.2f}) = {producto}")
+    
+    # Ejemplo 5: Aplicación en machine learning (derivada de sigmoide)
+    print("\n5. APLICACIÓN EN MACHINE LEARNING: DERIVADA DE SIGMOIDE")
+    sigmoide = lambda x: 1 / (1 + math.exp(-x))
+    derivada_sigmoide = calc.derivada(sigmoide, 0)
+    print(f"   σ(0) = {sigmoide(0):.4f}")
+    print(f"   σ'(0) = {derivada_sigmoide:.4f}")
+    
+    # Ejemplo 6: Gráfico de función y su derivada
+    print("\n6. GRÁFICO DE FUNCIÓN Y SU DERIVADA")
+    print("   Generando gráfico para f(x) = x³ - 6x² + 9x + 1...")
+    calc.graficar_funcion_y_derivada(funcion, 0, 4, "Función cúbica y su derivada")
+    
+    print("\n" + "=" * 70)
+
