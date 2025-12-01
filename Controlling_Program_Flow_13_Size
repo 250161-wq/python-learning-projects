@@ -1,0 +1,52 @@
+#Peyman Miyandashti 250161
+#inicio 
+size = 10
+for i in range (size):
+    count =size -i
+    print("*")
+    print("*"*size)
+    print("*"* (i+1))
+    print("*"* count)
+    print("*"* count)
+    print("*"* count)
+    print("*")
+    print(""* i)
+    print("*"* count)
+###################################
+#Peyman Miyandashti 250161
+#inicio 
+size = 10
+for i in range (size):
+   print("*"* (i+1))
+###################################
+#Peyman Miyandashti 250161
+#inicio 
+size = 10
+for i in range (size):
+    count =size -i
+    print("*"* count)
+###################################
+#Peyman Miyandashti 250161
+#inicio 
+size = 10
+for i in range (size):
+    count =size -i
+    print(""* i)
+    print("*"* count)
+###################################
+#Peyman Miyandashti 250161
+#inicio 
+size = 10
+for i in range (size):
+    count =size -i
+    print(''* i)
+    print('*'*(i+1))
+###################################
+# Peyman Miyandashti 250161
+# inicio
+size = 10
+for i in range(size):
+    count = size - i
+    # Print spaces followed by stars
+    print(' ' * count // 2)
+    print('*'*(i+1))
