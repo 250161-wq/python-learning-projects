@@ -1,0 +1,334 @@
+# peyman miyandashti 250161
+
+# Math operations
+x = 10
+y = 3
+
+print(x + y)  # Addition
+print(x - y)  # Subtraction
+print(x * y)  # Multiplication
+print(x / y)  # Division (returns float)
+print(x // y)  # Floor division (returns integer)
+print(x % y)  # Modulus (remainder)
+print(x**y)  # Exponentiation (x to the power of y)
+#############################################################
+# peyman miyandashti 250161
+
+import math
+import random
+from typing import Union, Tuple
+import statistics
+
+class AdvancedMathOperations:
+    """A comprehensive math operations class with error handling and visualization"""
+    
+    def __init__(self, x: float, y: float):
+        self.x = x
+        self.y = y
+    
+    def basic_operations(self) -> dict:
+        """Perform all basic arithmetic operations"""
+        operations = {
+            'Addition': self.x + self.y,
+            'Subtraction': self.x - self.y,
+            'Multiplication': self.x * self.y,
+            'Division': self.x / self.y if self.y != 0 else "Undefined (division by zero)",
+            'Floor Division': self.x // self.y if self.y != 0 else "Undefined",
+            'Modulus': self.x % self.y if self.y != 0 else "Undefined",
+            'Exponentiation': self.x ** self.y,
+            'Root': self.x ** (1/self.y) if self.y != 0 else "Undefined"
+        }
+        return operations
+    
+    def advanced_operations(self) -> dict:
+        """Perform advanced mathematical operations"""
+        operations = {
+            'Logarithm (base 10)': math.log10(abs(self.x)) if self.x > 0 else "Undefined",
+            'Natural Logarithm': math.log(abs(self.x)) if self.x > 0 else "Undefined",
+            'Sine (radians)': math.sin(self.x),
+            'Cosine (radians)': math.cos(self.x),
+            'Tangent (radians)': math.tan(self.x),
+            'Hypotenuse': math.hypot(self.x, self.y),
+            'GCD': math.gcd(int(self.x), int(self.y)) if self.x.is_integer() and self.y.is_integer() else "Not integers",
+            'Factorial x': math.factorial(int(self.x)) if self.x >= 0 and self.x.is_integer() else "Invalid",
+            'Factorial y': math.factorial(int(self.y)) if self.y >= 0 and self.y.is_integer() else "Invalid"
+        }
+        return operations
+    
+    def comparison_operations(self) -> dict:
+        """Perform comparison operations"""
+        return {
+            'Equal': self.x == self.y,
+            'Not Equal': self.x != self.y,
+            'Greater Than': self.x > self.y,
+            'Less Than': self.x < self.y,
+            'Greater or Equal': self.x >= self.y,
+            'Less or Equal': self.x <= self.y
+        }
+    
+    def bitwise_operations(self) -> dict:
+        """Perform bitwise operations (only for integers)"""
+        if self.x.is_integer() and self.y.is_integer():
+            x_int, y_int = int(self.x), int(self.y)
+            return {
+                'AND': x_int & y_int,
+                'OR': x_int | y_int,
+                'XOR': x_int ^ y_int,
+                'NOT x': ~x_int,
+                'Left Shift': x_int << 2,
+                'Right Shift': x_int >> 2
+            }
+        return {"Error": "Bitwise operations require integers"}
+    
+    def format_results(self, operations_dict: dict, title: str) -> str:
+        """Format operations results nicely"""
+        output = f"\n{'='*50}\n{title}\n{'='*50}\n"
+        for operation, result in operations_dict.items():
+            output += f"{operation:20} : {result:>15}\n"
+        return output
+
+def calculate_statistics(numbers: list) -> dict:
+    """Calculate various statistics for a list of numbers"""
+    if not numbers:
+        return {"Error": "Empty list"}
+    
+    return {
+        'Sum': sum(numbers),
+        'Mean': statistics.mean(numbers),
+        'Median': statistics.median(numbers),
+        'Mode': statistics.mode(numbers) if len(numbers) > 1 else "N/A",
+        'Variance': statistics.variance(numbers) if len(numbers) > 1 else "N/A",
+        'Std Dev': statistics.stdev(numbers) if len(numbers) > 1 else "N/A",
+        'Min': min(numbers),
+        'Max': max(numbers),
+        'Range': max(numbers) - min(numbers)
+    }
+
+def solve_quadratic(a: float, b: float, c: float) -> Tuple[Union[float, str], Union[float, str]]:
+    """Solve quadratic equation ax² + bx + c = 0"""
+    discriminant = b**2 - 4*a*c
+    
+    if discriminant > 0:
+        root1 = (-b + math.sqrt(discriminant)) / (2*a)
+        root2 = (-b - math.sqrt(discriminant)) / (2*a)
+        return root1, root2
+    elif discriminant == 0:
+        root = -b / (2*a)
+        return root, "Same (double root)"
+    else:
+        real_part = -b / (2*a)
+        imaginary_part = math.sqrt(abs(discriminant)) / (2*a)
+        return f"{real_part} + {imaginary_part}i", f"{real_part} - {imaginary_part}i"
+
+def generate_math_table(number: int, limit: int = 10) -> str:
+    """Generate multiplication table"""
+    table = f"\nMultiplication Table for {number}\n"
+    table += "-" * 30 + "\n"
+    for i in range(1, limit + 1):
+        table += f"{number} × {i:2} = {number * i:3}\n"
+    return table
+
+def main():
+    print("="*60)
+    print("ADVANCED MATH OPERATIONS SYSTEM")
+    print("Peyman Miyandashti 250161")
+    print("="*60)
+    
+    # Example 1: Basic operations with two numbers
+    print("\n1. BASIC OPERATIONS WITH TWO NUMBERS")
+    print("-"*40)
+    
+    x, y = 10, 3
+    math_ops = AdvancedMathOperations(x, y)
+    
+    print(f"x = {x}, y = {y}")
+    print(math_ops.format_results(math_ops.basic_operations(), "Basic Arithmetic"))
+    print(math_ops.format_results(math_ops.comparison_operations(), "Comparison Operations"))
+    print(math_ops.format_results(math_ops.bitwise_operations(), "Bitwise Operations"))
+    
+    # Example 2: Advanced operations
+    print("\n2. ADVANCED MATHEMATICAL OPERATIONS")
+    print("-"*40)
+    x, y = 100, 45.5
+    math_ops = AdvancedMathOperations(x, y)
+    print(f"x = {x}, y = {y}")
+    print(math_ops.format_results(math_ops.advanced_operations(), "Advanced Operations"))
+    
+    # Example 3: Statistics
+    print("\n3. STATISTICAL CALCULATIONS")
+    print("-"*40)
+    data = [12, 15, 18, 22, 25, 30, 35, 40, 45, 50]
+    print(f"Dataset: {data}")
+    stats = calculate_statistics(data)
+    for stat, value in stats.items():
+        print(f"{stat:10}: {value:>10.2f}" if isinstance(value, (int, float)) else f"{stat:10}: {value:>10}")
+    
+    # Example 4: Quadratic equation solver
+    print("\n4. QUADRATIC EQUATION SOLVER")
+    print("-"*40)
+    a, b, c = 1, -3, 2  # x² - 3x + 2 = 0
+    root1, root2 = solve_quadratic(a, b, c)
+    print(f"Equation: {a}x² + {b}x + {c} = 0")
+    print(f"Root 1: {root1}")
+    print(f"Root 2: {root2}")
+    
+    # Example 5: Math tables
+    print("\n5. MATHEMATICAL TABLES")
+    print("-"*40)
+    print(generate_math_table(7, 12))
+    
+    # Example 6: Special math functions
+    print("\n6. SPECIAL MATHEMATICAL FUNCTIONS")
+    print("-"*40)
+    
+    # Constants
+    print(f"π (Pi): {math.pi:.10f}")
+    print(f"e (Euler's number): {math.e:.10f}")
+    print(f"τ (Tau): {math.tau:.10f}")
+    print(f"Infinity: {math.inf}")
+    print(f"NaN (Not a Number): {math.nan}")
+    
+    # Trigonometry
+    angle = 45
+    print(f"\nTrigonometry (angle = {angle}°):")
+    print(f"sin({angle}°) = {math.sin(math.radians(angle)):.4f}")
+    print(f"cos({angle}°) = {math.cos(math.radians(angle)):.4f}")
+    print(f"tan({angle}°) = {math.tan(math.radians(angle)):.4f}")
+    
+    # Example 7: Random number generation
+    print("\n7. RANDOM NUMBER GENERATION")
+    print("-"*40)
+    print(f"Random integer (1-100): {random.randint(1, 100)}")
+    print(f"Random float (0-1): {random.random():.4f}")
+    print(f"Random choice from list: {random.choice(['Python', 'Java', 'C++', 'JavaScript'])}")
+    
+    # Generate 5 random numbers with statistics
+    random_nums = [random.randint(1, 100) for _ in range(10)]
+    print(f"\n10 Random numbers (1-100): {sorted(random_nums)}")
+    
+    # Example 8: Number theory
+    print("\n8. NUMBER THEORY")
+    print("-"*40)
+    num = 28
+    # Check if number is perfect
+    divisors = [i for i in range(1, num) if num % i == 0]
+    is_perfect = sum(divisors) == num
+    print(f"Number: {num}")
+    print(f"Divisors: {divisors}")
+    print(f"Sum of divisors: {sum(divisors)}")
+    print(f"Perfect number: {is_perfect}")
+    
+    # Prime check
+    num2 = 17
+    is_prime = all(num2 % i != 0 for i in range(2, int(math.sqrt(num2)) + 1)) and num2 > 1
+    print(f"\n{num2} is prime: {is_prime}")
+    
+    # Example 9: Complex numbers
+    print("\n9. COMPLEX NUMBER OPERATIONS")
+    print("-"*40)
+    z1 = complex(3, 4)  # 3 + 4j
+    z2 = complex(1, 2)  # 1 + 2j
+    print(f"z1 = {z1}")
+    print(f"z2 = {z2}")
+    print(f"Addition: {z1 + z2}")
+    print(f"Multiplication: {z1 * z2}")
+    print(f"Magnitude of z1: {abs(z1):.2f}")
+    print(f"Phase of z1: {math.degrees(math.atan2(z1.imag, z1.real)):.2f}°")
+    
+    print("\n" + "="*60)
+    print("MATH OPERATIONS COMPLETED SUCCESSFULLY!")
+    print("="*60)
+
+if __name__ == "__main__":
+    main()
+###########################################################################################
+# peyman miyandashti 250161
+
+# Vector operations
+def vector_operations():
+    """Vector math operations"""
+    v1 = [1, 2, 3]
+    v2 = [4, 5, 6]
+    
+    # Dot product
+    dot_product = sum(a*b for a,b in zip(v1, v2))
+    
+    # Vector addition
+    vector_sum = [a+b for a,b in zip(v1, v2)]
+    
+    # Scalar multiplication
+    scalar = 2
+    scaled_vector = [scalar * x for x in v1]
+    
+    return dot_product, vector_sum, scaled_vector
+
+# Matrix operations (2x2)
+def matrix_operations():
+    """Basic matrix operations"""
+    A = [[1, 2], [3, 4]]
+    B = [[5, 6], [7, 8]]
+    
+    # Matrix addition
+    addition = [[A[i][j] + B[i][j] for j in range(2)] for i in range(2)]
+    
+    # Matrix multiplication
+    multiplication = [[sum(A[i][k] * B[k][j] for k in range(2)) for j in range(2)] for i in range(2)]
+    
+    # Determinant of A
+    det_A = A[0][0] * A[1][1] - A[0][1] * A[1][0]
+    
+    return addition, multiplication, det_A
+
+# Financial calculations
+def financial_calculations(principal, rate, time):
+    """Financial math calculations"""
+    # Simple interest
+    simple_interest = principal * rate * time / 100
+    
+    # Compound interest
+    compound_interest = principal * ((1 + rate/100) ** time) - principal
+    
+    # Future value
+    future_value = principal * ((1 + rate/100) ** time)
+    
+    return simple_interest, compound_interest, future_value
+
+# Unit conversions
+def unit_conversions():
+    """Common unit conversions"""
+    conversions = {
+        'Degrees to Radians': math.radians(180),
+        'Radians to Degrees': math.degrees(math.pi),
+        'Celsius to Fahrenheit': lambda c: (c * 9/5) + 32,
+        'Fahrenheit to Celsius': lambda f: (f - 32) * 5/9,
+        'Kilometers to Miles': lambda km: km * 0.621371,
+        'Miles to Kilometers': lambda mi: mi * 1.60934
+    }
+    return conversions
+
+# Run all additional functions
+if __name__ == "__main__":
+    print("\nADDITIONAL MATH FUNCTIONS")
+    print("-"*40)
+    
+    # Vector operations
+    dot, vec_sum, scaled = vector_operations()
+    print(f"Vector dot product: {dot}")
+    print(f"Vector sum: {vec_sum}")
+    print(f"Scaled vector: {scaled}")
+    
+    # Matrix operations
+    mat_add, mat_mul, det = matrix_operations()
+    print(f"\nMatrix addition: {mat_add}")
+    print(f"Matrix multiplication: {mat_mul}")
+    print(f"Determinant: {det}")
+    
+    # Financial calculations
+    principal = 1000
+    rate = 5
+    time = 3
+    simple, compound, future = financial_calculations(principal, rate, time)
+    print(f"\nFinancial calculations (Principal=${principal}, Rate={rate}%, Time={time} years):")
+    print(f"Simple Interest: ${simple:.2f}")
+    print(f"Compound Interest: ${compound:.2f}")
+    print(f"Future Value: ${future:.2f}")
