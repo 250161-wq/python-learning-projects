@@ -1,0 +1,27 @@
+#Peyman Miyandashti 250161
+Name=input(("insert your name :"))
+Age=input(("insert your Age:"))
+City=input(("insert your City:"))
+Papulation=input(("insert your City's papulation:"))
+is_student=True
+print("name", Name)
+print("age", Age)
+print("papulation", Papulation)
+print("is_student", True)
+print((Name,"is",Age,"Years old." ))
+print(City,"has a population of ",Papulation)
+if Papulation == "2000000":
+    print("Big city")
+elif Papulation < "2000000":
+     print("Small Cir")
+elif Papulation >"2000000":
+     print("Huge City")
+else:
+     print("normal city")
+print(f"{Name} next year will have {int(Age)+1} years old.")
+fruits_you_like=["Banana,Strawberry,cherry,"]
+Banana=input("What Color Do You See At Banana: ")
+if Banana == "Yellow":
+     print("True✅")
+else: 
+    print("incorrect Answer ❌")
