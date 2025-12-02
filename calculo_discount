@@ -1,0 +1,24 @@
+#Peyman Miyandashti 250161
+#Una tienda de abastos ofrece un descuento del 8% sobre el total de la compra y
+# un cliente desea saber cuanto deberá pagar finalmente por su compra. Elabore
+# un pseudocódigo y flujograma que resuelva este problema.
+#ingrese total 
+# inicio 
+
+def calculate_discount():
+    #leer total compra
+    total_compra = float(input("Ingrese el total de la compra: "))
+    #leer descuento
+    descuento = total_compra * 0.08
+    #proceso
+    total_pagar = total_compra - descuento
+    
+    # resultados
+    print(f"\nMonto original: {total_compra:.2f}")
+    print(f"Descuento (8%): {descuento:.2f}")
+    print(f"Total a pagar: {total_pagar:.2f}")
+
+# imprimir
+if __name__ == "__main__":
+    calculate_discount()
+    #fin
