@@ -1,0 +1,96 @@
+#Peyman miyandashti 250161
+#  *args = allows you to pass multiple non-key arguments 
+# **kwargs = allows you to pass multiple keywords-arguments 
+#     *unpacking operator 
+# 1.positional 2. default 3. keywords 4. ARBITRARY
+
+# *args
+def  display_name(*args):
+    for arg in args :
+        print(arg, end=" ")
+display_name("Engineer","peyman","Miyandashti","6865090453")
+
+#########################################################
+
+#Peyman Miyandashti 250161 
+# Example: Flexible text formatter
+def format_text(prefix, *args, suffix="."):
+    """
+    Combines multiple strings with a prefix and suffix.
+    Demonstrates mixing regular parameters with *args.
+    """
+    combined = " ".join(args)
+    return f"{prefix} {combined}{suffix}"
+
+# Test the formatter
+result1 = format_text("Hello", "world", "!")
+print(result1)  # Hello world !.
+
+result2 = format_text("Items:", "apple", "banana", "cherry", suffix=":")
+print(result2)  # Items: apple banana cherry:
+
+result3 = format_text("Numbers:", "1", "2", "3", "4", "5")
+print(result3)  # Numbers: 1 2 3 4 5.
+
+#########################################################
+
+#Peyman Miyandashti 250161
+
+# *args Example: Calculate average of multiple numbers
+def calculate_average(*args):
+    """
+    Calculates the average of any number of input values.
+    Uses *args to accept multiple positional arguments.
+    """
+    if len(args) == 0:
+        return 0  # Avoid division by zero
+    
+    total = sum(args)
+    average = total / len(args)
+    return average
+
+# Test with different numbers of arguments
+print(f"Average of 5, 10, 15: {calculate_average(5, 10, 15)}")
+print(f"Average of 2, 4, 6, 8, 10: {calculate_average(2, 4, 6, 8, 10)}")
+print(f"Average of 100, 200: {calculate_average(100, 200)}")
+print(f"Single number 42: {calculate_average(42)}")
+print(f"No arguments: {calculate_average()}")
+############################################################
+#Peyman Miyandashti 250161
+def create_person_report(name, *skills, **personal_info):
+    """
+    Creates a report for a person with their skills and personal information.
+    *args captures skills (variable length)
+    **kwargs captures personal information (key-value pairs)
+    """
+    report = f"Name: {name}\n"
+    
+    if skills:
+        report += f"Skills: {', '.join(skills)}\n"
+    
+    if personal_info:
+        report += "Additional Information:\n"
+        for key, value in personal_info.items():
+            report += f"  - {key}: {value}\n"
+    
+    return report
+
+# Test with different data
+person1 = create_person_report(
+    "Peyman Miyandashti",
+    "Python", "Data Analysis", "Machine Learning",
+    age=25,
+    student_id="250161",
+    phone="686-509-0453"
+)
+
+person2 = create_person_report(
+    "Alice Johnson",
+    "JavaScript", "React",
+    department="Engineering",
+    years_experience=3
+)
+
+print(person1)
+print("\n" + "="*50 + "\n")
+print(person2)
