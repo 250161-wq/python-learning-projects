@@ -1,0 +1,8 @@
+#Peyman Miyandashti 250161
+# Elabore un pseudocódigo y flujograma que calcule el área de un rectángulo:Lado1 = 3 lado2 = 4, Area del rectángulo=lado1 * lado2 
+#leer
+lado1=int (3)
+lado2=int (4)
+#proceso 
+AreaDelRectangulo=lado1*lado2
+print("Area_del_rectangulo=",AreaDelRectangulo)
