@@ -1,0 +1,15 @@
+#Peyman Miyandashti 250161
+# Elabore un pseudocódigo y flujograma que sume, reste, multiplique y divida dos números: x = 10 y = 2 ß Elabore un pseudocódigo
+#leer 
+x=int (10)
+y=int (2)
+#proceso
+a= int (x+y)
+b= int (x-y)
+c= int (x*y)
+d= int (x/y)
+#imprimir
+print("suma de x + y =",a)
+print("resta de x - y =",b)
+print("multiplica de x * y =",c)
+print("dividida de x / y =",d)
