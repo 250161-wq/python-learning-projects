@@ -1,0 +1,46 @@
+#Peyman Miyandashti 250161
+# 2dlist Means list of lists 2dlist =[list1,list2,list3]
+
+fruits = ["apple","orange","banana","coconut"]
+vegerabels = ["celery","carrot","potatoes"]
+meats = ["chicken","fish","turkey"]
+#Here we have 3 lists called grocerios which contains 3 lists fruits,vegerabels,meats
+groceries = [fruits,vegerabels,meats]
+
+# Here we are going to replace  pineapple instead of apple in fruits list when we first type  variable and then inside the brackets we type a number 0 , that means first item of the list and  we can even change that number  to any number at list for example , in python we start with number 0 and so , number  0 means "apple", number 1 means "orange", number 2 means "banana" and number 3 means "coconut"  and when we type number 0 that means we are going to change "apple" to "pineapple" 
+fruits[0] = "pineapple"
+#here we are going to add strawberry to  the last of fruits list, when we use .append() function that means we are going to add something to the last of the list not replace anything just add something to the last of the list.
+fruits.append("strawberry")
+# we call only fruits list
+print(fruits)
+# we call groceries list which contains 3 lists fruits,vegerabels,meats
+print(groceries)
+# we call first list of groceries list which is fruits list
+print(groceries[0])
+# we call first item of first list of groceries list which is pineapple
+print(groceries[0][0])
+# we call second item of first list of groceries list which is orange
+print(groceries[0][1])
+# we call third item of first list of groceries list which is banana
+print(groceries[0][2])
+# we call fourth item of first list of groceries list which is coconut
+print(groceries[0][3])
+# we call fifth item of first list of groceries list which is strawberry
+print(groceries[0][4])
+# we call second list of groceries list which is vegerabels list
+print(groceries[1])
+# we call first item of second list of groceries list which is celery
+print(groceries[1][0])
+# we call second item of second list of groceries list which is carrot
+print(groceries[1][1])
+# we call third item of second list of groceries list which is potatoes
+print(groceries[1][2])
+# we call third list of groceries list which is meats list
+print(groceries[2])
+# we call first item of third list of groceries list which is chicken
+print(groceries[2][0])
+# we call second item of third list of groceries list which is fish
+print(groceries[2][1])
+# we call third item of third list of groceries list which is turkey
+print(groceries[2][2])
+
