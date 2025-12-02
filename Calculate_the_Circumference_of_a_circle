@@ -1,0 +1,394 @@
+#Peyman Miyandasht 250161
+
+"""
+===========================================================
+CIRCLE GEOMETRY ANALYZER
+Student: Peyman Miyandashti
+Student ID: 250161
+===========================================================
+"""
+
+import math
+import sys
+
+class CircleAnalyzer:
+    def __init__(self):
+        self.calculations_history = []
+        self.display_welcome()
+    
+    def display_welcome(self):
+        """Display welcome banner with student information"""
+        print("\n" + "=" * 60)
+        print("⚫ CIRCLE GEOMETRY ANALYZER v2.0")
+        print("=" * 60)
+        print("Created by: Peyman Miyandashti")
+        print("Student ID: 250161")
+        print("Date: 2024")
+        print("=" * 60)
+    
+    def get_circle_measurements(self):
+        """Get circle measurements from user with validation"""
+        while True:
+            try:
+                print("\n" + "-" * 40)
+                measurement_type = input("Enter measurement type (radius/diameter/circumference/area): ").lower().strip()
+                
+                if measurement_type in ['r', 'radius']:
+                    radius = float(input("Enter circle radius: "))
+                    return self.calculate_from_radius(radius)
+                    
+                elif measurement_type in ['d', 'diameter']:
+                    diameter = float(input("Enter circle diameter: "))
+                    radius = diameter / 2
+                    return self.calculate_from_radius(radius)
+                    
+                elif measurement_type in ['c', 'circumference']:
+                    circumference = float(input("Enter circle circumference: "))
+                    radius = circumference / (2 * math.pi)
+                    return self.calculate_from_radius(radius)
+                    
+                elif measurement_type in ['a', 'area']:
+                    area = float(input("Enter circle area: "))
+                    radius = math.sqrt(area / math.pi)
+                    return self.calculate_from_radius(radius)
+                    
+                elif measurement_type == 'quit':
+                    return None
+                    
+                else:
+                    print("⚠️ Please enter: radius, diameter, circumference, or area")
+                    
+            except ValueError:
+                print("❌ Please enter a valid number!")
+            except ZeroDivisionError:
+                print("❌ Cannot have zero measurement!")
+    
+    def calculate_from_radius(self, radius):
+        """Calculate all circle properties from radius"""
+        if radius <= 0:
+            print("❌ Radius must be positive!")
+            return None
+        
+        calculations = {
+            'radius': radius,
+            'diameter': 2 * radius,
+            'circumference': 2 * math.pi * radius,
+            'area': math.pi * (radius ** 2),
+            'arc_length_90': (math.pi * radius) / 2,
+            'sector_area_90': (math.pi * (radius ** 2)) / 4,
+            'inscribed_square_side': radius * math.sqrt(2),
+            'circumscribed_square_side': 2 * radius
+        }
+        
+        return calculations
+    
+    def display_results(self, circle_data):
+        """Display circle properties in a formatted way"""
+        if not circle_data:
+            return
+        
+        print("\n" + "=" * 60)
+        print("📊 CIRCLE ANALYSIS RESULTS")
+        print("=" * 60)
+        
+        r = circle_data['radius']
+        print(f"\n📐 Basic Properties:")
+        print(f"   Radius (r): {r:.6f} units")
+        print(f"   Diameter (d): {circle_data['diameter']:.6f} units (2r)")
+        print(f"   Circumference (C): {circle_data['circumference']:.6f} units (2πr)")
+        print(f"   Area (A): {circle_data['area']:.6f} square units (πr²)")
+        
+        print(f"\n🎯 Key Ratios:")
+        print(f"   C/d = π ≈ {math.pi:.6f}")
+        print(f"   A/(r²) = π ≈ {math.pi:.6f}")
+        print(f"   C/√A = 2√π ≈ {(2 * math.sqrt(math.pi)):.6f}")
+        
+        print(f"\n📐 Derived Measurements (90° sector):")
+        print(f"   Arc Length (90°): {circle_data['arc_length_90']:.6f} units")
+        print(f"   Sector Area (90°): {circle_data['sector_area_90']:.6f} square units")
+        
+        print(f"\n⬜ Square Relationships:")
+        print(f"   Inscribed Square Side: {circle_data['inscribed_square_side']:.6f} units")
+        print(f"   Circumscribed Square Side: {circle_data['circumscribed_square_side']:.6f} units")
+        print(f"   Area Ratio (Circle/Square): {(circle_data['area'] / (circle_data['circumscribed_square_side'] ** 2)):.6f}")
+        
+        print(f"\n🔵 Approximation (for radius = {r:.2f}):")
+        print(f"   π ≈ {circle_data['circumference'] / (2 * r):.10f}")
+        print(f"   π ≈ {circle_data['area'] / (r ** 2):.10f}")
+        
+        # Add to history
+        self.calculations_history.append({
+            'radius': r,
+            'circumference': circle_data['circumference'],
+            'area': circle_data['area']
+        })
+    
+    def compare_circles(self):
+        """Compare multiple circles"""
+        print("\n" + "=" * 60)
+        print("🔍 COMPARE TWO CIRCLES")
+        print("=" * 60)
+        
+        try:
+            r1 = float(input("Enter radius of first circle: "))
+            r2 = float(input("Enter radius of second circle: "))
+            
+            if r1 <= 0 or r2 <= 0:
+                print("❌ Radii must be positive!")
+                return
+            
+            circle1 = self.calculate_from_radius(r1)
+            circle2 = self.calculate_from_radius(r2)
+            
+            print("\n" + "-" * 60)
+            print("📈 COMPARISON RESULTS")
+            print("-" * 60)
+            
+            print(f"\nRadius Ratio: {r2/r1:.3f} : 1")
+            print(f"Diameter Ratio: {(2*r2)/(2*r1):.3f} : 1")
+            print(f"Circumference Ratio: {circle2['circumference']/circle1['circumference']:.3f} : 1")
+            print(f"Area Ratio: {circle2['area']/circle1['area']:.3f} : 1")
+            
+            print(f"\n📐 Scale Factor Analysis:")
+            print(f"   If radius increases by factor k:")
+            print(f"   - Diameter increases by factor k")
+            print(f"   - Circumference increases by factor k")
+            print(f"   - Area increases by factor k²")
+            
+            print(f"\n🔢 Example (k = {r2/r1:.2f}):")
+            print(f"   Area multiplies by {(r2/r1)**2:.3f}x")
+            print(f"   ({(circle2['area']/circle1['area']):.3f}x actual)")
+            
+        except ValueError:
+            print("❌ Invalid input!")
+    
+    def show_history(self):
+        """Display calculation history"""
+        print("\n" + "=" * 60)
+        print("📜 CALCULATION HISTORY")
+        print("=" * 60)
+        
+        if not self.calculations_history:
+            print("No calculations yet!")
+            return
+        
+        print(f"{'No.':4} {'Radius':>10} {'Circumference':>15} {'Area':>15}")
+        print("-" * 50)
+        
+        for i, calc in enumerate(self.calculations_history, 1):
+            print(f"{i:4} {calc['radius']:10.4f} {calc['circumference']:15.4f} {calc['area']:15.4f}")
+        
+        # Summary statistics
+        if len(self.calculations_history) > 1:
+            print("\n📊 Summary Statistics:")
+            radii = [c['radius'] for c in self.calculations_history]
+            print(f"   Average Radius: {sum(radii)/len(radii):.4f}")
+            print(f"   Max Radius: {max(radii):.4f}")
+            print(f"   Min Radius: {min(radii):.4f}")
+    
+    def real_world_examples(self):
+        """Show real-world circle examples"""
+        print("\n" + "=" * 60)
+        print("🌍 REAL-WORLD CIRCLE EXAMPLES")
+        print("=" * 60)
+        
+        examples = [
+            ("Basketball (NBA)", 0.12, "meters"),
+            ("Quarter (US Coin)", 0.012, "meters"),
+            ("CD/DVD", 0.06, "meters"),
+            ("Ferris Wheel (London Eye)", 60, "meters"),
+            ("Earth's Equator", 6378137, "meters"),
+            ("Proton", 0.000000000000001, "meters")
+        ]
+        
+        print(f"\n{'Object':25} {'Radius':>12} {'Circumference':>18} {'Area':>20}")
+        print("-" * 80)
+        
+        for name, radius, unit in examples:
+            circ = 2 * math.pi * radius
+            area = math.pi * (radius ** 2)
+            
+            # Format for readability
+            radius_fmt = f"{radius:12.2e}" if radius < 0.01 or radius > 1000 else f"{radius:12.4f}"
+            circ_fmt = f"{circ:18.2e}" if circ < 0.01 or circ > 1000 else f"{circ:18.4f}"
+            area_fmt = f"{area:20.2e}" if area < 0.01 or area > 1000 else f"{area:20.4f}"
+            
+            print(f"{name:25} {radius_fmt} {unit:8} {circ_fmt} {unit:8} {area_fmt} sq {unit}")
+        
+        print("\n" + "-" * 80)
+        print("💡 Interesting Facts:")
+        print("   • π (pi) is the ratio of circumference to diameter for ANY circle")
+        print("   • The area of a circle grows quadratically with radius")
+        print("   • A circle has the largest area for a given perimeter")
+        print("   • π appears in many physics equations (oscillations, waves, etc.)")
+    
+    def run(self):
+        """Main program loop"""
+        while True:
+            print("\n" + "=" * 60)
+            print("📋 MAIN MENU")
+            print("=" * 60)
+            print("1. Calculate circle properties")
+            print("2. Compare two circles")
+            print("3. View calculation history")
+            print("4. Show real-world examples")
+            print("5. Quick circumference calculator")
+            print("6. Help / About")
+            print("7. Exit")
+            print("=" * 60)
+            
+            choice = input("\nEnter your choice (1-7): ").strip()
+            
+            if choice == '1':
+                circle_data = self.get_circle_measurements()
+                if circle_data:
+                    self.display_results(circle_data)
+                    
+            elif choice == '2':
+                self.compare_circles()
+                
+            elif choice == '3':
+                self.show_history()
+                
+            elif choice == '4':
+                self.real_world_examples()
+                
+            elif choice == '5':
+                self.quick_circumference_calculator()
+                
+            elif choice == '6':
+                self.show_help()
+                
+            elif choice == '7':
+                self.exit_program()
+                break
+                
+            else:
+                print("❌ Please enter a number between 1 and 7")
+    
+    def quick_circumference_calculator(self):
+        """Quick calculator like original but enhanced"""
+        print("\n" + "=" * 40)
+        print("⚡ QUICK CIRCUMFERENCE CALCULATOR")
+        print("=" * 40)
+        
+        try:
+            radius = float(input("Enter the radius of the circle: "))
+            
+            if radius <= 0:
+                print("❌ Radius must be positive!")
+                return
+            
+            circumference = 2 * math.pi * radius
+            diameter = 2 * radius
+            area = math.pi * (radius ** 2)
+            
+            print("\n" + "-" * 40)
+            print("📐 Calculation Results:")
+            print(f"   Radius: {radius:.4f} units")
+            print(f"   Diameter: {diameter:.4f} units")
+            print(f"   Circumference: {circumference:.4f} units")
+            print(f"   Area: {area:.4f} square units")
+            
+            # Show π approximation
+            pi_approx = circumference / diameter
+            print(f"\n🔢 π Approximation: {pi_approx:.10f}")
+            print(f"   Actual π: {math.pi:.10f}")
+            print(f"   Difference: {abs(pi_approx - math.pi):.10f}")
+            
+            # Add to history
+            self.calculations_history.append({
+                'radius': radius,
+                'circumference': circumference,
+                'area': area
+            })
+            
+        except ValueError:
+            print("❌ Please enter a valid number!")
+    
+    def show_help(self):
+        """Display help information"""
+        print("\n" + "=" * 60)
+        print("📚 CIRCLE GEOMETRY ANALYZER - HELP")
+        print("=" * 60)
+        print("\nCreated by: Peyman Miyandashti")
+        print("Student ID: 250161")
+        
+        print("\n🔵 Circle Formulas:")
+        print("   • Diameter (d) = 2 × radius (r)")
+        print("   • Circumference (C) = 2 × π × r = π × d")
+        print("   • Area (A) = π × r²")
+        print("   • Arc Length = (θ/360) × 2πr  (θ in degrees)")
+        print("   • Sector Area = (θ/360) × πr²")
+        
+        print("\n📐 Key Relationships:")
+        print("   • C/d = π (constant for all circles)")
+        print("   • A grows with r² (quadratic relationship)")
+        print("   • Doubling radius quadruples area")
+        
+        print("\n🧮 Menu Options:")
+        print("   1. Calculate - Enter any measurement, get all properties")
+        print("   2. Compare - See how changing radius affects measurements")
+        print("   3. History - View all previous calculations")
+        print("   4. Examples - Real-world circle measurements")
+        print("   5. Quick Calc - Simple circumference calculator")
+        print("   6. Help - This information")
+        print("   7. Exit - Close the program")
+        
+        print("\n" + "=" * 60)
+    
+    def exit_program(self):
+        """Display exit message with summary"""
+        print("\n" + "=" * 60)
+        print("🎓 PROGRAM SUMMARY")
+        print("=" * 60)
+        print(f"\nStudent: Peyman Miyandashti")
+        print(f"Student ID: 250161")
+        print(f"\nCalculations performed: {len(self.calculations_history)}")
+        
+        if self.calculations_history:
+            print("\n📊 Final Calculations:")
+            for i, calc in enumerate(self.calculations_history[-3:], 1):
+                print(f"   {i}. Radius: {calc['radius']:.4f}, Circumference: {calc['circumference']:.4f}")
+        
+        print("\n" + "=" * 60)
+        print("✨ Thank you for using Circle Geometry Analyzer!")
+        print("   Created by: Peyman Miyandashti")
+        print("   Student ID: 250161")
+        print("=" * 60)
+
+def main():
+    """Main program entry point"""
+    analyzer = CircleAnalyzer()
+    analyzer.run()
+
+# Additional functions for demonstration
+def demonstrate_circle_properties():
+    """Demonstrate various circle calculations"""
+    print("\n" + "=" * 60)
+    print("🔬 CIRCLE PROPERTIES DEMONSTRATION")
+    print("=" * 60)
+    
+    # Example calculations
+    radii = [1, 2, 5, 10]
+    
+    print(f"\n{'Radius':>8} {'Diameter':>12} {'Circumference':>16} {'Area':>16}")
+    print("-" * 60)
+    
+    for r in radii:
+        d = 2 * r
+        c = 2 * math.pi * r
+        a = math.pi * (r ** 2)
+        print(f"{r:8.2f} {d:12.2f} {c:16.2f} {a:16.2f}")
+    
+    print("\n" + "=" * 60)
+    print("Created by: Peyman Miyandashti")
+    print("Student ID: 250161")
+    print("=" * 60)
+
+if __name__ == "__main__":
+    # Run the full interactive analyzer
+    main()
+    
+    # Uncomment to run the demonstration instead:
+    # demonstrate_circle_properties()
