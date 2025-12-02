@@ -1,0 +1,23 @@
+#Peyman Miyandashti 250161
+#Algoritmo para sumar dos números
+#Entradas valor1 , valor2 , suma 
+valor1=int (input("ingresa valor numero 1 :",))
+valor2=int (input("ingresa valor numero 2 :",))
+#salidas : la suma del valor1 ,as valor2 (variable Result)
+variable_Result=valor1+valor2
+print("valor1+valor2=",variable_Result)
+#fin
+
+#variables A,B,Result de tipos de datos enteros
+#ALGORITMO SUMA;
+#Variables
+#A, B, Result fl ENTEROS;
+#INICIO
+A=int (input("ingresa valor A :"))
+B=int (input("ingresa valor B :"))
+#leer A, B
+#proceso 
+Result=A+B
+#imprimir
+print("A+B=",Result)
+#fin
