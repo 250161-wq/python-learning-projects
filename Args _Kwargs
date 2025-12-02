@@ -1,4 +1,5 @@
-#Peyman miyandashti 250161
+#Peyman miyandashti 250161  
+#Args
 #  *args = allows you to pass multiple non-key arguments 
 # **kwargs = allows you to pass multiple keywords-arguments 
 #     *unpacking operator 
@@ -56,6 +57,25 @@ print(f"Average of 100, 200: {calculate_average(100, 200)}")
 print(f"Single number 42: {calculate_average(42)}")
 print(f"No arguments: {calculate_average()}")
 ############################################################
+
+#Peyman miyandashti 250161
+#  *args = allows you to pass multiple non-key arguments 
+# **kwargs = allows you to pass multiple keywords-arguments 
+#     *unpacking operator 
+# 1.positional 2. default 3. keywords 4. ARBITRARY
+# **kwargs = keyword args 
+
+def print_address(**kwargs):
+    for key, value in kwargs.items():
+          print(f"{key}:{value}")
+
+print_address(street="3618# Cerrada Estepa",
+              city="Mexicali",
+              state="BC",
+              zip="30129")
+
+##############################################################
+
 #Peyman Miyandashti 250161
 def create_person_report(name, *skills, **personal_info):
     """
@@ -94,3 +114,73 @@ person2 = create_person_report(
 print(person1)
 print("\n" + "="*50 + "\n")
 print(person2)
+
+#############################################
+#Peyman miyandashti 250161
+#  *args = allows you to pass multiple non-key arguments 
+# **kwargs = allows you to pass multiple keywords-arguments 
+#     *unpacking operator 
+# 1.positional 2. default 3. keywords 4. ARBITRARY
+# **kwargs = keyword args 
+
+def shipping_label(*args,**kwargs):
+        for arg in args :
+                print(arg, end=" ")
+        print()
+
+        if "apt" in kwargs :
+               print(f"{kwargs.get('street')} {kwargs.get('apt')}")
+        elif"pobox" in kwargs:
+               print(f"{kwargs.get('street')}")
+        else:
+               print(f"{kwargs.get('street')}")
+        print(f"{kwargs.get('street')}")
+        print(f"{kwargs.get('city')}")
+        print(f"{kwargs.get('zip')}")
+        print(f"{kwargs.get('apt')}") 
+
+        #or
+        print(f"{kwargs.get('street')}  {kwargs.get('city')} {kwargs.get('zip')}")
+
+        for value in kwargs.values():
+            print(value, end=" ")
+shipping_label("DR","Peyman","IRAN",
+               street ="3618 cerrada estepa ",
+               apt ="12",
+               pobox ="po box #6452",
+               city="Mexicali",
+               state ="BC",
+               zip = "30169"
+               
+               )
+#####################################################################
+#Peyman miyandashti 250161
+#  *args = allows you to pass multiple non-key arguments 
+# **kwargs = allows you to pass multiple keywords-arguments 
+#     *unpacking operator 
+# 1.positional 2. default 3. keywords 4. ARBITRARY
+
+def  add(*args):
+    total = 0
+    for arg in args:
+        total += arg
+        return total
+print(add(1))
+#########################################################################
+
+#Peyman miyandashti 250161
+#  *args = allows you to pass multiple non-key arguments 
+# **kwargs = allows you to pass multiple keywords-arguments 
+#     *unpacking operator 
+# 1.positional 2. default 3. keywords 4. ARBITRARY
+# **kwargs = keyword args 
+
+def print_address(**kwargs):
+    for value in kwargs.values():
+          print(value)
+
+print_address(street="3618# Cerrada Estepa",
+              city="Mexicali",
+              state="BC",
+              zip="30129")
+#########################################################################
