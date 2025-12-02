@@ -1,0 +1,143 @@
+#Peyman Miyandashti 250161
+
+print("Hello")
+print("World")
+# Output:
+# Hello
+# World
+# (Each on a new line)
+
+#using end
+print("Hello", end="")
+print("World")
+# Output: HelloWorld
+# (Both on same line, no space between)
+
+print("Loading", end="")
+print("...", end="")
+print(" Done!")
+# Output: Loading... Done!
+
+
+print("One", end=", ")
+print("Two", end=", ")
+print("Three")
+# Output: One, Two, Three
+
+
+import time
+
+print("Processing", end="")
+for i in range(5):
+    print(".", end="", flush=True)
+    time.sleep(0.5)
+print(" Done!")
+# Output: Processing..... Done!
+
+
+print("Name: ", end="")
+print("John Doe")
+# Output: Name: John Doe
+
+
+print("Progress: [", end="")
+for i in range(10):
+    print("#", end="")
+print("] 100%")
+# Output: Progress: [##########] 100%
+
+
+#Sep Vs End 
+
+# sep = separates multiple arguments
+print("a", "b", "c", sep="-")  
+# Output: a-b-c
+
+# end = controls what's printed at the end
+print("a", "b", "c", end="!")  
+# Output: a b c!
+
+print("a", "b", "c", sep=", ", end=".\n")
+# Output: a, b, c.
+
+# Without end parameter
+for i in range(1, 6):
+    print(i, "squared is", i*i)
+# Output:
+# 1 squared is 1
+# 2 squared is 4
+# 3 squared is 4
+# 4 squared is 16
+# 5 squared is 25
+
+# With end parameter
+for i in range(1, 6):
+    print(i, "squared is", i*i, end=" | ")
+# Output: 1 squared is 1 | 2 squared is 4 | 3 squared is 9 | 4 squared is 16 | 5 squared is 25 | 
+
+print("Student", end="\t")
+print("Score", end="\t")
+print("Grade")
+print("-" * 25)
+print("Alice", end="\t\t")
+print(95, end="\t")
+print("A")
+print("Bob", end="\t\t")
+print(87, end="\t")
+print("B")
+
+# Output:
+# Student  Score   Grade
+# -------------------------
+# Alice    95      A
+# Bob      87      B
+
+
+Common end Values
+end value	Result
+end="\n"	New line (default)
+end=""	No separator at end
+end=" "	Space at end
+end="\t"	Tab at end
+end=", "	Comma and space
+end=" -> "	Arrow separator
+
+
+##########################################
+#Peyman Miyandashti 250161
+print("student",end="\t") 
+print("score",end="\t")
+print("grade",end="\t")
+print("age",end="\t")
+print("city",end="\n")
+
+print("=" * 40)
+print()
+print("Alice",end="\t")
+print(85,end="\t")
+print("A",end="\t")
+print(20,end="\t")
+
+
+print()
+print("Bob",end="\t")
+print(78,end="\t")
+print("B",end="\t")
+print(22,end="\t")
+print("Los Angeles",end="\t")
+
+print()
+print("Charlie",end="\t")
+print(92,end="\t")
+print("A+",end="\t")
+print(19,end="\t")
+print("Chicago",end="\t")
+
+print()
+print("Diana",end="\t")
+print(88,end="\t")
+print("A",end="\t")
+print(21,end="\t")
+print("Houston",end="\t")
+
+print()
