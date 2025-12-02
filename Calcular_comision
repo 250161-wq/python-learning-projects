@@ -1,0 +1,34 @@
+#Peyman Miyandashti 250161 
+#Un vendedor recibe un sueldo base mas un 10% extra por comisión de sus ventas, el
+# vendedor desea saber cuanto dinero obtendrá por concepto de comisiones por las tres
+# ventas que realiza en el mes y el total que recibirá en el mes tomando en cuenta su sueldo
+# base y comisiones.
+#inicio
+#leer 
+# Solicitar los datos al usuario
+def calcular_comisiones():
+    try:
+        sueldo_base = float(input("Ingresa el sueldo base del vendedor: "))
+        venta1 = float(input("Ingresa el monto de la primera venta: "))
+        venta2 = float(input("Ingresa el monto de la segunda venta: "))
+        venta3 = float(input("Ingresa el monto de la tercera venta: "))
+        
+        # Calcular la comisión (10% de cada venta)
+        comision_venta1 = venta1 * 0.10
+        comision_venta2 = venta2 * 0.10
+        comision_venta3 = venta3 * 0.10
+        
+        # Calcular el total de comisiones y el total a recibir en el mes
+        total_comisiones = comision_venta1 + comision_venta2 + comision_venta3
+        total_mes = sueldo_base + total_comisiones
+        
+        # imprimir
+        print(f"Comisión por la primera venta: ${comision_venta1:.2f}")
+        print(f"Comisión por la segunda venta: ${comision_venta2:.2f}")
+        print(f"Comisión por la tercera venta: ${comision_venta3:.2f}")
+        print(f"Total de comisiones en el mes: ${total_comisiones:.2f}")
+        print(f"Total a recibir en el mes (sueldo base + comisiones): ${total_mes:.2f}")
+    except ValueError:
+        print("Por favor, ingrese valores numéricos válidos.")
+calcular_comisiones()
+
