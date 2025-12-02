@@ -1,0 +1,18 @@
+#Peyman Miyandashti  250161
+# How we can accept user input 
+#    input() = A function that prompts  the user to enter data 
+#  return the entered data as a string 
+
+name = input ("What isn your name ? ")
+age = input("How old are you ")
+
+#convert str to  int 
+
+age = int (age )
+age = age+1
+#print with use f-string 
+
+print(f"Hello {name}!")
+print("HAPPY BORTHDAY ! ")
+print (f"But next Year You will {age }Years old!!! ")
+
