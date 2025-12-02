@@ -1,0 +1,414 @@
+#Peyman Miyandashti 250161 
+#built-in math 
+
+x= 3.14
+y = 4
+z = 5
+result = round((x))
+print (result)
+result = abs(y)
+print(y)
+
+result = pow(4,3)
+print (result)
+
+result_max = max(x,y,z)
+print(result_max)
+
+result_min = min(x,y,z)
+print(result_min)
+#########################################
+#Peyman Miyandashti 250161
+"""
+MATHEMATICAL ANALYSIS TOOLKIT
+Student: Peyman Miyandashti
+Student ID: 250161
+Demonstrating Python's built-in math functions with practical applications
+"""
+
+import math  # Python's math module for advanced functions
+
+class MathAnalyzer:
+    def __init__(self, student_name, student_id):
+        self.student = student_name
+        self.id = student_id
+        self.analysis_count = 0
+        
+        print(f"🧮 MATHEMATICAL ANALYSIS TOOLKIT")
+        print(f"   Student: {self.student}")
+        print(f"   ID: {self.id}")
+        print("=" * 60)
+    
+    def analyze_data_set(self, *data_points):
+        """Analyze a dataset using various math functions"""
+        if not data_points:
+            print("⚠️ No data provided!")
+            return
+        
+        print(f"\n📊 DATASET ANALYSIS: {data_points}")
+        
+        # Basic statistical measures
+        self.analysis_count += 1
+        
+        # Using built-in functions
+        data_count = len(data_points)
+        data_sum = sum(data_points)
+        data_max = max(data_points)
+        data_min = min(data_points)
+        data_range = data_max - data_min
+        
+        print(f"   Count: {data_count}")
+        print(f"   Sum: {data_sum}")
+        print(f"   Maximum: {data_max}")
+        print(f"   Minimum: {data_min}")
+        print(f"   Range: {data_range}")
+        
+        # Calculate mean
+        mean_value = data_sum / data_count
+        print(f"   Mean (Average): {mean_value:.2f}")
+        
+        # Calculate absolute deviations
+        print(f"\n   Absolute Deviations from Mean ({mean_value:.2f}):")
+        for value in data_points:
+            deviation = abs(value - mean_value)
+            print(f"     {value}: deviation = {deviation:.2f}")
+        
+        return {
+            'count': data_count,
+            'sum': data_sum,
+            'max': data_max,
+            'min': data_min,
+            'mean': mean_value,
+            'range': data_range
+        }
+
+def demonstrate_rounding():
+    """Showcase rounding functions with practical examples"""
+    print("\n" + "=" * 60)
+    print("🔢 ROUNDING FUNCTIONS")
+    print("=" * 60)
+    
+    # Financial data
+    prices = [19.994, 29.997, 49.999, 99.955]
+    tax_rate = 0.0825  # 8.25% tax
+    
+    print("💰 PRICE ROUNDING EXAMPLES:")
+    for price in prices:
+        rounded = round(price, 2)  # Round to 2 decimal places
+        print(f"   ${price:.3f} → ${rounded:.2f} (retail price)")
+    
+    # Engineering precision
+    print("\n⚙️ ENGINEERING PRECISION:")
+    measurements = [3.1415926535, 2.7182818284, 1.6180339887]
+    for value in measurements:
+        print(f"   π-like: {value:.10f} → rounded: {round(value, 4)}")
+    
+    # Special rounding cases
+    print("\n📐 INTERESTING ROUNDING CASES:")
+    test_cases = [
+        (2.5, "Banker's rounding (ties to even)"),
+        (3.5, "Banker's rounding (ties to even)"),
+        (1.25, "One decimal place"),
+        (1.35, "One decimal place"),
+    ]
+    
+    for value, description in test_cases:
+        print(f"   {value} → {round(value)} ({description})")
+
+def demonstrate_absolute_values():
+    """Show practical uses of absolute values"""
+    print("\n" + "=" * 60)
+    print("📏 ABSOLUTE VALUES & DISTANCES")
+    print("=" * 60)
+    
+    # Temperature differences
+    print("🌡️ TEMPERATURE DIFFERENCES:")
+    cities = [
+        ("Toronto", 5, -3),
+        ("Vancouver", 10, 2),
+        ("Montreal", -2, -10),
+    ]
+    
+    for city, temp1, temp2 in cities:
+        difference = abs(temp1 - temp2)
+        print(f"   {city}: {temp1}°C to {temp2}°C = {difference}°C difference")
+    
+    # Financial gains/losses
+    print("\n📈 FINANCIAL GAINS/LOSSES:")
+    investments = [
+        ("Stock A", 100, 120),
+        ("Stock B", 150, 130),
+        ("Stock C", 200, 180),
+    ]
+    
+    for stock, buy, sell in investments:
+        change = sell - buy
+        abs_change = abs(change)
+        direction = "gain" if change > 0 else "loss"
+        print(f"   {stock}: ${buy} → ${sell} = ${abs_change} {direction}")
+    
+    # Distance calculations
+    print("\n📍 COORDINATE DISTANCES:")
+    points = [(-3, 2), (5, -1), (0, 0)]
+    
+    for x, y in points:
+        distance_from_origin = math.sqrt(x**2 + y**2)
+        print(f"   Point ({x}, {y}): distance = {distance_from_origin:.2f}")
+
+def demonstrate_power_functions():
+    """Demonstrate power and exponentiation"""
+    print("\n" + "=" * 60)
+    print("⚡ POWER & EXPONENTIAL FUNCTIONS")
+    print("=" * 60)
+    
+    # Compound interest
+    print("💰 COMPOUND INTEREST CALCULATIONS:")
+    principal = 1000
+    rates = [0.05, 0.07, 0.10]  # 5%, 7%, 10%
+    years = [5, 10, 20]
+    
+    for rate in rates:
+        print(f"\n   Annual Rate: {rate*100:.1f}%")
+        for year in years:
+            amount = principal * pow(1 + rate, year)
+            print(f"     {year} years: ${amount:,.2f}")
+    
+    # Area and volume calculations
+    print("\n📐 GEOMETRIC CALCULATIONS:")
+    shapes = [
+        ("Square side 5", 5, 2),
+        ("Cube side 3", 3, 3),
+        ("Circle radius 4", 4, 2),
+    ]
+    
+    for shape, value, exponent in shapes:
+        result = pow(value, exponent)
+        if exponent == 2:
+            print(f"   {shape}: area = {result}")
+        elif exponent == 3:
+            print(f"   {shape}: volume = {result}")
+    
+    # Exponential growth (bacteria, population)
+    print("\n🧫 EXPONENTIAL GROWTH (Bacteria):")
+    initial_bacteria = 100
+    growth_rate = 2.0  # Doubles every hour
+    
+    for hours in [1, 2, 3, 4, 5]:
+        bacteria = initial_bacteria * pow(growth_rate, hours)
+        print(f"   After {hours} hours: {bacteria:,.0f} bacteria")
+
+def demonstrate_min_max_functions():
+    """Show practical uses of min and max functions"""
+    print("\n" + "=" * 60)
+    print("📊 MINIMUM & MAXIMUM ANALYSIS")
+    print("=" * 60)
+    
+    # Weather data analysis
+    print("🌤️ WEEKLY TEMPERATURE ANALYSIS:")
+    weekly_temps = {
+        "Monday": [5, 7, 8, 6, 9],
+        "Tuesday": [6, 8, 10, 7, 9],
+        "Wednesday": [4, 5, 6, 5, 7],
+        "Thursday": [7, 9, 11, 8, 10],
+        "Friday": [8, 10, 12, 9, 11],
+    }
+    
+    for day, temps in weekly_temps.items():
+        daily_max = max(temps)
+        daily_min = min(temps)
+        print(f"   {day}: High {daily_max}°C, Low {daily_min}°C")
+    
+    # Student grades
+    print("\n📚 STUDENT GRADE ANALYSIS:")
+    student_grades = {
+        "Alice": [85, 92, 78, 95, 88],
+        "Bob": [72, 68, 75, 80, 70],
+        "Charlie": [90, 95, 92, 88, 94],
+    }
+    
+    for student, grades in student_grades.items():
+        best_grade = max(grades)
+        worst_grade = min(grades)
+        average = sum(grades) / len(grades)
+        print(f"   {student}: Best {best_grade}, Worst {worst_grade}, Avg {average:.1f}")
+    
+    # Resource allocation
+    print("\n💻 SYSTEM RESOURCE MONITORING:")
+    cpu_usage = [45, 67, 23, 89, 34, 56, 78]
+    memory_usage = [1200, 890, 1500, 670, 1100, 980, 1300]  # in MB
+    
+    peak_cpu = max(cpu_usage)
+    min_cpu = min(cpu_usage)
+    peak_memory = max(memory_usage)
+    min_memory = min(memory_usage)
+    
+    print(f"   CPU Usage: Peak {peak_cpu}%, Minimum {min_cpu}%")
+    print(f"   Memory Usage: Peak {peak_memory}MB, Minimum {min_memory}MB")
+
+def demonstrate_other_math_functions():
+    """Show additional math functions"""
+    print("\n" + "=" * 60)
+    print("🔢 ADDITIONAL MATH FUNCTIONS")
+    print("=" * 60)
+    
+    # Ceil and Floor
+    print("📏 CEILING & FLOOR FUNCTIONS:")
+    numbers = [3.14, 2.71, -2.5, 4.01]
+    
+    for num in numbers:
+        ceil_val = math.ceil(num)
+        floor_val = math.floor(num)
+        print(f"   {num:6} → ceil: {ceil_val:3}, floor: {floor_val:3}")
+    
+    # Square root and logarithms
+    print("\n📐 SQUARE ROOTS & LOGARITHMS:")
+    values = [1, 10, 100, 1000]
+    
+    for val in values:
+        sqrt_val = math.sqrt(val)
+        log10_val = math.log10(val)
+        natural_log = math.log(val)
+        print(f"   {val:4}: √ = {sqrt_val:6.2f}, log₁₀ = {log10_val:6.2f}, ln = {natural_log:6.2f}")
+    
+    # Trigonometric functions
+    print("\n📐 TRIGONOMETRIC FUNCTIONS (angles in degrees):")
+    angles = [0, 30, 45, 60, 90]
+    
+    for angle in angles:
+        rad = math.radians(angle)
+        sin_val = math.sin(rad)
+        cos_val = math.cos(rad)
+        tan_val = math.tan(rad)
+        print(f"   {angle:2}°: sin = {sin_val:6.3f}, cos = {cos_val:6.3f}, tan = {tan_val:6.3f}")
+
+def create_student_report():
+    """Generate a comprehensive math report for the student"""
+    print("\n" + "=" * 60)
+    print("📋 STUDENT MATH PROFILE")
+    print("=" * 60)
+    
+    # Student's hypothetical grades
+    math_grades = [85, 92, 78, 95, 88]
+    science_grades = [90, 87, 92, 85, 91]
+    programming_grades = [95, 98, 92, 96, 94]
+    
+    print(f"Student: Peyman Miyandashti")
+    print(f"Student ID: 250161")
+    print(f"\n📊 GRADE ANALYSIS:")
+    
+    # Math grades analysis
+    math_max = max(math_grades)
+    math_min = min(math_grades)
+    math_avg = sum(math_grades) / len(math_grades)
+    print(f"   Mathematics: Highest {math_max}, Lowest {math_min}, Average {math_avg:.1f}")
+    
+    # Science grades analysis
+    science_max = max(science_grades)
+    science_min = min(science_grades)
+    science_avg = sum(science_grades) / len(science_grades)
+    print(f"   Science: Highest {science_max}, Lowest {science_min}, Average {science_avg:.1f}")
+    
+    # Programming grades analysis
+    prog_max = max(programming_grades)
+    prog_min = min(programming_grades)
+    prog_avg = sum(programming_grades) / len(programming_grades)
+    print(f"   Programming: Highest {prog_max}, Lowest {prog_min}, Average {prog_avg:.1f}")
+    
+    # Overall performance
+    all_grades = math_grades + science_grades + programming_grades
+    overall_max = max(all_grades)
+    overall_min = min(all_grades)
+    overall_avg = sum(all_grades) / len(all_grades)
+    
+    print(f"\n🏆 OVERALL PERFORMANCE:")
+    print(f"   Highest Grade: {overall_max}")
+    print(f"   Lowest Grade: {overall_min}")
+    print(f"   Overall Average: {overall_avg:.1f}")
+    
+    # GPA calculation (4.0 scale)
+    def grade_to_gpa(grade):
+        if grade >= 90: return 4.0
+        elif grade >= 85: return 3.7
+        elif grade >= 80: return 3.3
+        elif grade >= 75: return 3.0
+        elif grade >= 70: return 2.7
+        else: return 2.0
+    
+    gpa_values = [grade_to_gpa(grade) for grade in all_grades]
+    gpa_average = sum(gpa_values) / len(gpa_values)
+    
+    print(f"   Estimated GPA: {gpa_average:.2f}/4.0")
+    
+    return {
+        'student': 'Peyman Miyandashti',
+        'id': '250161',
+        'overall_avg': overall_avg,
+        'gpa': gpa_average
+    }
+
+# ============================================
+# MAIN EXECUTION
+# ============================================
+
+if __name__ == "__main__":
+    # Initialize the analyzer with student info
+    analyzer = MathAnalyzer("Peyman Miyandashti", "250161")
+    
+    # Analyze a dataset
+    data_set = [23.5, 45.2, 67.8, 12.9, 89.1, 34.6, 56.7]
+    analyzer.analyze_data_set(*data_set)
+    
+    # Demonstrate various math functions
+    demonstrate_rounding()
+    demonstrate_absolute_values()
+    demonstrate_power_functions()
+    demonstrate_min_max_functions()
+    demonstrate_other_math_functions()
+    
+    # Create student report
+    report = create_student_report()
+    
+    # Quick reference of built-in math functions
+    print("\n" + "=" * 60)
+    print("📚 BUILT-IN MATH FUNCTIONS REFERENCE")
+    print("=" * 60)
+    
+    functions = [
+        ("round(x, n)", "Rounds x to n decimal places", "round(3.14159, 2) → 3.14"),
+        ("abs(x)", "Absolute value of x", "abs(-5) → 5"),
+        ("pow(x, y)", "x raised to power y", "pow(2, 3) → 8"),
+        ("max(iterable)", "Largest value in iterable", "max([1,5,3]) → 5"),
+        ("min(iterable)", "Smallest value in iterable", "min([1,5,3]) → 1"),
+        ("sum(iterable)", "Sum of all values", "sum([1,2,3]) → 6"),
+        ("len(iterable)", "Number of items", "len([1,2,3]) → 3"),
+        ("divmod(x, y)", "Quotient and remainder", "divmod(10, 3) → (3, 1)"),
+    ]
+    
+    print("\n{:<15} {:<30} {}".format("Function", "Description", "Example"))
+    print("-" * 70)
+    for func, desc, example in functions:
+        print("{:<15} {:<30} {}".format(func, desc, example))
+    
+    # Math module functions
+    print("\n📐 MATH MODULE FUNCTIONS (import math):")
+    math_funcs = [
+        "math.sqrt(x)", "math.ceil(x)", "math.floor(x)",
+        "math.sin(x)", "math.cos(x)", "math.tan(x)",
+        "math.log(x)", "math.log10(x)", "math.exp(x)",
+        "math.pi", "math.e", "math.degrees(x)", "math.radians(x)"
+    ]
+    
+    for i in range(0, len(math_funcs), 3):
+        row = math_funcs[i:i+3]
+        print("   " + " | ".join(f"{func:15}" for func in row))
+    
+    print("\n" + "=" * 60)
+    print("🎓 MATHEMATICAL ANALYSIS COMPLETE")
+    print("=" * 60)
+    print(f"Student: {report['student']}")
+    print(f"Student ID: {report['id']}")
+    print(f"Overall Average: {report['overall_avg']:.1f}%")
+    print(f"GPA Equivalent: {report['gpa']:.2f}/4.0")
+    print(f"\nThis program demonstrates practical applications of")
+    print(f"Python's built-in math functions in real-world scenarios.")
+###################################################################################
