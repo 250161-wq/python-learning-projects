@@ -1,0 +1,47 @@
+#Peyman Miyandashti 250161 
+# pago 38 ejercicio 6
+#Un alumno desea saber cual será su calificación final en la materia de Algoritmos. Dicha
+# calificación se compone de los siguientes porcentajes:
+# 55% del promedio de sus tres calificaciones parciales.
+# 30% de la calificacion del examen final.
+# 15% de la calificacion del Trabajo final.
+# Solicitar las calificaciones al usuario
+#inicio
+#leer parciales y examen final y trabajo final 
+def algoritmo_calificacion_final():
+    try:
+        parcial1 = float(input("Ingresa la calificación del primer parcial: "))
+        parcial2 = float(input("Ingresa la calificación del segundo parcial: "))
+        parcial3 = float(input("Ingresa la calificación del tercer parcial: "))
+        examen_final = float(input("Ingresa la calificación del examen final: "))
+        trabajo_final = float(input("Ingresa la calificación del trabajo final: "))
+        
+        # Calcular el promedio de los tres parciales
+        promedio_parciales = (parcial1 + parcial2 + parcial3) / 3
+        
+        # proceso final
+        calificacion_final = (promedio_parciales * 0.55) + (examen_final * 0.30) + (trabajo_final * 0.15)
+        
+        # imprimir
+        print(f"La calificación final en Algoritmos es: {calificacion_final:.2f}")
+    except ValueError:
+        print("Por favor, ingrese valores numéricos válidos.")
+    
+
+        # Calcular el promedio de los tres parciales
+    promedio_parciales = (parcial1 + parcial2 + parcial3) / 3
+    print("calcular el promedio de los tres parciales:",promedio_parciales)
+
+    # proceso final
+    calificacion_final = (promedio_parciales * 0.55) + (examen_final * 0.30) + (trabajo_final * 0.15)
+
+        # imprimir
+    print(f"La calificación final en Algoritmos es: {calificacion_final:.2f}")
+algoritmo_calificacion_final()
+#final
+######################################################
+#Promedio de parciales: (80 + 85 + 90) / 3 = 85.
+#55% de 85: 85 * 0.55 = 46.75.
+#30% de 95 (examen final): 95 * 0.30 = 28.5.
+#15% de 100 (trabajo final): 100 * 0.15 = 15.
+#Total: 46.75 + 28.5 + 15 = 88.25
