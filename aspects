@@ -1,0 +1,1260 @@
+# peyman miyandashti 250161
+# MASTER GUIDE TO PYTHON FUNCTIONS
+
+from typing import Any, List, Tuple, Dict, Set, Optional, Union, Callable
+from dataclasses import dataclass, field
+from enum import Enum
+import time
+import math
+from functools import wraps, lru_cache, reduce
+import inspect
+from collections import defaultdict
+import random
+
+class OperationType(Enum):
+    """Enum for different operation types"""
+    MATH = "Mathematical"
+    STRING = "String Manipulation"
+    DATA = "Data Processing"
+    SYSTEM = "System Operations"
+    CUSTOM = "Custom"
+
+@dataclass
+class FunctionMetrics:
+    """Track function performance and usage"""
+    name: str
+    call_count: int = 0
+    total_execution_time: float = 0
+    average_execution_time: float = 0
+    last_called: Optional[float] = None
+    errors_encountered: int = 0
+
+class AdvancedFunctionMaster:
+    """Comprehensive function examples and patterns"""
+    
+    def __init__(self):
+        self.function_metrics = defaultdict(FunctionMetrics)
+        self.function_history = []
+    
+    # SECTION 1: FUNCTION FUNDAMENTALS
+    def function_fundamentals(self):
+        """Basic function concepts with enhancements"""
+        print("="*70)
+        print("SECTION 1: FUNCTION FUNDAMENTALS")
+        print("="*70)
+        
+        # 1.1 Basic function with docstring
+        def greet_person(name: str) -> str:
+            """
+            Greet a person by name.
+            
+            Args:
+                name (str): The name of the person to greet
+                
+            Returns:
+                str: A personalized greeting message
+                
+            Example:
+                >>> greet_person("Alice")
+                'Hello, Alice! Welcome!'
+            """
+            return f"Hello, {name}! Welcome!"
+        
+        print("\n1.1 Basic Function with Docstring:")
+        print(f"   {greet_person.__doc__}")
+        print(f"   Result: {greet_person('Alice')}")
+        
+        # 1.2 Function with multiple return values
+        def calculate_statistics(numbers: List[float]) -> Tuple[float, float, float]:
+            """
+            Calculate basic statistics for a list of numbers.
+            
+            Returns:
+                Tuple[float, float, float]: (sum, average, product)
+            """
+            total = sum(numbers)
+            average = total / len(numbers) if numbers else 0
+            product = math.prod(numbers) if numbers else 0
+            return total, average, product
+        
+        print("\n1.2 Multiple Return Values:")
+        numbers = [1, 2, 3, 4, 5]
+        total, avg, prod = calculate_statistics(numbers)
+        print(f"   Numbers: {numbers}")
+        print(f"   Sum: {total}, Average: {avg:.2f}, Product: {prod}")
+        
+        # 1.3 Function with type hints
+        def process_data(
+            data: List[int],
+            multiplier: float = 1.5,
+            verbose: bool = False
+        ) -> List[float]:
+            """
+            Process data with optional parameters.
+            
+            Args:
+                data: List of integers to process
+                multiplier: Value to multiply each element by
+                verbose: If True, print processing information
+                
+            Returns:
+                List of processed float values
+            """
+            if verbose:
+                print(f"   Processing {len(data)} elements with multiplier {multiplier}")
+            
+            return [x * multiplier for x in data]
+        
+        print("\n1.3 Type Hints and Default Parameters:")
+        result = process_data([1, 2, 3], multiplier=2.0, verbose=True)
+        print(f"   Result: {result}")
+        
+        # 1.4 Variable-length arguments
+        def flexible_function(*args, **kwargs):
+            """
+            Demonstrate *args and **kwargs.
+            
+            *args: Variable number of positional arguments
+            **kwargs: Variable number of keyword arguments
+            """
+            print(f"   Positional arguments ({len(args)}): {args}")
+            print(f"   Keyword arguments ({len(kwargs)}): {kwargs}")
+            
+            # Process based on arguments
+            if 'operation' in kwargs:
+                op = kwargs['operation']
+                if op == 'sum' and args:
+                    return sum(args)
+                elif op == 'product' and args:
+                    return math.prod(args)
+            return None
+        
+        print("\n1.4 Variable-length Arguments (*args, **kwargs):")
+        result = flexible_function(1, 2, 3, 4, operation='sum', debug=True)
+        print(f"   Result: {result}")
+        
+        self._track_function_call("function_fundamentals")
+    
+    # SECTION 2: DECORATORS - ENHANCING FUNCTIONS
+    def decorator_masterclass(self):
+        """Master decorators - function modifiers"""
+        print("\n" + "="*70)
+        print("SECTION 2: DECORATOR MASTERCLASS")
+        print("="*70)
+        
+        # 2.1 Basic decorator
+        def timer_decorator(func):
+            """Decorator to measure execution time"""
+            @wraps(func)  # Preserves function metadata
+            def wrapper(*args, **kwargs):
+                start_time = time.time()
+                result = func(*args, **kwargs)
+                end_time = time.time()
+                print(f"   ⏱️  {func.__name__} executed in {end_time - start_time:.4f} seconds")
+                return result
+            return wrapper
+        
+        # 2.2 Decorator with arguments
+        def repeat_decorator(times=2):
+            """Decorator to repeat function execution"""
+            def decorator(func):
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    results = []
+                    for i in range(times):
+                        print(f"   🔁 Attempt {i+1}/{times}")
+                        result = func(*args, **kwargs)
+                        results.append(result)
+                    return results[-1] if len(results) == 1 else results
+                return wrapper
+            return decorator
+        
+        # 2.3 Caching decorator
+        def cache_decorator(func):
+            """Simple caching decorator"""
+            cache = {}
+            @wraps(func)
+            def wrapper(*args):
+                if args in cache:
+                    print(f"   💾 Cache hit for {args}")
+                    return cache[args]
+                print(f"   ⚡ Computing for {args}")
+                result = func(*args)
+                cache[args] = result
+                return result
+            return wrapper
+        
+        # 2.4 Validation decorator
+        def validate_input(func):
+            """Validate function inputs"""
+            @wraps(func)
+            def wrapper(numbers: List[float]):
+                if not numbers:
+                    raise ValueError("List cannot be empty")
+                if any(not isinstance(x, (int, float)) for x in numbers):
+                    raise TypeError("All elements must be numbers")
+                if any(math.isnan(x) or math.isinf(x) for x in numbers):
+                    raise ValueError("Numbers must be finite")
+                return func(numbers)
+            return wrapper
+        
+        # Apply decorators
+        @timer_decorator
+        @repeat_decorator(times=3)
+        @validate_input
+        def compute_power(numbers: List[float], power: float = 2) -> List[float]:
+            """Raise each number to the given power"""
+            return [x ** power for x in numbers]
+        
+        print("\n2.1-2.4 Decorated Function Example:")
+        try:
+            result = compute_power([1, 2, 3, 4, 5])
+            print(f"   Result: {result}")
+        except Exception as e:
+            print(f"   ❌ Error: {e}")
+        
+        # 2.5 Built-in decorators
+        @lru_cache(maxsize=128)
+        def fibonacci_cached(n: int) -> int:
+            """Fibonacci with built-in caching"""
+            if n < 2:
+                return n
+            return fibonacci_cached(n-1) + fibonacci_cached(n-2)
+        
+        print("\n2.5 Built-in @lru_cache Decorator:")
+        print(f"   Fibonacci(30): {fibonacci_cached(30)}")
+        print(f"   Cache info: {fibonacci_cached.cache_info()}")
+        
+        self._track_function_call("decorator_masterclass")
+    
+    # SECTION 3: LAMBDA AND HIGHER-ORDER FUNCTIONS
+    def functional_programming(self):
+        """Lambda functions and functional programming"""
+        print("\n" + "="*70)
+        print("SECTION 3: FUNCTIONAL PROGRAMMING")
+        print("="*70)
+        
+        # 3.1 Lambda functions
+        print("\n3.1 Lambda Functions (Anonymous Functions):")
+        
+        # Basic lambda
+        square = lambda x: x ** 2
+        print(f"   square(5) = {square(5)}")
+        
+        # Lambda with multiple parameters
+        add = lambda a, b: a + b
+        print(f"   add(3, 7) = {add(3, 7)}")
+        
+        # Lambda in sorting
+        students = [
+            {"name": "Alice", "grade": 85},
+            {"name": "Bob", "grade": 92},
+            {"name": "Charlie", "grade": 78}
+        ]
+        sorted_students = sorted(students, key=lambda x: x["grade"], reverse=True)
+        print(f"   Sorted students by grade: {sorted_students}")
+        
+        # 3.2 Map, Filter, Reduce
+        print("\n3.2 Map, Filter, Reduce:")
+        
+        numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        
+        # Map: Apply function to each element
+        squared = list(map(lambda x: x ** 2, numbers))
+        print(f"   Squared numbers: {squared}")
+        
+        # Filter: Keep elements that satisfy condition
+        even_numbers = list(filter(lambda x: x % 2 == 0, numbers))
+        print(f"   Even numbers: {even_numbers}")
+        
+        # Reduce: Aggregate elements
+        product = reduce(lambda x, y: x * y, numbers)
+        print(f"   Product of all numbers: {product:,}")
+        
+        # 3.3 Function composition
+        print("\n3.3 Function Composition:")
+        
+        def compose(*functions):
+            """Compose multiple functions"""
+            def composed(arg):
+                result = arg
+                for func in reversed(functions):
+                    result = func(result)
+                return result
+            return composed
+        
+        add_5 = lambda x: x + 5
+        multiply_3 = lambda x: x * 3
+        subtract_2 = lambda x: x - 2
+        
+        complex_operation = compose(add_5, multiply_3, subtract_2)
+        print(f"   compose(add_5, multiply_3, subtract_2)(10) = {complex_operation(10)}")
+        
+        # 3.4 Currying (Partial function application)
+        print("\n3.4 Currying and Partial Functions:")
+        
+        from functools import partial
+        
+        def power(base, exponent):
+            return base ** exponent
+        
+        square = partial(power, exponent=2)
+        cube = partial(power, exponent=3)
+        
+        print(f"   square(5) = {square(5)}")
+        print(f"   cube(3) = {cube(3)}")
+        
+        self._track_function_call("functional_programming")
+    
+    # SECTION 4: GENERATORS AND COROUTINES
+    def generators_and_coroutines(self):
+        """Generator functions and coroutines"""
+        print("\n" + "="*70)
+        print("SECTION 4: GENERATORS AND COROUTINES")
+        print("="*70)
+        
+        # 4.1 Basic generator
+        def countdown(n: int):
+            """Countdown generator"""
+            print(f"   🚀 Starting countdown from {n}")
+            while n > 0:
+                yield n
+                n -= 1
+            yield "Blast off! 🚀"
+        
+        print("\n4.1 Basic Generator:")
+        for count in countdown(5):
+            print(f"   {count}")
+        
+        # 4.2 Infinite generator
+        def fibonacci_generator():
+            """Infinite Fibonacci sequence generator"""
+            a, b = 0, 1
+            while True:
+                yield a
+                a, b = b, a + b
+        
+        print("\n4.2 Infinite Generator (first 10 Fibonacci numbers):")
+        fib_gen = fibonacci_generator()
+        fib_numbers = [next(fib_gen) for _ in range(10)]
+        print(f"   {fib_numbers}")
+        
+        # 4.3 Generator expression
+        print("\n4.3 Generator Expression:")
+        squares_gen = (x**2 for x in range(10))
+        print(f"   First 5 squares: {[next(squares_gen) for _ in range(5)]}")
+        
+        # 4.4 Generator with send() - Coroutine
+        def accumulator():
+            """Coroutine that accumulates values"""
+            total = 0
+            while True:
+                value = yield total
+                if value is None:
+                    break
+                total += value
+                print(f"   Added {value}, new total: {total}")
+        
+        print("\n4.4 Coroutine with send():")
+        acc = accumulator()
+        next(acc)  # Prime the generator
+        for value in [10, 20, 30, 40]:
+            current_total = acc.send(value)
+        acc.close()
+        
+        self._track_function_call("generators_and_coroutines")
+    
+    # SECTION 5: RECURSION - MASTERING SELF-REFERENCING FUNCTIONS
+    def recursion_mastery(self):
+        """Advanced recursion techniques"""
+        print("\n" + "="*70)
+        print("SECTION 5: RECURSION MASTERY")
+        print("="*70)
+        
+        # 5.1 Basic recursion with memoization
+        memo = {}
+        
+        def fibonacci_recursive(n: int) -> int:
+            """Recursive Fibonacci with memoization"""
+            if n in memo:
+                return memo[n]
+            if n <= 1:
+                result = n
+            else:
+                result = fibonacci_recursive(n-1) + fibonacci_recursive(n-2)
+            memo[n] = result
+            return result
+        
+        print("\n5.1 Recursive Fibonacci with Memoization:")
+        print(f"   fibonacci(10) = {fibonacci_recursive(10)}")
+        print(f"   fibonacci(20) = {fibonacci_recursive(20)}")
+        
+        # 5.2 Recursive directory traversal
+        def find_files(directory: str, extension: str) -> List[str]:
+            """Recursively find files with given extension"""
+            import os
+            files_found = []
+            
+            for item in os.listdir(directory):
+                full_path = os.path.join(directory, item)
+                if os.path.isdir(full_path):
+                    # Recursive call for subdirectories
+                    files_found.extend(find_files(full_path, extension))
+                elif item.endswith(extension):
+                    files_found.append(full_path)
+            
+            return files_found
+        
+        print("\n5.2 Recursive Directory Traversal (simulated):")
+        # Simulated file structure
+        class SimulatedFileSystem:
+            @staticmethod
+            def listdir(path):
+                return ["file1.txt", "file2.py", "subfolder", "file3.txt"]
+            
+            @staticmethod
+            def isdir(path):
+                return "subfolder" in path
+        
+        # Mock the function for demonstration
+        def simulated_find_files(directory: str, extension: str) -> List[str]:
+            print(f"   Searching in: {directory}")
+            return ["/path/to/file1.txt", "/path/to/file3.txt"]
+        
+        print(f"   Found .txt files: {simulated_find_files('/test', '.txt')}")
+        
+        # 5.3 Recursive backtracking (N-Queens problem)
+        def solve_n_queens(n: int) -> List[List[str]]:
+            """Solve N-Queens problem using backtracking"""
+            def is_safe(board: List[int], row: int, col: int) -> bool:
+                """Check if placing queen at (row, col) is safe"""
+                for i in range(row):
+                    if board[i] == col or \
+                       board[i] - i == col - row or \
+                       board[i] + i == col + row:
+                        return False
+                return True
+            
+            def backtrack(row: int, board: List[int]):
+                """Backtracking recursive function"""
+                if row == n:
+                    # Convert board to solution format
+                    solution = []
+                    for col in board:
+                        solution.append('.' * col + 'Q' + '.' * (n - col - 1))
+                    solutions.append(solution)
+                    return
+                
+                for col in range(n):
+                    if is_safe(board, row, col):
+                        board[row] = col
+                        backtrack(row + 1, board)
+                        board[row] = -1  # Backtrack
+            
+            solutions = []
+            board = [-1] * n
+            backtrack(0, board)
+            return solutions
+        
+        print("\n5.3 Recursive Backtracking (4-Queens):")
+        solutions = solve_n_queens(4)
+        print(f"   Found {len(solutions)} solutions for 4-Queens")
+        for i, solution in enumerate(solutions[:2], 1):
+            print(f"   Solution {i}:")
+            for row in solution:
+                print(f"     {row}")
+        
+        # 5.4 Tail recursion optimization (simulated)
+        def factorial_tail_recursive(n: int, accumulator: int = 1) -> int:
+            """Tail-recursive factorial (Python doesn't optimize, but pattern is useful)"""
+            if n == 0:
+                return accumulator
+            return factorial_tail_recursive(n - 1, n * accumulator)
+        
+        print("\n5.4 Tail Recursion Pattern:")
+        print(f"   factorial(5) = {factorial_tail_recursive(5)}")
+        
+        self._track_function_call("recursion_mastery")
+    
+    # SECTION 6: ERROR HANDLING IN FUNCTIONS
+    def robust_error_handling(self):
+        """Comprehensive error handling patterns"""
+        print("\n" + "="*70)
+        print("SECTION 6: ROBUST ERROR HANDLING")
+        print("="*70)
+        
+        # 6.1 Basic try-except-finally
+        def safe_division(a: float, b: float) -> Optional[float]:
+            """Safe division with error handling"""
+            try:
+                result = a / b
+                print(f"   ✅ Division successful: {a} / {b} = {result}")
+                return result
+            except ZeroDivisionError:
+                print(f"   ❌ Error: Cannot divide by zero!")
+                return None
+            except TypeError as e:
+                print(f"   ❌ TypeError: {e}")
+                return None
+            finally:
+                print("   🔄 Division operation completed (cleanup)")
+        
+        print("\n6.1 Basic Error Handling:")
+        safe_division(10, 2)
+        safe_division(10, 0)
+        safe_division(10, "2")  # Type error
+        
+        # 6.2 Custom exceptions
+        class InvalidInputError(Exception):
+            """Custom exception for invalid input"""
+            def __init__(self, value, message="Invalid input provided"):
+                self.value = value
+                self.message = message
+                super().__init__(self.message)
+            
+            def __str__(self):
+                return f"{self.message}: {self.value}"
+        
+        class InsufficientFundsError(Exception):
+            """Custom exception for banking operations"""
+            pass
+        
+        def process_transaction(balance: float, amount: float) -> float:
+            """Process banking transaction with custom exceptions"""
+            if amount <= 0:
+                raise InvalidInputError(amount, "Transaction amount must be positive")
+            
+            if amount > balance:
+                raise InsufficientFundsError(
+                    f"Insufficient funds: ${balance:.2f} available, ${amount:.2f} requested"
+                )
+            
+            new_balance = balance - amount
+            print(f"   💳 Transaction successful: ${amount:.2f} deducted")
+            print(f"   💰 New balance: ${new_balance:.2f}")
+            return new_balance
+        
+        print("\n6.2 Custom Exceptions:")
+        try:
+            process_transaction(1000, 500)  # Should work
+            process_transaction(100, 200)   # Should raise InsufficientFundsError
+        except InvalidInputError as e:
+            print(f"   ❌ InvalidInputError: {e}")
+        except InsufficientFundsError as e:
+            print(f"   ❌ InsufficientFundsError: {e}")
+        
+        # 6.3 Retry decorator with exponential backoff
+        def retry_decorator(max_retries=3, delay=1, backoff=2):
+            """Decorator to retry function on failure"""
+            def decorator(func):
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    retries = 0
+                    current_delay = delay
+                    
+                    while retries <= max_retries:
+                        try:
+                            return func(*args, **kwargs)
+                        except Exception as e:
+                            retries += 1
+                            if retries > max_retries:
+                                print(f"   ❌ Max retries exceeded. Last error: {e}")
+                                raise
+                            print(f"   ⚠️  Attempt {retries} failed: {e}")
+                            print(f"   😴 Retrying in {current_delay} seconds...")
+                            time.sleep(current_delay)
+                            current_delay *= backoff  # Exponential backoff
+                return wrapper
+            return decorator
+        
+        @retry_decorator(max_retries=3, delay=0.5)
+        def unreliable_api_call(endpoint: str):
+            """Simulate an unreliable API call"""
+            if random.random() < 0.7:  # 70% chance of failure
+                raise ConnectionError(f"Failed to connect to {endpoint}")
+            return f"Data from {endpoint}"
+        
+        print("\n6.3 Retry with Exponential Backoff:")
+        try:
+            result = unreliable_api_call("/api/users")
+            print(f"   ✅ Success: {result}")
+        except Exception as e:
+            print(f"   ❌ Final failure: {e}")
+        
+        # 6.4 Context managers (with statement)
+        class DatabaseConnection:
+            """Context manager for database connections"""
+            def __init__(self, db_name):
+                self.db_name = db_name
+                self.connection = None
+            
+            def __enter__(self):
+                print(f"   🔗 Connecting to {self.db_name}...")
+                self.connection = f"Connection to {self.db_name}"
+                return self.connection
+            
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                print(f"   🔒 Closing connection to {self.db_name}")
+                self.connection = None
+                if exc_type:
+                    print(f"   ⚠️  Exception occurred: {exc_val}")
+                # Return True to suppress exception, False to propagate
+                return False
+        
+        print("\n6.4 Context Managers:")
+        with DatabaseConnection("my_database") as conn:
+            print(f"   Using connection: {conn}")
+            # Simulate operation
+            print("   📊 Executing query...")
+        
+        self._track_function_call("robust_error_handling")
+    
+    # SECTION 7: REAL-WORLD FUNCTION PATTERNS
+    def real_world_patterns(self):
+        """Practical function patterns for real applications"""
+        print("\n" + "="*70)
+        print("SECTION 7: REAL-WORLD FUNCTION PATTERNS")
+        print("="*70)
+        
+        # 7.1 Strategy pattern using functions
+        print("\n7.1 Strategy Pattern (Functions as First-Class Citizens):")
+        
+        def bubble_sort(data: List[int]) -> List[int]:
+            """Bubble sort implementation"""
+            arr = data.copy()
+            n = len(arr)
+            for i in range(n):
+                for j in range(0, n - i - 1):
+                    if arr[j] > arr[j + 1]:
+                        arr[j], arr[j + 1] = arr[j + 1], arr[j]
+            return arr
+        
+        def quick_sort(data: List[int]) -> List[int]:
+            """Quick sort implementation"""
+            if len(data) <= 1:
+                return data
+            pivot = data[len(data) // 2]
+            left = [x for x in data if x < pivot]
+            middle = [x for x in data if x == pivot]
+            right = [x for x in data if x > pivot]
+            return quick_sort(left) + middle + quick_sort(right)
+        
+        # Strategy selector
+        sorting_strategies = {
+            'bubble': bubble_sort,
+            'quick': quick_sort,
+            'builtin': sorted
+        }
+        
+        def sort_data(data: List[int], strategy: str = 'builtin') -> List[int]:
+            """Sort data using selected strategy"""
+            sorter = sorting_strategies.get(strategy, sorted)
+            return sorter(data)
+        
+        numbers = [64, 34, 25, 12, 22, 11, 90]
+        print(f"   Original: {numbers}")
+        print(f"   Bubble sort: {sort_data(numbers, 'bubble')}")
+        print(f"   Quick sort: {sort_data(numbers, 'quick')}")
+        
+        # 7.2 Factory pattern with functions
+        print("\n7.2 Factory Pattern:")
+        
+        def create_multiplier(factor: float) -> Callable[[float], float]:
+            """Factory function creating multiplier functions"""
+            def multiplier(x: float) -> float:
+                return x * factor
+            return multiplier
+        
+        double = create_multiplier(2)
+        triple = create_multiplier(3)
+        half = create_multiplier(0.5)
+        
+        print(f"   double(10) = {double(10)}")
+        print(f"   triple(10) = {triple(10)}")
+        print(f"   half(10) = {half(10)}")
+        
+        # 7.3 Observer pattern with callbacks
+        print("\n7.3 Observer Pattern (Event Handling):")
+        
+        class EventManager:
+            """Simple event manager"""
+            def __init__(self):
+                self.subscribers = defaultdict(list)
+            
+            def subscribe(self, event_type: str, callback: Callable):
+                """Subscribe callback to event type"""
+                self.subscribers[event_type].append(callback)
+            
+            def emit(self, event_type: str, data: Any = None):
+                """Emit event to all subscribers"""
+                print(f"   📢 Emitting event: {event_type}")
+                for callback in self.subscribers.get(event_type, []):
+                    callback(data)
+        
+        def log_event(data):
+            print(f"   📝 Logger: {data}")
+        
+        def notify_user(data):
+            print(f"   👤 User notified: {data}")
+        
+        def update_database(data):
+            print(f"   💾 Database updated: {data}")
+        
+        manager = EventManager()
+        manager.subscribe("user_login", log_event)
+        manager.subscribe("user_login", notify_user)
+        manager.subscribe("data_updated", update_database)
+        
+        # Simulate events
+        manager.emit("user_login", {"user": "Alice", "time": "2024-01-01"})
+        manager.emit("data_updated", {"records": 150})
+        
+        # 7.4 Middleware pattern
+        print("\n7.4 Middleware Pattern (Request Processing):")
+        
+        def create_middleware_stack(*middlewares):
+            """Create a middleware stack"""
+            def processor(initial_request):
+                request = initial_request
+                
+                for middleware in middlewares:
+                    request = middleware(request)
+                    if request is None:  # Middleware can stop processing
+                        return None
+                
+                return request
+            
+            return processor
+        
+        def authentication_middleware(request: Dict) -> Optional[Dict]:
+            """Check authentication"""
+            if "token" not in request:
+                print("   ❌ Authentication failed: No token")
+                return None
+            print("   ✅ Authentication passed")
+            return request
+        
+        def logging_middleware(request: Dict) -> Dict:
+            """Log the request"""
+            print(f"   📋 Request: {request}")
+            return request
+        
+        def validation_middleware(request: Dict) -> Optional[Dict]:
+            """Validate request data"""
+            if "data" not in request:
+                print("   ❌ Validation failed: No data")
+                return None
+            print("   ✅ Validation passed")
+            return request
+        
+        # Create processor with middleware stack
+        request_processor = create_middleware_stack(
+            logging_middleware,
+            authentication_middleware,
+            validation_middleware
+        )
+        
+        # Test requests
+        print("\n   Test 1 (Valid request):")
+        valid_request = {"token": "abc123", "data": "important data"}
+        result = request_processor(valid_request)
+        print(f"   Result: {'Processed' if result else 'Rejected'}")
+        
+        print("\n   Test 2 (Invalid - no token):")
+        invalid_request = {"data": "important data"}
+        result = request_processor(invalid_request)
+        print(f"   Result: {'Processed' if result else 'Rejected'}")
+        
+        self._track_function_call("real_world_patterns")
+    
+    # SECTION 8: FUNCTION METADATA AND INTROSPECTION
+    def function_introspection(self):
+        """Inspect and manipulate function metadata"""
+        print("\n" + "="*70)
+        print("SECTION 8: FUNCTION INTROSPECTION")
+        print("="*70)
+        
+        # 8.1 Inspecting function properties
+        def complex_function(
+            name: str,
+            age: int = 25,
+            *args: Any,
+            verbose: bool = False,
+            **kwargs: Any
+        ) -> Dict[str, Any]:
+            """A complex function for inspection"""
+            result = {"name": name, "age": age}
+            if verbose:
+                result["verbose"] = True
+            return {**result, **kwargs}
+        
+        print("\n8.1 Function Inspection:")
+        print(f"   Name: {complex_function.__name__}")
+        print(f"   Docstring: {complex_function.__doc__.strip()}")
+        print(f"   Module: {complex_function.__module__}")
+        print(f"   Annotations: {complex_function.__annotations__}")
+        
+        # 8.2 Using inspect module
+        signature = inspect.signature(complex_function)
+        print(f"\n   Signature: {signature}")
+        print(f"   Parameters:")
+        for param_name, param in signature.parameters.items():
+            print(f"     • {param_name}: {param}")
+        
+        # 8.3 Getting source code
+        print(f"\n   Source code (first 3 lines):")
+        try:
+            source = inspect.getsource(complex_function).split('\n')[:3]
+            for line in source:
+                print(f"     {line}")
+        except:
+            print("     Source not available")
+        
+        # 8.4 Dynamic function creation
+        print("\n8.2 Dynamic Function Creation:")
+        
+        def create_dynamic_function(func_name: str, operation: str) -> Callable:
+            """Create a function dynamically"""
+            source_code = f"""
+def {func_name}(x, y):
+    if "{operation}" == "add":
+        return x + y
+    elif "{operation}" == "multiply":
+        return x * y
+    else:
+        raise ValueError("Unknown operation")
+"""
+            # Create new namespace
+            namespace = {}
+            exec(source_code, namespace)
+            return namespace[func_name]
+        
+        # Create and use dynamic functions
+        add_func = create_dynamic_function("dynamic_add", "add")
+        multiply_func = create_dynamic_function("dynamic_multiply", "multiply")
+        
+        print(f"   dynamic_add(5, 3) = {add_func(5, 3)}")
+        print(f"   dynamic_multiply(5, 3) = {multiply_func(5, 3)}")
+        
+        # 8.5 Function attributes
+        print("\n8.3 Function Attributes (Custom Metadata):")
+        
+        def tagged_function(x):
+            """Function with custom attributes"""
+            return x * 2
+        
+        # Add custom attributes
+        tagged_function.author = "Peyman Miyandashti"
+        tagged_function.version = "1.0"
+        tagged_function.tags = ["math", "utility"]
+        tagged_function.created = "2024-01-01"
+        
+        print(f"   Custom attributes:")
+        for attr_name in ["author", "version", "tags", "created"]:
+            if hasattr(tagged_function, attr_name):
+                value = getattr(tagged_function, attr_name)
+                print(f"     • {attr_name}: {value}")
+        
+        self._track_function_call("function_introspection")
+    
+    # SECTION 9: PERFORMANCE OPTIMIZATION
+    def performance_optimization(self):
+        """Optimizing function performance"""
+        print("\n" + "="*70)
+        print("SECTION 9: PERFORMANCE OPTIMIZATION")
+        print("="*70)
+        
+        # 9.1 Local variable optimization
+        print("\n9.1 Local Variable Optimization:")
+        
+        def unoptimized_sum(numbers):
+            """Less optimized version"""
+            total = 0
+            for num in numbers:
+                total = total + num  # Repeated attribute access
+            return total
+        
+        def optimized_sum(numbers):
+            """Optimized version"""
+            total = 0
+            add = total.__add__  # Local reference to method
+            for num in numbers:
+                total = add(num)  # Faster method call
+            return total
+        
+        # Test performance
+        test_data = list(range(10000))
+        
+        import timeit
+        
+        unopt_time = timeit.timeit(lambda: unoptimized_sum(test_data), number=100)
+        opt_time = timeit.timeit(lambda: optimized_sum(test_data), number=100)
+        
+        print(f"   Unoptimized: {unopt_time:.4f} seconds")
+        print(f"   Optimized: {opt_time:.4f} seconds")
+        print(f"   Improvement: {(unopt_time/opt_time - 1)*100:.1f}% faster")
+        
+        # 9.2 Memoization patterns
+        print("\n9.2 Advanced Memoization:")
+        
+        class Memoized:
+            """Memoization decorator with size limit"""
+            def __init__(self, func, maxsize=1000):
+                self.func = func
+                self.cache = {}
+                self.maxsize = maxsize
+                self.hits = 0
+                self.misses = 0
+            
+            def __call__(self, *args):
+                if args in self.cache:
+                    self.hits += 1
+                    return self.cache[args]
+                
+                self.misses += 1
+                result = self.func(*args)
+                
+                # Limit cache size (simple LRU)
+                if len(self.cache) >= self.maxsize:
+                    # Remove random item (simplified)
+                    self.cache.pop(next(iter(self.cache)))
+                
+                self.cache[args] = result
+                return result
+            
+            def stats(self):
+                return {
+                    'hits': self.hits,
+                    'misses': self.misses,
+                    'size': len(self.cache),
+                    'hit_rate': self.hits / (self.hits + self.misses) if (self.hits + self.misses) > 0 else 0
+                }
+        
+        @Memoized
+        def expensive_computation(n: int) -> int:
+            """Simulate expensive computation"""
+            time.sleep(0.001)  # Simulate work
+            return n * n
+        
+        # Test memoization
+        print("   Testing memoization:")
+        for _ in range(5):
+            expensive_computation(5)  # Should cache
+        for _ in range(5):
+            expensive_computation(10)  # Should cache
+        
+        stats = expensive_computation.stats()
+        print(f"   Cache stats: {stats}")
+        
+        # 9.3 Vectorized operations
+        print("\n9.3 Vectorization (NumPy-style):")
+        
+        import array
+        
+        def vectorized_add(arr1, arr2):
+            """Add two arrays element-wise"""
+            if len(arr1) != len(arr2):
+                raise ValueError("Arrays must have same length")
+            
+            result = array.array('d', [0.0]) * len(arr1)
+            for i in range(len(arr1)):
+                result[i] = arr1[i] + arr2[i]
+            return result
+        
+        # Compare with list comprehension
+        def list_comprehension_add(arr1, arr2):
+            return [a + b for a, b in zip(arr1, arr2)]
+        
+        # Create test data
+        size = 100000
+        data1 = array.array('d', [i * 0.1 for i in range(size)])
+        data2 = array.array('d', [i * 0.2 for i in range(size)])
+        
+        vector_time = timeit.timeit(
+            lambda: vectorized_add(data1, data2),
+            number=10
+        )
+        list_time = timeit.timeit(
+            lambda: list_comprehension_add(data1, data2),
+            number=10
+        )
+        
+        print(f"   Vectorized: {vector_time:.4f} seconds")
+        print(f"   List comprehension: {list_time:.4f} seconds")
+        
+        self._track_function_call("performance_optimization")
+    
+    # SECTION 10: REAL-WORLD APPLICATION
+    def complete_application(self):
+        """Complete real-world application using functions"""
+        print("\n" + "="*70)
+        print("SECTION 10: COMPLETE REAL-WORLD APPLICATION")
+        print("="*70)
+        
+        # E-commerce Order Processing System
+        print("\n🛒 E-COMMERCE ORDER PROCESSING SYSTEM")
+        print("-"*50)
+        
+        @dataclass
+        class Product:
+            id: str
+            name: str
+            price: float
+            category: str
+            stock: int
+        
+        @dataclass
+        class OrderItem:
+            product: Product
+            quantity: int
+            discount: float = 0.0
+            
+            @property
+            def total_price(self) -> float:
+                base = self.product.price * self.quantity
+                return base * (1 - self.discount)
+        
+        @dataclass
+        class Order:
+            order_id: str
+            customer_id: str
+            items: List[OrderItem]
+            status: str = "pending"
+            created_at: float = field(default_factory=time.time)
+            
+            @property
+            def total_amount(self) -> float:
+                return sum(item.total_price for item in self.items)
+            
+            @property
+            def item_count(self) -> int:
+                return sum(item.quantity for item in self.items)
+        
+        # Business logic functions
+        def calculate_tax(amount: float, tax_rate: float = 0.08) -> float:
+            """Calculate tax for an amount"""
+            return amount * tax_rate
+        
+        def apply_discount(order: Order, discount_code: Optional[str] = None) -> float:
+            """Apply discount based on discount code"""
+            discount_multiplier = 1.0
+            
+            if discount_code == "SAVE10":
+                discount_multiplier = 0.9
+            elif discount_code == "SAVE20":
+                discount_multiplier = 0.8
+            elif discount_code == "FREESHIP":
+                # Free shipping handled separately
+                pass
+            
+            return order.total_amount * discount_multiplier
+        
+        def validate_order(order: Order) -> Tuple[bool, List[str]]:
+            """Validate order for processing"""
+            errors = []
+            
+            # Check stock availability
+            for item in order.items:
+                if item.quantity > item.product.stock:
+                    errors.append(f"Insufficient stock for {item.product.name}")
+            
+            # Check order amount
+            if order.total_amount <= 0:
+                errors.append("Order amount must be positive")
+            
+            # Check item count
+            if order.item_count > 100:
+                errors.append("Maximum 100 items per order")
+            
+            return len(errors) == 0, errors
+        
+        def process_payment(amount: float, payment_method: str) -> bool:
+            """Simulate payment processing"""
+            # Simulate network delay
+            time.sleep(0.1)
+            
+            # Simulate payment failure 10% of the time
+            if random.random() < 0.1:
+                return False
+            
+            print(f"   💳 Payment of ${amount:.2f} processed via {payment_method}")
+            return True
+        
+        def send_confirmation_email(customer_id: str, order_id: str, amount: float):
+            """Simulate sending confirmation email"""
+            print(f"   📧 Confirmation email sent to customer {customer_id}")
+            print(f"   📦 Order #{order_id} confirmed for ${amount:.2f}")
+        
+        # Main order processing pipeline
+        def process_order(order: Order, 
+                         discount_code: Optional[str] = None,
+                         payment_method: str = "credit_card") -> Dict[str, Any]:
+            """
+            Complete order processing pipeline
+            
+            Returns:
+                Dict with processing results
+            """
+            print(f"\n   Processing Order #{order.order_id}")
+            print(f"   Customer: {order.customer_id}")
+            print(f"   Items: {order.item_count}")
+            
+            # Step 1: Validate order
+            is_valid, errors = validate_order(order)
+            if not is_valid:
+                return {
+                    "success": False,
+                    "order_id": order.order_id,
+                    "errors": errors,
+                    "message": "Order validation failed"
+                }
+            
+            print("   ✅ Order validation passed")
+            
+            # Step 2: Apply discount
+            discounted_amount = apply_discount(order, discount_code)
+            tax = calculate_tax(discounted_amount)
+            final_amount = discounted_amount + tax
+            
+            print(f"   📊 Amount breakdown:")
+            print(f"     Subtotal: ${order.total_amount:.2f}")
+            if discount_code:
+                print(f"     Discounted: ${discounted_amount:.2f}")
+            print(f"     Tax (8%): ${tax:.2f}")
+            print(f"     Final: ${final_amount:.2f}")
+            
+            # Step 3: Process payment
+            print(f"   🔄 Processing payment...")
+            payment_success = process_payment(final_amount, payment_method)
+            
+            if not payment_success:
+                return {
+                    "success": False,
+                    "order_id": order.order_id,
+                    "errors": ["Payment processing failed"],
+                    "message": "Please try another payment method"
+                }
+            
+            # Step 4: Update inventory
+            for item in order.items:
+                item.product.stock -= item.quantity
+                print(f"   📉 Updated stock for {item.product.name}: {item.product.stock} remaining")
+            
+            # Step 5: Send confirmation
+            send_confirmation_email(order.customer_id, order.order_id, final_amount)
+            
+            # Step 6: Update order status
+            order.status = "completed"
+            
+            return {
+                "success": True,
+                "order_id": order.order_id,
+                "customer_id": order.customer_id,
+                "final_amount": final_amount,
+                "status": order.status,
+                "message": "Order processed successfully"
+            }
+        
+        # Create sample products
+        products = [
+            Product("P001", "Laptop", 999.99, "Electronics", 50),
+            Product("P002", "Mouse", 29.99, "Electronics", 100),
+            Product("P003", "Keyboard", 79.99, "Electronics", 75),
+            Product("P004", "Monitor", 299.99, "Electronics", 30)
+        ]
+        
+        # Create sample order
+        order_items = [
+            OrderItem(products[0], 1),  # 1 Laptop
+            OrderItem(products[1], 2),  # 2 Mice
+            OrderItem(products[3], 1)   # 1 Monitor
+        ]
+        
+        order = Order(
+            order_id="ORD-2024-001",
+            customer_id="CUST-001",
+            items=order_items
+        )
+        
+        # Process the order
+        result = process_order(
+            order=order,
+            discount_code="SAVE10",
+            payment_method="credit_card"
+        )
+        
+        print(f"\n   📋 Final Result:")
+        for key, value in result.items():
+            print(f"     {key}: {value}")
+        
+        self._track_function_call("complete_application")
+    
+    def _track_function_call(self, function_name: str):
+        """Track function call for metrics"""
+        metrics = self.function_metrics[function_name]
+        metrics.name = function_name
+        metrics.call_count += 1
+        metrics.last_called = time.time()
+    
+    def display_metrics(self):
+        """Display function performance metrics"""
+        print("\n" + "="*70)
+        print("📊 FUNCTION PERFORMANCE METRICS")
+        print("="*70)
+        
+        if not self.function_metrics:
+            print("   No metrics collected yet.")
+            return
+        
+        print(f"\n{'Function Name':<25} {'Calls':<8} {'Last Called':<20}")
+        print("-"*60)
+        
+        for name, metrics in self.function_metrics.items():
+            last_called = time.ctime(metrics.last_called) if metrics.last_called else "Never"
+            print(f"{name:<25} {metrics.call_count:<8} {last_called:<20}")
+
+def main():
+    """Main program execution"""
+    print("="*70)
+    print("MASTER GUIDE TO PYTHON FUNCTIONS")
+    print("Peyman Miyandashti 250161")
+    print("="*70)
+    
+    # Create function master instance
+    func_master = AdvancedFunctionMaster()
+    
+    # Execute all sections
+    sections = [
+        func_master.function_fundamentals,
+        func_master.decorator_masterclass,
+        func_master.functional_programming,
+        func_master.generators_and_coroutines,
+        func_master.recursion_mastery,
+        func_master.robust_error_handling,
+        func_master.real_world_patterns,
+        func_master.function_introspection,
+        func_master.performance_optimization,
+        func_master.complete_application
+    ]
+    
+    for i, section_func in enumerate(sections, 1):
+        try:
+            section_func()
+        except Exception as e:
+            print(f"\n❌ Error in section {i}: {e}")
+            import traceback
+            traceback.print_exc()
+        
+        if i < len(sections):
+            input(f"\nPress Enter to continue to next section ({i+1}/{len(sections)})...")
+            print("\n" + "="*70)
+    
+    # Display metrics
+    func_master.display_metrics()
+    
+    print("\n" + "="*70)
+    print("🎉 FUNCTION MASTERY COMPLETE!")
+    print("="*70)
+
+if __name__ == "__main__":
+    main()
