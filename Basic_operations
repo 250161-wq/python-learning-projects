@@ -1,0 +1,387 @@
+#Peyman Miyandashti 250161
+#Basic Operations 
+#Basic Operation (Addition, Subtraction, Multiplication, Division, Floor Division, Modulus, Exponentation).
+
+#Arithmetic
+#First lets define two or more integers 
+
+a = 10
+b = 3   
+
+# Addition  + 
+print(a +b)
+
+# Subtraction -
+print(a -b)
+
+# Multiplication  *
+print(a *b)
+
+# Division	/
+print(a /b)
+
+# Floor Division	//
+print(a //b)
+
+# Modulus (Remainder)	%
+print(a % b)
+
+# Exponentiation	**
+print(a ** b)
+
+# We can combine  two variables with the assignment operator =.
+
+# Addition example with assignment operator
+
+count = 5
+count +=2
+print(count) # Process : count + 2 = 7  Output: 7
+
+# Subtraction example with assignment operator
+
+temprature = 112
+temprature -=35
+print(temprature) #process : temprature - 35 Output : 77
+
+# We can even use Float on our process 
+# Multiplication example with assignment operator
+
+price = 23
+price *=2.5
+print(price) # process price *2.5 Output : 57.5
+
+# Floor Division example with assignment operator
+list_value  = 242
+list_value /=2
+print(list_value) # process list_value / 2  Output : 121
+
+# Modulus example with assignment operator
+remainder = 17
+remainder %= 5
+print(remainder) # process: 17 % 5 = 2 (remainder after division) Output: 2
+
+# Exponentiation example with assignment operator
+power = 2
+power **= 3
+print(power) # process: 2 ** 3 = 8 (2 raised to the power of 3) Output: 8
+
+##############################################################
+#Peyman Miyandashti 250161 
+"""
+FINANCIAL PORTFOLIO TRACKER
+Student: Peyman Miyandashti
+Student ID: 250161
+Demonstrating all arithmetic operations with real financial calculations
+"""
+
+class InvestmentPortfolio:
+    def __init__(self, owner_name, owner_id, initial_capital=10000):
+        self.owner = owner_name
+        self.student_id = owner_id
+        self.capital = initial_capital
+        self.stocks = []
+        self.transaction_count = 0
+        self.dividends_earned = 0
+        
+        print(f"📊 PORTFOLIO CREATED FOR: {self.owner} (ID: {self.student_id})")
+        print(f"💰 Initial Capital: ${initial_capital:,.2f}")
+        print("=" * 60)
+    
+    def buy_stock(self, ticker, shares, price_per_share):
+        """Purchase stocks using addition and subtraction"""
+        cost = shares * price_per_share
+        
+        if cost > self.capital:
+            print(f"❌ Insufficient funds! Need ${cost:,.2f}, have ${self.capital:,.2f}")
+            return False
+        
+        # Subtraction: Reduce capital
+        self.capital -= cost
+        
+        # Addition: Add to transaction count
+        self.transaction_count += 1
+        
+        # Store the stock
+        self.stocks.append({
+            'ticker': ticker,
+            'shares': shares,
+            'buy_price': price_per_share,
+            'total_cost': cost
+        })
+        
+        print(f"✅ BOUGHT {shares} shares of {ticker} at ${price_per_share:,.2f}")
+        print(f"   Cost: ${cost:,.2f} | Remaining Capital: ${self.capital:,.2f}")
+        print(f"   Total Transactions: {self.transaction_count}")
+        return True
+    
+    def sell_stock(self, ticker, current_price):
+        """Sell stocks using arithmetic operations"""
+        for stock in self.stocks:
+            if stock['ticker'] == ticker:
+                # Multiplication: Calculate sale value
+                sale_value = stock['shares'] * current_price
+                
+                # Addition: Add to capital
+                self.capital += sale_value
+                
+                # Division: Calculate profit/loss percentage
+                profit = sale_value - stock['total_cost']
+                profit_percentage = (profit / stock['total_cost']) * 100
+                
+                print(f"💰 SOLD {stock['shares']} shares of {ticker} at ${current_price:,.2f}")
+                print(f"   Sale Value: ${sale_value:,.2f}")
+                print(f"   Profit/Loss: ${profit:,.2f} ({profit_percentage:.2f}%)")
+                print(f"   Updated Capital: ${self.capital:,.2f}")
+                
+                # Remove from portfolio
+                self.stocks.remove(stock)
+                return True
+        
+        print(f"❌ Stock {ticker} not found in portfolio!")
+        return False
+    
+    def receive_dividend(self, ticker, dividend_per_share):
+        """Calculate and receive dividends"""
+        for stock in self.stocks:
+            if stock['ticker'] == ticker:
+                # Multiplication: Calculate total dividend
+                total_dividend = stock['shares'] * dividend_per_share
+                
+                # Addition: Add to capital and dividends earned
+                self.capital += total_dividend
+                self.dividends_earned += total_dividend
+                
+                print(f"💵 DIVIDEND from {ticker}: ${dividend_per_share:,.2f} per share")
+                print(f"   Total: ${total_dividend:,.2f} for {stock['shares']} shares")
+                print(f"   Lifetime Dividends: ${self.dividends_earned:,.2f}")
+                return True
+        
+        print(f"❌ No {ticker} shares for dividend!")
+        return False
+    
+    def calculate_compound_interest(self, years, annual_rate=0.07):
+        """Demonstrate exponentiation for compound interest"""
+        # Formula: A = P(1 + r)^t
+        future_value = self.capital * ((1 + annual_rate) ** years)
+        
+        print(f"\n📈 COMPOUND INTEREST PROJECTION")
+        print(f"   Current Capital: ${self.capital:,.2f}")
+        print(f"   Annual Rate: {annual_rate*100:.1f}%")
+        print(f"   Time Period: {years} years")
+        print(f"   Future Value: ${future_value:,.2f}")
+        
+        # Subtraction: Calculate gain
+        gain = future_value - self.capital
+        print(f"   Total Gain: ${gain:,.2f}")
+        
+        return future_value
+    
+    def split_shares(self, ticker, split_ratio):
+        """Demonstrate multiplication and division in stock splits"""
+        for stock in self.stocks:
+            if stock['ticker'] == ticker:
+                # Division: Calculate new share count and price
+                new_shares = stock['shares'] * split_ratio
+                new_price_per_share = stock['buy_price'] / split_ratio
+                
+                print(f"🔄 STOCK SPLIT: {ticker} {split_ratio}:1")
+                print(f"   Old: {stock['shares']} shares @ ${stock['buy_price']:,.2f}")
+                print(f"   New: {new_shares:.0f} shares @ ${new_price_per_share:,.2f}")
+                
+                # Update stock information
+                stock['shares'] = new_shares
+                stock['buy_price'] = new_price_per_share
+                return True
+        
+        print(f"❌ {ticker} not found for split!")
+        return False
+    
+    def calculate_portfolio_allocation(self):
+        """Demonstrate floor division and modulus"""
+        if not self.stocks:
+            print("📭 Portfolio is empty!")
+            return
+        
+        total_investment = sum(stock['total_cost'] for stock in self.stocks)
+        
+        print(f"\n📊 PORTFOLIO ALLOCATION")
+        print(f"Total Investment in Stocks: ${total_investment:,.2f}")
+        print(f"Available Cash: ${self.capital:,.2f}")
+        
+        # Floor Division: Equal allocation per stock
+        equal_parts = len(self.stocks)
+        ideal_per_stock = total_investment // equal_parts
+        
+        print(f"\n📐 IDEAL ALLOCATION ANALYSIS:")
+        print(f"   {equal_parts} stocks → ${ideal_per_stock:,.2f} each")
+        
+        for stock in self.stocks:
+            # Modulus: Check if allocation is even
+            difference = stock['total_cost'] - ideal_per_stock
+            if difference > 0:
+                print(f"   {stock['ticker']}: ${difference:,.2f} OVER ideal")
+            elif difference < 0:
+                print(f"   {stock['ticker']}: ${abs(difference):,.2f} UNDER ideal")
+            else:
+                print(f"   {stock['ticker']}: Perfectly allocated!")
+    
+    def portfolio_summary(self):
+        """Display complete portfolio summary"""
+        print("\n" + "=" * 60)
+        print(f"📋 PORTFOLIO SUMMARY - {self.owner} (ID: {self.student_id})")
+        print("=" * 60)
+        
+        # Total stock value
+        stock_values = []
+        for stock in self.stocks:
+            current_value = stock['shares'] * stock['buy_price']  # For simplicity, using buy price
+            stock_values.append(current_value)
+        
+        total_stock_value = sum(stock_values)
+        total_portfolio_value = self.capital + total_stock_value
+        
+        print(f"💰 Available Cash: ${self.capital:,.2f}")
+        print(f"📈 Stock Holdings: ${total_stock_value:,.2f}")
+        print(f"🏦 Total Portfolio Value: ${total_portfolio_value:,.2f}")
+        print(f"💸 Lifetime Dividends: ${self.dividends_earned:,.2f}")
+        print(f"🔄 Total Transactions: {self.transaction_count}")
+        
+        if self.stocks:
+            print(f"\n📊 STOCK HOLDINGS ({len(self.stocks)}):")
+            for i, stock in enumerate(self.stocks, 1):
+                value = stock['shares'] * stock['buy_price']
+                print(f"   {i}. {stock['ticker']}: {stock['shares']:,} shares @ ${stock['buy_price']:,.2f}")
+                print(f"      Investment: ${stock['total_cost']:,.2f}")
+                print(f"      Current Value: ${value:,.2f}")
+
+# ============================================
+# DEMONSTRATION OF ARITHMETIC OPERATIONS
+# ============================================
+
+def demonstrate_arithmetic_operations():
+    """Showcase all arithmetic operators with financial examples"""
+    
+    # Initialize portfolio
+    print("🏦 FINANCIAL ARITHMETIC DEMONSTRATION")
+    portfolio = InvestmentPortfolio("Peyman Miyandashti", "250161", 50000)
+    
+    print("\n1. ADDITION (+) & SUBTRACTION (-)")
+    print("-" * 40)
+    portfolio.buy_stock("AAPL", 50, 150.75)  # Subtraction from capital
+    portfolio.buy_stock("TSLA", 20, 250.50)  # More subtraction
+    portfolio.buy_stock("GOOGL", 10, 2800.00)
+    
+    print("\n2. MULTIPLICATION (*) & DIVISION (/)")
+    print("-" * 40)
+    portfolio.receive_dividend("AAPL", 0.88)  # Multiplication: shares × dividend
+    portfolio.split_shares("TSLA", 3)         # Division: split ratio
+    
+    print("\n3. FLOOR DIVISION (//) & MODULUS (%)")
+    print("-" * 40)
+    portfolio.calculate_portfolio_allocation()  # Uses // and %
+    
+    print("\n4. EXPONENTIATION (**) - Compound Growth")
+    print("-" * 40)
+    portfolio.calculate_compound_interest(10, 0.08)  # A = P(1+r)^t
+    
+    print("\n5. COMBINED ASSIGNMENT OPERATORS")
+    print("-" * 40)
+    
+    # Simulate market movement
+    print("📈 MARKET SIMULATION:")
+    daily_return = 1.02  # 2% daily return
+    
+    # Using **= for compound daily returns
+    portfolio.capital **= daily_return  # capital = capital ** 1.02
+    print(f"   Capital after 1 day at 2% return: ${portfolio.capital:,.2f}")
+    
+    # Using *= for commission fees
+    commission_rate = 0.99  # 1% fee
+    portfolio.capital *= commission_rate  # capital = capital * 0.99
+    print(f"   After 1% commission: ${portfolio.capital:,.2f}")
+    
+    # Using += for bonus deposit
+    bonus = 1000
+    portfolio.capital += bonus  # capital = capital + 1000
+    print(f"   After $1,000 bonus: ${portfolio.capital:,.2f}")
+    
+    print("\n6. COMPREHENSIVE EXAMPLE")
+    print("-" * 40)
+    
+    # Create a scenario using all operations
+    initial = 10000
+    print(f"Starting with: ${initial:,.2f}")
+    
+    # Series of operations
+    value = initial
+    value += 5000          # Deposit
+    value -= 2000          # Withdrawal
+    value *= 1.05          # 5% gain
+    value /= 2             # Split between accounts
+    value //= 100          # How many $100 bills
+    value %= 5             # Remainder after giving to 5 people
+    value **= 2            # Square the result
+    
+    print(f"After all operations: ${value:,.2f}")
+    
+    return portfolio
+
+# ============================================
+# QUICK ARITHMETIC REFERENCE WITH EXAMPLES
+# ============================================
+
+def arithmetic_reference():
+    """Quick reference of all arithmetic operators"""
+    print("\n" + "=" * 60)
+    print("📚 ARITHMETIC OPERATORS REFERENCE - Peyman Miyandashti 250161")
+    print("=" * 60)
+    
+    a, b = 15, 4  # Sample values
+    
+    reference = [
+        ("+", "Addition", f"{a} + {b} = {a + b}", "Combine values"),
+        ("-", "Subtraction", f"{a} - {b} = {a - b}", "Find difference"),
+        ("*", "Multiplication", f"{a} * {b} = {a * b}", "Repeated addition"),
+        ("/", "Division", f"{a} / {b} = {a / b}", "Split into parts"),
+        ("//", "Floor Division", f"{a} // {b} = {a // b}", "Whole number division"),
+        ("%", "Modulus", f"{a} % {b} = {a % b}", "Remainder after division"),
+        ("**", "Exponentiation", f"{a} ** {b} = {a ** b}", "Raise to power"),
+        ("=", "Assignment", "x = 5", "Store value"),
+        ("+=", "Add & Assign", "x += 3 → x = x + 3", "Increment"),
+        ("-=", "Subtract & Assign", "x -= 2 → x = x - 2", "Decrement"),
+        ("*=", "Multiply & Assign", "x *= 4 → x = x × 4", "Scale value"),
+        ("/=", "Divide & Assign", "x /= 2 → x = x ÷ 2", "Reduce proportionally"),
+        ("//=", "Floor Divide & Assign", "x //= 3 → x = x // 3", "Floor division assignment"),
+        ("%=", "Modulus & Assign", "x %= 3 → x = x % 3", "Remainder assignment"),
+        ("**=", "Exponent & Assign", "x **= 2 → x = x²", "Power assignment"),
+    ]
+    
+    print("\n{:<5} {:<20} {:<25} {}".format("Op", "Name", "Example", "Description"))
+    print("-" * 80)
+    
+    for op, name, example, desc in reference:
+        print("{:<5} {:<20} {:<25} {}".format(op, name, example, desc))
+
+# ============================================
+# MAIN EXECUTION
+# ============================================
+
+if __name__ == "__main__":
+    # Run the portfolio demonstration
+    my_portfolio = demonstrate_arithmetic_operations()
+    
+    # Show final portfolio summary
+    my_portfolio.portfolio_summary()
+    
+    # Display arithmetic reference
+    arithmetic_reference()
+    
+    # Personal message
+    print("\n" + "=" * 60)
+    print("💼 PORTFOLIO SIMULATION COMPLETE")
+    print("=" * 60)
+    print(f"Student: Peyman Miyandashti")
+    print(f"Student ID: 250161")
+    print(f"Date: 2024")
+    print("\nThis program demonstrates all Python arithmetic operators")
+    print("in a practical financial context with real calculations.")
