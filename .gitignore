@@ -1,3 +1,22 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React build output
+task-management-system/frontend/build/
+
+# Database files
+*.db
+*.sqlite3
+
+# Uploads directory
+task-management-system/backend/uploads/
+
+# Test database
+test.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
