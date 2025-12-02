@@ -1,0 +1,22 @@
+#Peyman Miyandashti 250161
+#Diseñe un algoritmo que permita hallar la suma y el promedio de tres números
+#Leer numero1,numero2.numero3
+numero1= int (input("ingresa numero_primero:,"))
+numero2= int (input("ingresa numero_segundo:,"))
+numero3= int (input("ingresa numero_trecero:,"))
+#proceso:Sumar los 3 numeros 
+suma= numero1+numero2+numero3
+#Se usó int para eliminar decimales. 
+#Puedo usar round para obtener el número más cercano
+#puedo eliminar de int para optener decimal 
+promedio=int(suma/3)
+promedio=(suma/3)
+promedio=round(suma/3)
+#imprimir
+print("suma de 3 numeros es:",suma)
+# calcular su promedio 
+#imprimir
+#Así que mostrará el último promedio porque es el último actualizar.
+print("promedio de 3 numeros es:",promedio)
+
+#fin
