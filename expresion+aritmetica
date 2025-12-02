@@ -1,0 +1,21 @@
+#Peyman Miyandashti 250161 
+# 
+#Convertir la siguiente expresión aritmética a algoritmos: Expr = 5* ( x+y )+a2
+#Algoritmo Expresión
+#Variables z,x,y,a  ̈ enteros;
+#inicio 
+#Escribir (“ Ingrese tres valores de a,x,y “);
+def algoritmo_expresion():
+    try:
+        a=int (input("ingresa de valore a :"))
+        x=int (input("ingresa de valore x :"))
+        y=int (input("ingresa de valore y :"))
+#leer a ,x, y
+#proceso 
+        z=((5*(x+y))+(a*a))
+#imprimir
+        print("El resultado de la expresion es ",z)
+    except ValueError:
+        print("Por favor, ingrese valores numéricos válidos.")
+algoritmo_expresion()
+#fin
